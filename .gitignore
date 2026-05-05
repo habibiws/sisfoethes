@@ -1,0 +1,16 @@
+# Root level
+node_modules/
+package-lock.json
+
+# Draft HTML files (prototype lama)
+*.html
+shared-nav.js
+shared.css
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

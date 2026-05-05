@@ -1,0 +1,35 @@
+/* FILTER BAR */
+.filter-bar-laporan {
+  background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px 20px; margin-bottom: 24px;
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.filter-label { font-size: calc(12px * var(--font-scale, 1)); font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.5px; }
+.filter-select, .filter-input { width: auto; flex: 1; min-width: 160px; max-width: 220px; }
+
+/* EXPORT GRID */
+.export-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.export-card {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+  padding: 18px; display: flex; align-items: center; gap: 16px; cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.export-card:hover { border-color: var(--navy-text); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(15,35,64,0.08); background: var(--white); }
+
+.export-icon {
+  width: 48px; height: 48px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center; font-size: calc(22px * var(--font-scale, 1)); flex-shrink: 0;
+}
+.export-info { flex: 1; }
+.export-title { font-size: calc(14px * var(--font-scale, 1)); font-weight: 700; color: var(--navy-text); }
+.export-sub { font-size: calc(11px * var(--font-scale, 1)); color: var(--text3); margin-top: 2px; }
+.export-btn-wrap { flex-shrink: 0; }
+
+/* STAT GRID (reused from dashboard but themed) */
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+
+@media (max-width: 768px) {
+  .filter-bar-laporan { flex-direction: column; align-items: stretch; }
+  .filter-select, .filter-input { max-width: none; }
+  .export-grid { grid-template-columns: 1fr; }
+}

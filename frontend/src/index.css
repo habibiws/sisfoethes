@@ -1,0 +1,5 @@
+@import './styles/global.css';
+@import './styles/components.css';
+@import './components/layout/Layout.css';
+@import './pages/AuthPage.css';
+@import './pages/DashboardPage.css';
