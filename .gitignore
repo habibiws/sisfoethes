@@ -11,6 +11,9 @@ shared.css
 .DS_Store
 Thumbs.db
 
+# Documentation
+SETUP_GUIDE.md
+
 # IDE
 .vscode/
 .idea/

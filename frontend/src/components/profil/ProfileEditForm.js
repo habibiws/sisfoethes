@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default function ProfileEditForm({ formData, setFormData, onSave, onCancel, isSaving, userRole }) {
-  const isAdmin = userRole === 'ketua_kk';
+  const canEditSubKk = userRole === 'ketua_kk' || userRole === 'admin';
 
   return (
     <div className="profile-edit-container">
@@ -49,16 +49,16 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
       <div className="form-grid mb-16">
         <div className="form-group">
           <label>Sub-Kelompok Keahlian</label>
-          {isAdmin ? (
+          {canEditSubKk ? (
             <select 
               value={formData.sub_kk_id} 
               onChange={e => setFormData({...formData, sub_kk_id: e.target.value})}
             >
-              <option value="1">Software Engineering</option>
-              <option value="2">Data Science & AI</option>
-              <option value="3">Cyber Security</option>
-              <option value="4">Internet of Things</option>
-              <option value="5">Game Development</option>
+              <option value="1">CORES — Control, Automation, Robotics & Embedded</option>
+              <option value="2">PORSCE — Power System & Energy Conversion</option>
+              <option value="3">BEE — Basic Electronics</option>
+              <option value="4">COMMET — Communication Network</option>
+              <option value="5">COS(PI) — Telecommunication & Signal Processing</option>
             </select>
           ) : (
             <div className="info-box readonly">
