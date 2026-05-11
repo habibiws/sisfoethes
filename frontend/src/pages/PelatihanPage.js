@@ -81,7 +81,6 @@ export default function PelatihanPage() {
   const handleDelete = (id) => {
     showConfirm(
       'Apakah Anda yakin ingin menghapus event ini? Semua data partisipasi juga akan terhapus.',
-      'Konfirmasi Hapus',
       async () => {
         try {
           await api.post(`/pelatihan-events/${id}`, { _method: 'DELETE' });
@@ -90,7 +89,8 @@ export default function PelatihanPage() {
         } catch (err) {
           showAlert('Gagal menghapus event.', 'Error', 'error');
         }
-      }
+      },
+      'Konfirmasi Hapus'
     );
   };
 

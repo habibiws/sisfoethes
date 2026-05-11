@@ -103,7 +103,6 @@ export default function TabPelatihan() {
                         {event.topik && <span> · Topik: {event.topik}</span>}
                       </div>
                       <div>Tanggal: {formatDate(event.tanggal_mulai)} {event.tanggal_selesai && `- ${formatDate(event.tanggal_selesai)}`}</div>
-                      <div>Status Event: <span style={{textTransform:'capitalize'}}>{event.status}</span></div>
                     </div>
                   </div>
                 </div>
