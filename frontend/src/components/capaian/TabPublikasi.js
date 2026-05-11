@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import useModalStore from '../../store/modalStore';
+import useDirtyState from '../../hooks/useDirtyState';
 
 const DEFAULT_FORM_DATA = {
   judul: '',
@@ -21,7 +22,15 @@ export default function TabPublikasi() {
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
-  const [initialFormData, setInitialFormData] = useState(DEFAULT_FORM_DATA);
+
+  const resetForm = () => {
+    setEditingId(null);
+    setFormData(DEFAULT_FORM_DATA);
+    setShowForm(false);
+  };
+
+  // Standardized Dirty State
+  const { isDirty, setIsDirty, handleSafeClose } = useDirtyState(resetForm);
 
   const fetchData = async () => {
     try {
@@ -38,20 +47,10 @@ export default function TabPublikasi() {
     fetchData();
   }, []);
 
-  const resetForm = () => {
-    setEditingId(null);
-    setFormData(DEFAULT_FORM_DATA);
-    setInitialFormData(DEFAULT_FORM_DATA);
-    setShowForm(false);
-  };
-
-  const handleCloseForm = () => {
-    const isDirty = JSON.stringify(formData) !== JSON.stringify(initialFormData);
-    if (isDirty) {
-      showConfirm('Perubahan Anda belum disimpan. Yakin ingin menutup?', resetForm, 'Buang Perubahan?');
-    } else {
-      resetForm();
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setIsDirty(true);
   };
 
   const handleEdit = (item) => {
@@ -65,19 +64,18 @@ export default function TabPublikasi() {
       doi_url: item.doi_url || ''
     };
     setFormData(itemData);
-    setInitialFormData(itemData);
+    setIsDirty(false); // Reset dirty on edit start
     setShowForm(true);
   };
 
   const handleDelete = (id) => {
-    showConfirm('Apakah Anda yakin ingin menghapus capaian ini?', async () => {
-      try {
-        await api.post(`/publikasis/${id}`, { _method: 'DELETE' });
-        fetchData();
-        showAlert('Data publikasi berhasil dihapus.', 'Berhasil', 'success');
-      } catch (err) {
-        showAlert('Gagal menghapus data.', 'Error', 'error');
-      }
+    showConfirm('Apakah Anda yakin ingin menghapus capaian ini?', () => {
+      api.post(`/publikasis/${id}`, { _method: 'DELETE' })
+        .then(() => {
+          fetchData();
+          showAlert('Data publikasi berhasil dihapus.', 'Berhasil', 'success');
+        })
+        .catch(() => showAlert('Gagal menghapus data.', 'Error', 'error'));
     });
   };
 
@@ -91,6 +89,7 @@ export default function TabPublikasi() {
         await api.post('/publikasis', formData);
       }
       fetchData();
+      setIsDirty(false);
       resetForm();
       showAlert('Data publikasi berhasil disimpan.', 'Berhasil', 'success');
     } catch (err) {
@@ -130,21 +129,21 @@ export default function TabPublikasi() {
       </div>
 
       {showForm && (
-        <div className="modal-overlay" onClick={handleCloseForm} style={{ zIndex: 50 }}>
-          <div className="modal-content animate-pop" onClick={e => e.stopPropagation()} style={{ maxWidth: '600px', padding: '24px' }}>
-            <div className="flex-between mb-16">
-              <h3 className="section-title" style={{ margin: 0 }}>{editingId ? 'Edit Publikasi' : 'Tambah Publikasi Baru'}</h3>
-              <button className="btn btn-ghost btn-sm btn-icon" onClick={handleCloseForm}>✕</button>
+        <div className="modal-overlay" onClick={handleSafeClose} style={{ zIndex: 10000 }}>
+          <div className="modal animate-pop" style={{ maxWidth: '650px', width: '100%', padding: '0', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
+            <div className="modal-header" style={{ padding: '24px 28px', borderBottom: '1px solid var(--border)', marginBottom: 0 }}>
+              <h3 className="modal-title" style={{ margin: 0 }}>{editingId ? '📝 Edit Publikasi' : '📄 Tambah Publikasi Baru'}</h3>
+              <button className="modal-close" onClick={handleSafeClose}>✕</button>
             </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ padding: '28px' }}>
             <div className="form-grid">
               <div className="form-group full">
                 <label>Judul Artikel <span className="req">*</span></label>
-                <input type="text" required value={formData.judul} onChange={e => setFormData({...formData, judul: e.target.value})} placeholder="Judul lengkap artikel" />
+                <input type="text" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap artikel" />
               </div>
               <div className="form-group">
                 <label>Jenis Publikasi <span className="req">*</span></label>
-                <select required value={formData.jenis} onChange={e => setFormData({...formData, jenis: e.target.value})}>
+                <select required value={formData.jenis} onChange={handleChange} name="jenis">
                   <option value="">-- Pilih --</option>
                   <option value="jurnal_internasional_scopus">Jurnal Internasional Scopus</option>
                   <option value="jurnal_nasional_sinta">Jurnal Nasional SINTA</option>
@@ -155,7 +154,7 @@ export default function TabPublikasi() {
               </div>
               <div className="form-group">
                 <label>Posisi Penulis <span className="req">*</span></label>
-                <select required value={formData.posisi_penulis} onChange={e => setFormData({...formData, posisi_penulis: e.target.value})}>
+                <select required value={formData.posisi_penulis} onChange={handleChange} name="posisi_penulis">
                   <option value="">-- Pilih --</option>
                   <option value="penulis_pertama">Penulis Pertama</option>
                   <option value="corresponding">Corresponding Author</option>
@@ -164,19 +163,19 @@ export default function TabPublikasi() {
               </div>
               <div className="form-group full">
                 <label>Nama Jurnal / Prosiding <span className="req">*</span></label>
-                <input type="text" required value={formData.nama_jurnal} onChange={e => setFormData({...formData, nama_jurnal: e.target.value})} placeholder="Nama jurnal atau prosiding" />
+                <input type="text" required value={formData.nama_jurnal} onChange={handleChange} name="nama_jurnal" placeholder="Nama jurnal atau prosiding" />
               </div>
               <div className="form-group">
                 <label>Tahun Terbit <span className="req">*</span></label>
-                <input type="number" required value={formData.tahun_terbit} onChange={e => setFormData({...formData, tahun_terbit: parseInt(e.target.value) || ''})} placeholder="2026" />
+                <input type="number" required value={formData.tahun_terbit} onChange={handleChange} name="tahun_terbit" placeholder="2026" />
               </div>
               <div className="form-group">
                 <label>DOI / URL</label>
-                <input type="text" value={formData.doi_url} onChange={e => setFormData({...formData, doi_url: e.target.value})} placeholder="https://doi.org/..." />
+                <input type="text" value={formData.doi_url} onChange={handleChange} name="doi_url" placeholder="https://doi.org/..." />
               </div>
             </div>
             <div className="btn-row mt-20" style={{ justifyContent: 'flex-end', display: 'flex', gap: '12px' }}>
-              <button type="button" className="btn btn-ghost" onClick={handleCloseForm} disabled={isSubmitting}>Batal</button>
+              <button type="button" className="btn btn-ghost" onClick={handleSafeClose} disabled={isSubmitting}>Batal</button>
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? 'Menyimpan...' : 'Simpan'}
               </button>

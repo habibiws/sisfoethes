@@ -15,11 +15,11 @@ export default function useDirtyState(onClose, message = 'Ada perubahan yang bel
     if (isDirty) {
       showConfirm(
         message,
-        'Konfirmasi Keluar',
         () => {
           setIsDirty(false);
           onClose();
-        }
+        },
+        'Konfirmasi Keluar'
       );
     } else {
       onClose();
