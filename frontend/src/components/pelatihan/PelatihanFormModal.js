@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
-import useModalStore from '../../store/modalStore';
+import useDirtyState from '../../hooks/useDirtyState';
 
 export default function PelatihanFormModal({ isOpen, onClose, onSave, initialData, currentTW }) {
-  const { showConfirm } = useModalStore();
+  const { isDirty, setIsDirty, handleSafeClose } = useDirtyState(onClose);
   const [formData, setFormData] = useState({
     judul: '',
     penyelenggara: '',
@@ -59,25 +59,10 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
     setIsDirty(true);
   };
 
-  const handleClose = () => {
-    if (isDirty) {
-      showConfirm(
-        'Ada perubahan yang belum disimpan. Yakin ingin keluar?',
-        'Konfirmasi Keluar',
-        () => {
-          setIsDirty(false);
-          onClose();
-        }
-      );
-    } else {
-      onClose();
-    }
-  };
-
   const handleOverlayClick = (e) => {
     // Check if the click was directly on the modal-overlay backdrop
     if (e.target.classList.contains('modal-overlay')) {
-      handleClose();
+      handleSafeClose();
     }
   };
 
@@ -109,7 +94,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
           <div className="modal-title">
             {initialData ? '📝 Edit Event Pelatihan' : '📅 Tambah Event Baru'}
           </div>
-          <button className="modal-close" onClick={(e) => { e.stopPropagation(); handleClose(); }} type="button">
+          <button className="modal-close" onClick={(e) => { e.stopPropagation(); handleSafeClose(); }} type="button">
             <X size={20} />
           </button>
         </div>
@@ -209,7 +194,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
             </div>
 
             <div className="btn-row" style={{ marginTop: '30px' }}>
-              <button type="button" className="btn btn-ghost" onClick={handleClose}>Batal</button>
+              <button type="button" className="btn btn-ghost" onClick={handleSafeClose}>Batal</button>
               <button type="submit" className="btn btn-primary" style={{ minWidth: '160px' }}>
                 {initialData ? 'Simpan Perubahan' : 'Daftarkan Event'}
               </button>
