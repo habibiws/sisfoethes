@@ -13,6 +13,7 @@ export default function PelatihanPage() {
   const { user } = useAuthStore();
   const { showAlert, showConfirm } = useModalStore();
   const [activeTW, setActiveTW] = useState(1);
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -39,10 +40,20 @@ export default function PelatihanPage() {
 
   const canEdit = ['admin', 'ketua_kk', 'ketua_sub_kk'].includes(user?.role);
 
-  // Filter events by selected TW
-  const filteredEvents = events.filter(e => parseInt(e.triwulan) === activeTW);
+  // Get unique years from data for filter
+  const years = [...new Set(events.map(e => parseInt(e.tahun)))].sort((a, b) => b - a);
+  if (!years.includes(new Date().getFullYear())) {
+    years.push(new Date().getFullYear());
+    years.sort((a, b) => b - a);
+  }
 
-  // Calculate summary for active TW
+  // Filter events by selected Year and TW
+  const filteredEvents = events.filter(e => 
+    parseInt(e.tahun) === selectedYear && 
+    parseInt(e.triwulan) === activeTW
+  );
+
+  // Calculate summary for active filters
   const summary = {
     eventCount: filteredEvents.length,
     totalPeserta: filteredEvents.reduce((acc, curr) => acc + (curr.participations_count || 0), 0),
@@ -50,8 +61,8 @@ export default function PelatihanPage() {
     completed: filteredEvents.filter(e => e.status === 'terlaksana').length
   };
 
-  // Get counts for all TWs
-  const twCounts = events.reduce((acc, curr) => {
+  // Get counts for all TWs based on selected YEAR
+  const twCounts = events.filter(e => parseInt(e.tahun) === selectedYear).reduce((acc, curr) => {
     const tw = curr.triwulan;
     acc[tw] = (acc[tw] || 0) + 1;
     return acc;
@@ -102,13 +113,33 @@ export default function PelatihanPage() {
   return (
     <Layout 
       title="Kelola Pelatihan KK" 
-      subtitle={`Kelompok Keahlian ETHES · Tahun ${new Date().getFullYear()}`}
+      subtitle={`Kelompok Keahlian ETHES · Triwulan ${activeTW} · Tahun ${selectedYear}`}
       headerActions={
-        canEdit && (
-          <button className="btn btn-primary" onClick={handleAdd}>
-            + Tambah Event Pelatihan
-          </button>
-        )
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          <select 
+            className="year-selector"
+            value={selectedYear}
+            onChange={(e) => setSelectedYear(parseInt(e.target.value))}
+            style={{ 
+              padding: '8px 16px', 
+              borderRadius: '8px', 
+              border: '1px solid var(--border)',
+              background: 'white',
+              fontWeight: 600,
+              color: 'var(--navy-text)',
+              cursor: 'pointer'
+            }}
+          >
+            {years.map(y => (
+              <option key={y} value={y}>Tahun {y}</option>
+            ))}
+          </select>
+          {canEdit && (
+            <button className="btn btn-primary" onClick={handleAdd}>
+              + Tambah Event Pelatihan
+            </button>
+          )}
+        </div>
       }
     >
       <div className="pelatihan-container">

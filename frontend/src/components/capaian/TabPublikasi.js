@@ -139,7 +139,7 @@ export default function TabPublikasi() {
             <div className="form-grid">
               <div className="form-group full">
                 <label>Judul Artikel <span className="req">*</span></label>
-                <input type="text" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap artikel" />
+                <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap artikel" />
               </div>
               <div className="form-group">
                 <label>Jenis Publikasi <span className="req">*</span></label>

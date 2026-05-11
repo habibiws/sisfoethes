@@ -15,8 +15,7 @@ export default function PelatihanList({ events, canEdit, onEdit, onDelete }) {
 
   const getStatusBadge = (status) => {
     if (status === 'terlaksana') return <span className="p-status done"><CheckCircle size={14} /> Terlaksana</span>;
-    if (status === 'direncanakan') return <span className="p-status planned"><Clock size={14} /> Direncanakan</span>;
-    return <span className="p-status canceled"><AlertCircle size={14} /> Dibatalkan</span>;
+    return <span className="p-status planned"><Clock size={14} /> Direncanakan</span>;
   };
 
   const formatDate = (dateStr) => {
@@ -56,7 +55,7 @@ export default function PelatihanList({ events, canEdit, onEdit, onDelete }) {
                 </div>
                 <div className="item-detail">
                   <Wallet size={16} />
-                  <span>{event.estimasi_biaya ? `Rp ${parseFloat(event.estimasi_biaya).toLocaleString('id-ID')}jt` : 'Tanpa Biaya'}</span>
+                  <span>{event.estimasi_biaya ? `Rp ${parseFloat(event.estimasi_biaya).toLocaleString('id-ID')}` : 'Tanpa Biaya'}</span>
                 </div>
               </div>
             </div>

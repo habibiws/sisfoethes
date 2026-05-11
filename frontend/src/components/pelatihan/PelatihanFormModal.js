@@ -161,6 +161,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
                 <input 
                   type="date"
                   name="tanggal_selesai"
+                  min={formData.tanggal_mulai}
                   value={formData.tanggal_selesai}
                   onChange={handleChange}
                 />
@@ -172,23 +173,21 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
                 <div className="form-group">
                   <label>Status Pelaksanaan <span className="req">*</span></label>
                   <select name="status" value={formData.status} onChange={handleChange}>
-                    <option value="direncanakan">🟡 Direncanakan</option>
-                    <option value="terlaksana">✅ Terlaksana</option>
-                    <option value="dibatalkan">❌ Dibatalkan</option>
+                    <option value="direncanakan">Direncanakan</option>
+                    <option value="terlaksana">Terlaksana</option>
                   </select>
                 </div>
               ) : (
                 <div style={{ display: 'none' }}></div>
               )}
               <div className="form-group">
-                <label>Estimasi Biaya (Juta Rp)</label>
+                <label>Estimasi Biaya</label>
                 <input 
                   type="number"
-                  step="0.1"
                   name="estimasi_biaya"
                   value={formData.estimasi_biaya}
                   onChange={handleChange}
-                  placeholder="Contoh: 12.5"
+                  placeholder="Masukkan nominal"
                 />
               </div>
             </div>
