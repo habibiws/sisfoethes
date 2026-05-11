@@ -60,20 +60,20 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
   if (!isOpen) return null;
 
   return (
-    <div className="global-modal-overlay">
-      <div className="global-modal-card animate-scale-up" style={{ maxWidth: '600px' }}>
-        <div className="global-modal-header">
-          <div className="global-modal-title">
-            {initialData ? 'Edit Event Pelatihan' : 'Tambah Event Baru'}
+    <div className="modal-overlay" style={{ zIndex: 10000 }}>
+      <div className="modal animate-pop" style={{ width: '650px', maxWidth: '95vw', padding: '0' }}>
+        <div className="modal-header" style={{ padding: '24px 28px', borderBottom: '1px solid var(--border)', marginBottom: 0 }}>
+          <div className="modal-title">
+            {initialData ? '📝 Edit Event Pelatihan' : '📅 Tambah Event Baru'}
           </div>
-          <button className="global-modal-close" onClick={handleClose}>
+          <button className="modal-close" onClick={handleClose}>
             <X size={20} />
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="global-modal-body">
+        <form onSubmit={handleSubmit} style={{ padding: '28px' }}>
           <div className="form-group mb-16">
-            <label>Judul Event <span className="required">*</span></label>
+            <label>Judul Event <span className="req">*</span></label>
             <input 
               name="judul"
               value={formData.judul}
@@ -85,7 +85,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
 
           <div className="form-grid mb-16">
             <div className="form-group">
-              <label>Penyelenggara <span className="required">*</span></label>
+              <label>Penyelenggara <span className="req">*</span></label>
               <input 
                 name="penyelenggara"
                 value={formData.penyelenggara}
@@ -95,7 +95,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
               />
             </div>
             <div className="form-group">
-              <label>Jenis Event <span className="required">*</span></label>
+              <label>Jenis Event <span className="req">*</span></label>
               <select name="jenis" value={formData.jenis} onChange={handleChange}>
                 <option value="workshop">Workshop</option>
                 <option value="sertifikasi">Sertifikasi</option>
@@ -118,7 +118,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
 
           <div className="form-grid mb-16">
             <div className="form-group">
-              <label>Tanggal Mulai <span className="required">*</span></label>
+              <label>Tanggal Mulai <span className="req">*</span></label>
               <input 
                 type="date"
                 name="tanggal_mulai"
