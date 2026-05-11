@@ -17,7 +17,7 @@ export default function PelatihanFormModal({ isOpen, onClose, onSave, initialDat
     estimasi_biaya: ''
   });
 
-  const [isDirty, setIsDirty] = useState(false);
+
 
   useEffect(() => {
     if (isOpen) {
