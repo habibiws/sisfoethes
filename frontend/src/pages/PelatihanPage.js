@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
 import PelatihanTabs from '../components/pelatihan/PelatihanTabs';
 import PelatihanSummary from '../components/pelatihan/PelatihanSummary';
-import PelatihanTable from '../components/pelatihan/PelatihanTable';
+import PelatihanList from '../components/pelatihan/PelatihanList';
 import PelatihanFormModal from '../components/pelatihan/PelatihanFormModal';
 import api from '../services/api';
 import useAuthStore from '../store/authStore';
@@ -122,7 +122,7 @@ export default function PelatihanPage() {
               <PelatihanSummary data={summary} />
 
               {filteredEvents.length > 0 ? (
-                <PelatihanTable 
+                <PelatihanList 
                   events={filteredEvents} 
                   canEdit={canEdit} 
                   onEdit={handleEdit}
