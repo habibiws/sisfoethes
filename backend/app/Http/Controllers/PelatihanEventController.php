@@ -10,7 +10,7 @@ class PelatihanEventController extends Controller
     public function index()
     {
         // All users can see all events
-        return response()->json(PelatihanEvent::with('creator')->orderBy('tanggal_mulai', 'desc')->get());
+        return response()->json(PelatihanEvent::with('creator')->withCount('participations')->orderBy('tanggal_mulai', 'desc')->get());
     }
 
     public function store(Request $request)
@@ -30,6 +30,7 @@ class PelatihanEventController extends Controller
             'triwulan' => 'required|integer|between:1,4',
             'tahun' => 'required|integer',
             'status' => 'required|string|in:direncanakan,terlaksana,dibatalkan',
+            'estimasi_biaya' => 'nullable|numeric|min:0',
         ]);
 
         $validated['created_by'] = auth()->id();
@@ -56,6 +57,7 @@ class PelatihanEventController extends Controller
             'triwulan' => 'required|integer|between:1,4',
             'tahun' => 'required|integer',
             'status' => 'required|string|in:direncanakan,terlaksana,dibatalkan',
+            'estimasi_biaya' => 'nullable|numeric|min:0',
         ]);
 
         $event->update($validated);

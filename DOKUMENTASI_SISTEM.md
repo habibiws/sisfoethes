@@ -53,8 +53,8 @@ Sistem menggunakan **Laravel Migrations** untuk mendefinisikan skema database. B
 
 | Tabel | Fungsi | Keterangan |
 |---|---|---|
-| `pelatihan_events` | Master data event pelatihan | Dibuat oleh Ketua Sub-KK ke atas |
-| `pelatihan_participations` | Catatan keikutsertaan dosen | Dosen menandai partisipasinya sendiri |
+| `pelatihan_events` | Master data event pelatihan | Dibuat oleh Ketua Sub-KK ke atas. Memiliki field `estimasi_biaya`. |
+| `pelatihan_participations` | Catatan keikutsertaan dosen | Dosen menandai partisipasinya sendiri. |
 
 ### 3.4 Relasi Antar Tabel
 
@@ -218,7 +218,8 @@ frontend/src/
 
 ### 6.2 Fitur UI/UX
 
-- **Modal Popup:** Semua form input capaian menggunakan modal popup. Jika user keluar tanpa menyimpan, muncul konfirmasi "Buang Perubahan?"
+- **Pelatihan Redesign:** Halaman Kelola Pelatihan menggunakan layout tabel kompak dengan ringkasan statistik satu baris (horizontal summary bar) untuk efisiensi ruang dan profesionalitas.
+- **Modal Popup:** Semua form input capaian dan pelatihan menggunakan modal popup. Jika user keluar tanpa menyimpan, muncul konfirmasi "Buang Perubahan?"
 - **Notifikasi Custom:** Sistem menggunakan `GlobalModal` (bukan `window.alert` bawaan browser) untuk semua notifikasi sukses/error/konfirmasi.
 - **Aksesibilitas:** Terdapat menu pengaturan ukuran font dan display yang persist di localStorage.
 - **Responsive Sidebar:** Sidebar dapat di-collapse/expand, state tersimpan di localStorage.
