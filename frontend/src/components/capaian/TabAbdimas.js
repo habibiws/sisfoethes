@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import useModalStore from '../../store/modalStore';
+import useDirtyState from '../../hooks/useDirtyState';
 
 const DEFAULT_FORM_DATA = {
   judul: '',
@@ -22,7 +23,15 @@ export default function TabAbdimas() {
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
-  const [initialFormData, setInitialFormData] = useState(DEFAULT_FORM_DATA);
+
+  const resetForm = () => {
+    setEditingId(null);
+    setFormData(DEFAULT_FORM_DATA);
+    setShowForm(false);
+  };
+
+  // Standardized Dirty State
+  const { isDirty, setIsDirty, handleSafeClose } = useDirtyState(resetForm);
 
   const fetchData = async () => {
     try {
@@ -39,20 +48,10 @@ export default function TabAbdimas() {
     fetchData();
   }, []);
 
-  const resetForm = () => {
-    setEditingId(null);
-    setFormData(DEFAULT_FORM_DATA);
-    setInitialFormData(DEFAULT_FORM_DATA);
-    setShowForm(false);
-  };
-
-  const handleCloseForm = () => {
-    const isDirty = JSON.stringify(formData) !== JSON.stringify(initialFormData);
-    if (isDirty) {
-      showConfirm('Perubahan Anda belum disimpan. Yakin ingin menutup?', resetForm, 'Buang Perubahan?');
-    } else {
-      resetForm();
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    setIsDirty(true);
   };
 
   const handleEdit = (item) => {
@@ -67,19 +66,18 @@ export default function TabAbdimas() {
       jumlah_dana: item.jumlah_dana || ''
     };
     setFormData(itemData);
-    setInitialFormData(itemData);
+    setIsDirty(false);
     setShowForm(true);
   };
 
   const handleDelete = (id) => {
-    showConfirm('Apakah Anda yakin ingin menghapus capaian ini?', async () => {
-      try {
-        await api.post(`/abdimas/${id}`, { _method: 'DELETE' });
-        fetchData();
-        showAlert('Data Abdimas berhasil dihapus.', 'Berhasil', 'success');
-      } catch (err) {
-        showAlert('Gagal menghapus data.', 'Error', 'error');
-      }
+    showConfirm('Apakah Anda yakin ingin menghapus capaian ini?', () => {
+      api.post(`/abdimas/${id}`, { _method: 'DELETE' })
+        .then(() => {
+          fetchData();
+          showAlert('Data Abdimas berhasil dihapus.', 'Berhasil', 'success');
+        })
+        .catch(() => showAlert('Gagal menghapus data.', 'Error', 'error'));
     });
   };
 
@@ -93,6 +91,7 @@ export default function TabAbdimas() {
         await api.post('/abdimas', formData);
       }
       fetchData();
+      setIsDirty(false);
       resetForm();
       showAlert('Data Abdimas berhasil disimpan.', 'Berhasil', 'success');
     } catch (err) {
@@ -121,21 +120,21 @@ export default function TabAbdimas() {
       </div>
 
       {showForm && (
-        <div className="modal-overlay" onClick={handleCloseForm} style={{ zIndex: 50 }}>
-          <div className="modal-content animate-pop" onClick={e => e.stopPropagation()} style={{ maxWidth: '600px', padding: '24px' }}>
-            <div className="flex-between mb-16">
-              <h3 className="section-title" style={{ margin: 0 }}>{editingId ? 'Edit Abdimas' : 'Tambah Abdimas Baru'}</h3>
-              <button className="btn btn-ghost btn-sm btn-icon" onClick={handleCloseForm}>✕</button>
+        <div className="modal-overlay" onClick={handleSafeClose} style={{ zIndex: 10000 }}>
+          <div className="modal animate-pop" style={{ maxWidth: '650px', width: '100%', padding: '0', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
+            <div className="modal-header" style={{ padding: '24px 28px', borderBottom: '1px solid var(--border)', marginBottom: 0 }}>
+              <h3 className="modal-title" style={{ margin: 0 }}>{editingId ? '📝 Edit Abdimas' : '🤝 Tambah Abdimas Baru'}</h3>
+              <button className="modal-close" onClick={handleSafeClose}>✕</button>
             </div>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ padding: '28px' }}>
             <div className="form-grid">
               <div className="form-group full">
                 <label>Judul Kegiatan <span className="req">*</span></label>
-                <input type="text" required value={formData.judul} onChange={e => setFormData({...formData, judul: e.target.value})} placeholder="Judul lengkap abdimas" />
+                <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap abdimas" />
               </div>
               <div className="form-group">
                 <label>Skema <span className="req">*</span></label>
-                <select required value={formData.skema} onChange={e => setFormData({...formData, skema: e.target.value})}>
+                <select name="skema" required value={formData.skema} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="mandiri">Mandiri</option>
                   <option value="pendanaan_internal">Pendanaan Internal</option>
@@ -144,7 +143,7 @@ export default function TabAbdimas() {
               </div>
               <div className="form-group">
                 <label>Posisi <span className="req">*</span></label>
-                <select required value={formData.posisi} onChange={e => setFormData({...formData, posisi: e.target.value})}>
+                <select name="posisi" required value={formData.posisi} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="ketua">Ketua</option>
                   <option value="anggota">Anggota</option>
@@ -152,23 +151,23 @@ export default function TabAbdimas() {
               </div>
               <div className="form-group full">
                 <label>Mitra Sasaran <span className="req">*</span></label>
-                <input type="text" required value={formData.mitra} onChange={e => setFormData({...formData, mitra: e.target.value})} placeholder="Contoh: Desa Suka Maju, UMKM XYZ" />
+                <input type="text" name="mitra" required value={formData.mitra} onChange={handleChange} placeholder="Contoh: Desa Suka Maju, UMKM XYZ" />
               </div>
               <div className="form-group">
                 <label>Lokasi Kegiatan</label>
-                <input type="text" value={formData.lokasi} onChange={e => setFormData({...formData, lokasi: e.target.value})} placeholder="Contoh: Kab. Bandung" />
+                <input type="text" name="lokasi" value={formData.lokasi} onChange={handleChange} placeholder="Contoh: Kab. Bandung" />
               </div>
               <div className="form-group">
                 <label>Tahun Pelaksanaan <span className="req">*</span></label>
-                <input type="number" required value={formData.tahun} onChange={e => setFormData({...formData, tahun: parseInt(e.target.value) || ''})} placeholder="2026" />
+                <input type="number" name="tahun" required value={formData.tahun} onChange={handleChange} placeholder="2026" />
               </div>
               <div className="form-group">
                 <label>Jumlah Dana (Rp)</label>
-                <input type="number" value={formData.jumlah_dana} onChange={e => setFormData({...formData, jumlah_dana: e.target.value})} placeholder="Opsional jika tidak ada" />
+                <input type="number" name="jumlah_dana" value={formData.jumlah_dana} onChange={handleChange} placeholder="Opsional jika tidak ada" />
               </div>
             </div>
             <div className="btn-row mt-20" style={{ justifyContent: 'flex-end', display: 'flex', gap: '12px' }}>
-              <button type="button" className="btn btn-ghost" onClick={handleCloseForm} disabled={isSubmitting}>Batal</button>
+              <button type="button" className="btn btn-ghost" onClick={handleSafeClose} disabled={isSubmitting}>Batal</button>
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? 'Menyimpan...' : 'Simpan'}
               </button>
