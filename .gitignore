@@ -3,7 +3,7 @@ node_modules/
 package-lock.json
 
 # Draft HTML files (prototype lama)
-*.html
+/*.html
 shared-nav.js
 shared.css
 
