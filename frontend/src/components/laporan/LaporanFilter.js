@@ -21,7 +21,7 @@ export default function LaporanFilter({ filters, onFilterChange, subKks }) {
         >
           <option value="">Semua Sub-KK</option>
           {subKks && subKks.map(sub => (
-            <option key={sub.id} value={sub.id}>{sub.name}</option>
+            <option key={sub.id} value={sub.id}>{sub.code}</option>
           ))}
         </select>
 

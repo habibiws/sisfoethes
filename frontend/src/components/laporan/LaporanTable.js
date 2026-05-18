@@ -58,7 +58,7 @@ export default function LaporanTable({ users, onShowDetail, onRemindUser }) {
                     <td>
                       {row.sub_kk ? (
                         <span className="tag-navy" style={{ fontSize: '10px', padding: '2px 8px', borderRadius: '4px', background: '#EBF2F9', color: 'var(--navy)', fontWeight: 600 }}>
-                          {row.sub_kk.name}
+                          {row.sub_kk.code}
                         </span>
                       ) : (
                         <span style={{ fontSize: '11px', color: 'var(--text3)' }}>—</span>

@@ -15,7 +15,7 @@ export default function LaporanPage() {
   const { user: currentUser } = useAuthStore();
   const { showAlert, showConfirm } = useModalStore();
 
-  const [selectedYear, setSelectedYear] = useState('2026');
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
   const [filters, setFilters] = useState({
     sub_kk_id: '',
     status: '',
@@ -109,9 +109,10 @@ export default function LaporanPage() {
             onChange={(e) => setSelectedYear(e.target.value)}
             style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '13px', background: 'var(--white)', fontWeight: 600 }}
           >
-            <option value="2026">Tahun 2026</option>
-            <option value="2025">Tahun 2025</option>
-            <option value="2024">Tahun 2024</option>
+            {Array.from({ length: new Date().getFullYear() - 2024 + 1 }, (_, i) => {
+              const yr = new Date().getFullYear() - i;
+              return <option key={yr} value={yr.toString()}>Tahun {yr}</option>;
+            })}
             <option value="">Semua Tahun</option>
           </select>
           <button className="btn btn-outline" onClick={handlePrint} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>

@@ -103,7 +103,8 @@ class LaporanController extends Controller
                 'role' => $user->role,
                 'sub_kk' => $user->subKk ? [
                     'id' => $user->subKk->id,
-                    'name' => $user->subKk->name
+                    'name' => $user->subKk->name,
+                    'code' => $user->subKk->code
                 ] : null,
                 'counts' => [
                     'publikasi' => $pubCount,
@@ -137,7 +138,7 @@ class LaporanController extends Controller
                 'total_dana_hibah' => $totalDana
             ],
             'users' => $processedUsers,
-            'sub_kks' => SubKk::select('id', 'name')->get()
+            'sub_kks' => SubKk::select('id', 'name', 'code')->get()
         ]);
     }
 
@@ -191,7 +192,8 @@ class LaporanController extends Controller
                 'role' => $user->role,
                 'sub_kk' => $user->subKk ? [
                     'id' => $user->subKk->id,
-                    'name' => $user->subKk->name
+                    'name' => $user->subKk->name,
+                    'code' => $user->subKk->code
                 ] : null
             ],
             'publikasis' => $publikasis,

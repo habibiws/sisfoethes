@@ -62,7 +62,7 @@ export default function LaporanDetailModal({ user, year, onClose }) {
           <div>
             <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: 'var(--navy)' }}>Detail Capaian Dosen</h3>
             <div style={{ fontSize: '13px', color: 'var(--text3)', marginTop: '4px', fontWeight: 500 }}>
-              <strong>{user.name}</strong> · NIDN: {user.nidn || '—'} · Sub-KK: {user.sub_kk?.name || '—'}
+              <strong>{user.name}</strong> · NIDN: {user.nidn || '—'} · Sub-KK: {user.sub_kk?.code || '—'}
             </div>
           </div>
           <button 
