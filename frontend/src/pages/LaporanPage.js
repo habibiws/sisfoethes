@@ -31,11 +31,6 @@ export default function LaporanPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  // Proteksi Halaman: Jika user biasa (anggota), redirect ke dashboard
-  if (currentUser && currentUser.role === 'anggota') {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   const fetchRekap = async () => {
     try {
       setIsLoading(true);
@@ -62,6 +57,11 @@ export default function LaporanPage() {
   useEffect(() => {
     fetchRekap();
   }, [selectedYear, filters.sub_kk_id]);
+
+  // Proteksi Halaman: Jika user biasa (anggota), redirect ke dashboard
+  if (currentUser && currentUser.role === 'anggota') {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleFilterChange = (name, value) => {
     setFilters(prev => ({

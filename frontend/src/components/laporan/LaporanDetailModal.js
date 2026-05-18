@@ -223,12 +223,12 @@ export default function LaporanDetailModal({ user, year, onClose }) {
                     details.pelatihan_participations.map((part, idx) => (
                       <div key={part.id} className="card" style={{ padding: '16px', background: 'var(--bg)' }}>
                         <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--navy)', marginBottom: '6px' }}>
-                          {idx + 1}. {part.pelatihan_event?.judul || 'Pelatihan'}
+                          {idx + 1}. {part.event?.judul || 'Pelatihan'}
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', fontSize: '12px', color: 'var(--text3)' }}>
-                          <div><strong>Penyelenggara:</strong> {part.pelatihan_event?.penyelenggara || '—'}</div>
-                          <div><strong>Jenis Event:</strong> {getFormatEnum(part.pelatihan_event?.jenis)}</div>
-                          <div><strong>Tanggal Pelaksanaan:</strong> {part.pelatihan_event?.tanggal_mulai || '—'} s/d {part.pelatihan_event?.tanggal_selesai || '—'}</div>
+                          <div><strong>Penyelenggara:</strong> {part.event?.penyelenggara || '—'}</div>
+                          <div><strong>Jenis Event:</strong> {getFormatEnum(part.event?.jenis)}</div>
+                          <div><strong>Tanggal Pelaksanaan:</strong> {part.event?.tanggal_mulai || '—'} s/d {part.event?.tanggal_selesai || '—'}</div>
                           <div><strong>Status Partisipasi:</strong> <span className="tag-navy" style={{ background: '#EBF2F9', color: 'var(--navy)', padding: '2px 6px', borderRadius: '4px', fontSize: '10px', fontWeight: 600 }}>{getFormatEnum(part.status_keikutsertaan)}</span></div>
                         </div>
                         {part.catatan && (

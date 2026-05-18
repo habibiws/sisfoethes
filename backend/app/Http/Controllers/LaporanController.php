@@ -55,7 +55,7 @@ class LaporanController extends Controller
             },
             'pelatihanParticipations' => function ($q) use ($year) {
                 if ($year) {
-                    $q->whereHas('pelatihanEvent', function ($eventQ) use ($year) {
+                    $q->whereHas('event', function ($eventQ) use ($year) {
                         $eventQ->where('tahun', $year);
                     });
                 }
@@ -177,10 +177,10 @@ class LaporanController extends Controller
             ->get();
 
         $pelatihanParticipations = PelatihanParticipation::where('user_id', $userId)
-            ->whereHas('pelatihanEvent', function ($q) use ($year) {
+            ->whereHas('event', function ($q) use ($year) {
                 if ($year) $q->where('tahun', $year);
             })
-            ->with('pelatihanEvent')
+            ->with('event')
             ->get();
 
         return response()->json([
