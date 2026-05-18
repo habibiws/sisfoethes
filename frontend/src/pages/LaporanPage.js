@@ -1,50 +1,159 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
 import LaporanStats from '../components/laporan/LaporanStats';
 import LaporanFilter from '../components/laporan/LaporanFilter';
 import LaporanTable from '../components/laporan/LaporanTable';
 import LaporanExportGrid from '../components/laporan/LaporanExportGrid';
+import LaporanDetailModal from '../components/laporan/LaporanDetailModal';
+import api from '../services/api';
+import useModalStore from '../store/modalStore';
+import useAuthStore from '../store/authStore';
+import { Navigate } from 'react-router-dom';
 import './LaporanPage.css';
 
 export default function LaporanPage() {
+  const { user: currentUser } = useAuthStore();
+  const { showAlert, showConfirm } = useModalStore();
+
+  const [selectedYear, setSelectedYear] = useState('2026');
+  const [filters, setFilters] = useState({
+    sub_kk_id: '',
+    status: '',
+    search: ''
+  });
+
+  const [data, setData] = useState({
+    summary: null,
+    users: [],
+    sub_kks: []
+  });
+  
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
+
+  // Proteksi Halaman: Jika user biasa (anggota), redirect ke dashboard
+  if (currentUser && currentUser.role === 'anggota') {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  const fetchRekap = async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.get('/laporan/rekap', {
+        params: {
+          tahun: selectedYear,
+          sub_kk_id: filters.sub_kk_id
+        }
+      });
+      setData({
+        summary: response.data.summary,
+        users: response.data.users,
+        sub_kks: response.data.sub_kks
+      });
+    } catch (error) {
+      console.error('Gagal mengambil data rekap laporan:', error);
+      showAlert('Gagal memuat rekapitulasi data laporan.', 'Error', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Fetch when year or Sub-KK filter changes (server-side queries)
+  useEffect(() => {
+    fetchRekap();
+  }, [selectedYear, filters.sub_kk_id]);
+
+  const handleFilterChange = (name, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleRemindUser = (targetUser) => {
+    showConfirm(
+      `Apakah Anda yakin ingin mengirimkan email pengingat pengisian capaian kepada ${targetUser.name}?`,
+      async () => {
+        try {
+          const response = await api.post(`/laporan/remind/${targetUser.id}`);
+          showAlert(response.data.message || 'Email pengingat berhasil dikirim.', 'Berhasil', 'success');
+        } catch (error) {
+          console.error('Gagal mengirim pengingat:', error);
+          showAlert('Gagal mengirimkan pengingat email.', 'Error', 'error');
+        }
+      },
+      'Kirim Pengingat'
+    );
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Snappy client-side filtering for search & status (perfect responsive UX)
+  const filteredUsers = data.users.filter(u => {
+    const matchesSearch = u.name.toLowerCase().includes(filters.search.toLowerCase());
+    const matchesStatus = filters.status === '' || u.completeness === filters.status;
+    return matchesSearch && matchesStatus;
+  });
 
   return (
     <Layout 
       title="Laporan & Distribusi Capaian" 
       subtitle="Rekap seluruh anggota KK ETHES · Hak Akses: Ketua KK & Ketua Sub-KK"
       headerActions={
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button className="btn btn-outline">🖨️ Cetak</button>
-          <button className="btn btn-primary">📥 Export Semua</button>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <select 
+            className="filter-select select-input" 
+            value={selectedYear} 
+            onChange={(e) => setSelectedYear(e.target.value)}
+            style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '13px', background: 'var(--white)', fontWeight: 600 }}
+          >
+            <option value="2026">Tahun 2026</option>
+            <option value="2025">Tahun 2025</option>
+            <option value="2024">Tahun 2024</option>
+            <option value="">Semua Tahun</option>
+          </select>
+          <button className="btn btn-outline" onClick={handlePrint} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+            🖨️ Cetak
+          </button>
         </div>
       }
     >
       <div className="laporan-container">
-        <LaporanStats />
-        <LaporanFilter />
-        <LaporanTable onShowDetail={(user) => setSelectedUser(user)} />
-        <LaporanExportGrid />
+        {isLoading && data.summary === null ? (
+          <div className="loading-state" style={{ padding: '40px', textAlign: 'center', fontWeight: 600, color: 'var(--text3)' }}>
+            Memuat data laporan...
+          </div>
+        ) : (
+          <>
+            <LaporanStats summary={data.summary} />
+            <LaporanFilter 
+              filters={filters} 
+              onFilterChange={handleFilterChange} 
+              subKks={data.sub_kks}
+            />
+            {isLoading ? (
+              <div style={{ padding: '40px', textAlign: 'center', fontWeight: 600, color: 'var(--text3)' }}>
+                Menyaring data...
+              </div>
+            ) : (
+              <LaporanTable 
+                users={filteredUsers} 
+                onShowDetail={(user) => setSelectedUser(user)} 
+                onRemindUser={handleRemindUser}
+              />
+            )}
+            <LaporanExportGrid />
+          </>
+        )}
 
         {selectedUser && (
-          <div className="modal-overlay" onClick={() => setSelectedUser(null)}>
-            <div className="modal-content card" onClick={e => e.stopPropagation()} style={{ maxWidth: '650px' }}>
-              <div className="modal-header">
-                <h3 className="modal-title">Detail Capaian: {selectedUser.name}</h3>
-                <button className="btn-close" onClick={() => setSelectedUser(null)}>✕</button>
-              </div>
-              <div style={{ padding: '20px' }}>
-                <p style={{ color: 'var(--text3)', fontSize: '14px', textAlign: 'center' }}>
-                  Data rincian capaian untuk <strong>{selectedUser.name}</strong> akan dimuat di sini.
-                  Menampilkan daftar Publikasi, Hibah, dan HKI yang telah diverifikasi.
-                </p>
-                <div style={{ display: 'flex', gap: '10px', marginTop: '20px', justifyContent: 'center' }}>
-                  <button className="btn btn-ghost" onClick={() => setSelectedUser(null)}>Tutup</button>
-                  <button className="btn btn-primary">📄 Download Laporan PDF</button>
-                </div>
-              </div>
-            </div>
-          </div>
+          <LaporanDetailModal 
+            user={selectedUser} 
+            year={selectedYear} 
+            onClose={() => setSelectedUser(null)} 
+          />
         )}
       </div>
     </Layout>

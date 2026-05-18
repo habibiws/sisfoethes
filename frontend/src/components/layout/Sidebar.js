@@ -57,12 +57,14 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
           </div>
           <span className="si-text">Kelola Pelatihan</span>
         </Link>
-        <Link to="/laporan" className={`sidebar-item ${isActive('/laporan')}`}>
-          <div className="si-icon illus">
-            <img src="/assets/icons/laporan.png" alt="Laporan" />
-          </div>
-          <span className="si-text">Laporan</span>
-        </Link>
+        {user && ['admin', 'ketua_kk', 'ketua_sub_kk'].includes(user.role) && (
+          <Link to="/laporan" className={`sidebar-item ${isActive('/laporan')}`}>
+            <div className="si-icon illus">
+              <img src="/assets/icons/laporan.png" alt="Laporan" />
+            </div>
+            <span className="si-text">Laporan</span>
+          </Link>
+        )}
         
         {(user?.role === 'admin' || user?.role === 'ketua_kk') && (
           <Link to="/users" className={`sidebar-item ${isActive('/users')}`}>

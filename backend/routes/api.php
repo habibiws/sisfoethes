@@ -25,6 +25,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/users/{id}/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword']);
     Route::get('/capaian/summary', [\App\Http\Controllers\CapaianSummaryController::class, 'getSummary']);
 
+    // Laporan & Distribusi Capaian
+    Route::get('/laporan/rekap', [\App\Http\Controllers\LaporanController::class, 'getRekap']);
+    Route::get('/laporan/detail/{userId}', [\App\Http\Controllers\LaporanController::class, 'getDetail']);
+    Route::post('/laporan/remind/{userId}', [\App\Http\Controllers\LaporanController::class, 'remind']);
+
     // Capaian - Publikasi
     Route::get('/publikasis', [\App\Http\Controllers\PublikasiController::class, 'index']);
     Route::post('/publikasis', [\App\Http\Controllers\PublikasiController::class, 'store']);

@@ -33,3 +33,49 @@
   .filter-select, .filter-input { max-width: none; }
   .export-grid { grid-template-columns: 1fr; }
 }
+
+/* PRINT STYLES */
+@media print {
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .sidebar,
+  .navbar,
+  .filter-bar-laporan,
+  .export-grid,
+  .btn,
+  select,
+  .filter-select,
+  .modal-overlay,
+  .accessibility-menu-trigger,
+  .header-actions {
+    display: none !important;
+  }
+  .layout-container {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .content-wrap {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+  }
+  .user-table {
+    border: 1px solid #ddd !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+  .user-table th, .user-table td {
+    padding: 8px 10px !important;
+    border-bottom: 1px solid #ddd !important;
+  }
+  .user-table td:last-child, .user-table th:last-child {
+    display: none !important; /* Hide Actions column when printing */
+  }
+}

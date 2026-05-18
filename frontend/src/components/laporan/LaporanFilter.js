@@ -1,31 +1,55 @@
 import React from 'react';
 
-export default function LaporanFilter() {
+export default function LaporanFilter({ filters, onFilterChange, subKks }) {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    onFilterChange(name, value);
+  };
+
   return (
     <div className="filter-bar-laporan">
-      <label className="filter-label">Filter:</label>
-      <select className="filter-select">
-        <option>Sem. Genap 2024/2025</option>
-        <option>Sem. Ganjil 2024/2025</option>
-        <option>Tahun 2025</option>
-        <option>Tahun 2024</option>
-      </select>
-      <select className="filter-select">
-        <option>Semua Sub-KK</option>
-        <option>CORES</option>
-        <option>PORSCE</option>
-        <option>BEE</option>
-        <option>COMMET</option>
-        <option>COS(PI)</option>
-      </select>
-      <select className="filter-select">
-        <option value="">Semua Status</option>
-        <option value="Lengkap">Lengkap</option>
-        <option value="Parsial">Parsial</option>
-        <option value="Belum">Belum Input</option>
-      </select>
-      <input type="text" className="filter-input" placeholder="Cari nama dosen..." />
-      <button className="btn btn-primary btn-sm">Terapkan</button>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, flexWrap: 'wrap' }}>
+        <span className="filter-label">Filter:</span>
+        
+        {/* Filter Sub-KK */}
+        <select 
+          name="sub_kk_id" 
+          className="filter-select select-input" 
+          value={filters.sub_kk_id} 
+          onChange={handleChange}
+          style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '13px', background: 'var(--white)' }}
+        >
+          <option value="">Semua Sub-KK</option>
+          {subKks && subKks.map(sub => (
+            <option key={sub.id} value={sub.id}>{sub.name}</option>
+          ))}
+        </select>
+
+        {/* Filter Kelengkapan Status */}
+        <select 
+          name="status" 
+          className="filter-select select-input" 
+          value={filters.status} 
+          onChange={handleChange}
+          style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '13px', background: 'var(--white)' }}
+        >
+          <option value="">Semua Status</option>
+          <option value="Lengkap">Lengkap</option>
+          <option value="Parsial">Parsial</option>
+          <option value="Belum">Belum Input</option>
+        </select>
+
+        {/* Input Search Dosen */}
+        <input 
+          type="text" 
+          name="search"
+          className="filter-input text-input" 
+          placeholder="Cari nama dosen..." 
+          value={filters.search}
+          onChange={handleChange}
+          style={{ padding: '8px 14px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '13px', flex: 1, minWidth: '200px' }}
+        />
+      </div>
     </div>
   );
 }
