@@ -49,12 +49,16 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
           </div>
           <div className="form-group">
             <label><Briefcase size={15} /> Program Studi</label>
-            <input
-              type="text" required
+            <select
+              required
               value={formData.prodi}
               onChange={e => setFormData({ ...formData, prodi: e.target.value })}
-              placeholder="Program Studi"
-            />
+            >
+              <option value="">-- Pilih Program Studi --</option>
+              <option value="Teknik Elektro">Teknik Elektro</option>
+              <option value="Teknik Komputer">Teknik Komputer</option>
+              <option value="Teknik Telekomunikasi">Teknik Telekomunikasi</option>
+            </select>
           </div>
         </div>
 
