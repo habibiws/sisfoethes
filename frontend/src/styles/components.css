@@ -9,6 +9,8 @@
 .btn-primary:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(15,35,64,0.25); }
 .btn-red { background: var(--red); color: white; }
 .btn-red:hover { background: var(--red-light); transform: translateY(-1px); }
+.btn-danger { background: var(--red); color: white; }
+.btn-danger:hover { background: var(--red-light); transform: translateY(-1px); }
 .btn-teal { background: var(--teal); color: white; }
 .btn-teal:hover { background: var(--teal-light); }
 .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text2); }

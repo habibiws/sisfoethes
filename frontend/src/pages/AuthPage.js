@@ -180,7 +180,7 @@ export default function AuthPage() {
                 <div className="form-group mb-12">
                   <label>Role / Peran <span className="req">*</span></label>
                   <select value={regRole} onChange={e => setRegRole(e.target.value)} required>
-                    <option value="anggota">Anggota Biasa</option>
+                    <option value="anggota">Anggota</option>
                     <option value="ketua_sub_kk">Ketua Sub-KK</option>
                     <option value="ketua_kk">Ketua KK</option>
                   </select>

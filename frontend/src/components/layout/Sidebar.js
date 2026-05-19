@@ -15,7 +15,7 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
     if (role === 'admin') return 'Admin';
     if (role === 'ketua_kk') return 'Ketua KK';
     if (role === 'ketua_sub_kk') return 'Ketua Sub-KK';
-    return 'Anggota Biasa';
+    return 'Anggota';
   };
 
   return (

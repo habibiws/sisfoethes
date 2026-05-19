@@ -4,6 +4,7 @@ import UserTable from '../components/user-role/UserTable';
 import AddUserModal from '../components/user-role/AddUserModal';
 import EditUserModal from '../components/user-role/EditUserModal';
 import ResetPasswordModal from '../components/user-role/ResetPasswordModal';
+import DeleteUserModal from '../components/user-role/DeleteUserModal';
 import api from '../services/api';
 import useAuthStore from '../store/authStore';
 import './UserRolePage.css';
@@ -12,12 +13,13 @@ import useModalStore from '../store/modalStore';
 
 export default function UserRolePage() {
   const { user: currentUser } = useAuthStore();
-  const { showAlert, showConfirm } = useModalStore();
+  const { showAlert } = useModalStore();
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [editUser, setEditUser] = useState(null);
   const [resetPwUser, setResetPwUser] = useState(null);
+  const [deleteUser, setDeleteUser] = useState(null);
 
   const fetchUsers = async () => {
     try {
@@ -53,12 +55,7 @@ export default function UserRolePage() {
 
   const handleAddUser = async (userData) => {
     try {
-      const payload = {
-        ...userData,
-        role: userData.role === 'anggota_biasa' ? 'anggota' : userData.role
-      };
-      
-      await api.post('/users', payload);
+      await api.post('/users', userData);
       showAlert('User berhasil ditambahkan', 'Berhasil', 'success');
       setIsAddModalOpen(false);
       fetchUsers();
@@ -91,18 +88,17 @@ export default function UserRolePage() {
     }
   };
 
-  const handleDeleteUser = (userId) => {
-    showConfirm('Apakah Anda yakin ingin menghapus user ini?', async () => {
-      try {
-        // Use method spoofing to bypass PHP built-in server issues with PUT/DELETE
-        const response = await api.post(`/users/${userId}`, { _method: 'DELETE' });
-        showAlert(response.data?.message || 'User berhasil dihapus', 'Berhasil', 'success');
-        fetchUsers();
-      } catch (error) {
-        const msg = error.response?.data?.message || 'Gagal menghapus user';
-        showAlert(msg, 'Error', 'error');
-      }
-    });
+  const handleDeleteUser = async (userId) => {
+    try {
+      // Use method spoofing to bypass PHP built-in server issues with PUT/DELETE
+      const response = await api.post(`/users/${userId}`, { _method: 'DELETE' });
+      showAlert(response.data?.message || 'User berhasil dihapus', 'Berhasil', 'success');
+      setDeleteUser(null);
+      fetchUsers();
+    } catch (error) {
+      const msg = error.response?.data?.message || 'Gagal menghapus user';
+      showAlert(msg, 'Error', 'error');
+    }
   };
 
   return (
@@ -110,7 +106,7 @@ export default function UserRolePage() {
       title="Manajemen User & Role" 
       subtitle="Kelola anggota KK, atur hak akses, dan manajemen akun di sini."
       headerActions={
-        <button className="btn btn-primary" onClick={() => setIsAddModalOpen(true)}>+ Tambah User</button>
+        <button className="btn btn-primary" onClick={() => setIsAddModalOpen(true)}>Tambah User</button>
       }
     >
       <div className="user-role-container">
@@ -124,7 +120,10 @@ export default function UserRolePage() {
               currentUserId={currentUser?.id}
               onResetPassword={(user) => setResetPwUser(user)}
               onEditUser={(user) => setEditUser(user)}
-              onDeleteUser={handleDeleteUser}
+              onDeleteUser={(userId) => {
+                const target = users.find(u => u.id === userId);
+                if (target) setDeleteUser(target);
+              }}
             />
           </div>
         )}
@@ -149,6 +148,14 @@ export default function UserRolePage() {
             user={resetPwUser}
             onClose={() => setResetPwUser(null)}
             onReset={handleResetPassword}
+          />
+        )}
+
+        {deleteUser && (
+          <DeleteUserModal 
+            user={deleteUser}
+            onClose={() => setDeleteUser(null)}
+            onConfirm={handleDeleteUser}
           />
         )}
 

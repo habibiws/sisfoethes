@@ -1,57 +1,238 @@
-/* ─── USER TABLE ─── */
-.user-role-container { padding: 4px; }
-.user-table-wrap { width: 100%; overflow-x: auto; background: var(--white); border-radius: 16px; border: 1px solid var(--border); }
-.user-table { width: 100%; border-collapse: collapse; min-width: 800px; }
-.user-table th { 
-  text-align: left; padding: 14px 20px; 
-  background: #FAFAFA; color: var(--navy-text); 
-  font-size: calc(12px * var(--font-scale, 1)); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+/* ─── CONTAINER & GENERAL ─── */
+.user-role-container {
+  max-width: 1100px;
+  margin: 16px auto;
+  padding: 0 16px;
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* ─── TABLE CARD WRAPPER ─── */
+.user-table-wrap {
+  width: 100%;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  margin-bottom: 24px;
+  overflow: hidden;
+}
+
+.user-table-wrap::before {
+  content: 'Daftar Anggota Kelompok Keahlian';
+  display: block;
+  font-family: 'Fraunces', serif;
+  font-size: calc(18px * var(--font-scale, 1));
+  font-weight: 700;
+  color: var(--navy-text);
+  margin-bottom: 20px;
+  border-bottom: 1.5px solid var(--border);
+  padding-bottom: 12px;
+}
+
+/* ─── USER TABLE (DESKTOP) ─── */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.user-table th {
+  text-align: left;
+  padding: 14px 18px;
+  background: var(--bg);
+  color: var(--navy-text);
+  font-size: calc(12px * var(--font-scale, 1));
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
   border-bottom: 2px solid var(--border);
 }
-.user-table td { padding: 16px 20px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-.user-table tr:last-child td { border-bottom: none; }
-.user-table tr:hover { background: var(--bg); }
+
+.user-table td {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+  font-size: calc(14px * var(--font-scale, 1));
+  color: var(--text);
+  font-weight: 500;
+}
+
+.user-table tr:last-child td {
+  border-bottom: none;
+}
+
+.user-table tr:hover {
+  background: rgba(15, 35, 64, 0.015);
+}
+
+.row-me {
+  background: rgba(15, 35, 64, 0.025);
+}
 
 /* ─── ROLE BADGES ─── */
 .role-badge {
-  padding: 4px 10px; border-radius: 20px; font-size: calc(11px * var(--font-scale, 1)); font-weight: 700;
-  display: inline-block;
-}
-.role-badge.admin { background: #E0E7FF; color: #3730A3; }
-.role-badge.ketua_kk { background: #FCE7F3; color: #9D174D; }
-.role-badge.ketua_sub_kk { background: #FEF3C7; color: #92400E; }
-.role-badge.anggota_biasa { background: var(--bg2); color: var(--text2); }
-
-/* ─── MODALS ─── */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(15, 35, 64, 0.45);
-  backdrop-filter: blur(5px); display: flex; align-items: center; justify-content: center;
-  z-index: 2000; padding: 20px;
-}
-.modal-content {
-  width: 100%; max-width: 500px; background: var(--white); border-radius: 20px;
-  box-shadow: 0 25px 60px rgba(15, 35, 64, 0.25); animation: modalSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  padding: 32px; position: relative;
-}
-.modal-header {
-  display: flex; align-items: center; justify-content: space-between;
-  margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 15px;
-}
-.modal-title { font-family: 'Fraunces', serif; font-size: calc(20px * var(--font-scale, 1)); color: var(--navy-text); }
-.btn-close { 
-  background: none; border: none; font-size: calc(20px * var(--font-scale, 1)); color: var(--text3); 
-  cursor: pointer; transition: color 0.2s;
-}
-.btn-close:hover { color: var(--red); }
-
-@keyframes modalSlide {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: calc(11px * var(--font-scale, 1));
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
+.role-badge.admin {
+  background: rgba(231, 76, 60, 0.12);
+  color: #c0392b;
+  border: 1.2px solid rgba(231, 76, 60, 0.2);
+}
+
+.role-badge.ketua_kk {
+  background: rgba(15, 35, 64, 0.08);
+  color: var(--navy);
+  border: 1.2px solid rgba(15, 35, 64, 0.15);
+}
+
+.role-badge.ketua_sub_kk {
+  background: rgba(23, 162, 184, 0.1);
+  color: var(--teal-light);
+  border: 1.2px solid rgba(23, 162, 184, 0.2);
+}
+
+.role-badge.anggota {
+  background: rgba(108, 117, 125, 0.08);
+  color: var(--text2);
+  border: 1.2px solid rgba(108, 117, 125, 0.15);
+}
+
+/* ─── SKELETON / LOADING ─── */
+.loading-state {
+  padding: 48px;
+  text-align: center;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  color: var(--text3);
+  font-size: calc(14px * var(--font-scale, 1));
+  font-weight: 500;
+}
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─── 4-TIER RESPONSIVE BREAKPOINTS ─── */
+
+/* 1. Desktop & Larger (> 1024px) */
+@media (min-width: 1025px) {
+  .user-role-container {
+    margin: 24px auto;
+  }
+}
+
+/* 2. Tablet Landscape (769px - 1024px) */
+@media (max-width: 1024px) {
+  .user-role-container {
+    max-width: 100%;
+  }
+}
+
+/* 3. Tablet Portrait & Mobile (≤ 768px) - HYBRID CARD-LIST VIEW */
 @media (max-width: 768px) {
-  .user-table th:nth-child(3), .user-table td:nth-child(3),
-  .user-table th:nth-child(4), .user-table td:nth-child(4) {
-    display: none;
+  .user-table-wrap {
+    padding: 16px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+  }
+  
+  .user-table-wrap::before {
+    margin-bottom: 16px;
+  }
+
+  .user-table thead {
+    display: none; /* Hide standard headers */
+  }
+
+  .user-table, 
+  .user-table tbody, 
+  .user-table tr, 
+  .user-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .user-table tr {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 16px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    transition: all 0.2s;
+  }
+
+  .user-table tr:hover {
+    box-shadow: 0 4px 16px rgba(15, 35, 64, 0.05);
+    background: var(--white);
+  }
+
+  .user-table td {
+    border-bottom: 1px solid rgba(15, 35, 64, 0.04);
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: calc(13px * var(--font-scale, 1));
+    text-align: right;
+  }
+
+  .user-table td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--text3);
+    font-size: calc(11px * var(--font-scale, 1));
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    text-align: left;
+    margin-right: 16px;
+  }
+
+  .user-table td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+    margin-top: 12px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .user-table td:last-child::before {
+    margin-bottom: 8px;
+    text-align: left;
+  }
+
+  .action-buttons-wrap {
+    flex-direction: column;
+    gap: 8px !important;
+    width: 100%;
+  }
+
+  .action-buttons-wrap .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* 4. Small Mobile Devices (≤ 640px) */
+@media (max-width: 640px) {
+  .user-role-container {
+    padding: 0 12px;
   }
 }

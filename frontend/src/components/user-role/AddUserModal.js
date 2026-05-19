@@ -93,7 +93,7 @@ export default function AddUserModal({ onClose, onSave }) {
               >
                 <option value="ketua_kk">Ketua KK</option>
                 <option value="ketua_sub_kk">Ketua Sub-KK</option>
-                <option value="anggota">Anggota Biasa</option>
+                <option value="anggota">Anggota</option>
               </select>
             </div>
             <div className="form-group">

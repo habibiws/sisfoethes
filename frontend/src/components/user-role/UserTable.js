@@ -5,7 +5,7 @@ export default function UserTable({ users, currentUserId, onResetPassword, onEdi
     if (role === 'admin') return 'Admin';
     if (role === 'ketua_kk') return 'Ketua KK';
     if (role === 'ketua_sub_kk') return 'Ketua Sub-KK';
-    return 'Anggota Biasa';
+    return 'Anggota';
   };
 
   return (
@@ -15,7 +15,7 @@ export default function UserTable({ users, currentUserId, onResetPassword, onEdi
           <th>Nama & Email</th>
           <th>Role</th>
           <th>Sub-KK</th>
-          <th>NIDN/NIP</th>
+          <th>NIDN</th>
           <th>Aksi</th>
         </tr>
       </thead>
@@ -26,32 +26,27 @@ export default function UserTable({ users, currentUserId, onResetPassword, onEdi
 
           return (
             <tr key={user.id} className={isMe ? 'row-me' : ''}>
-              <td>
-                <div style={{ fontWeight: 600, color: 'var(--navy)' }}>
+              <td data-label="Nama & Email">
+                <div className="user-name-text" style={{ fontWeight: 600, color: 'var(--navy)' }}>
                   {user.name} {isMe && <small style={{ color: 'var(--text3)', fontWeight: 400 }}>(Anda)</small>}
                 </div>
-                <div style={{ fontSize: '11px', color: 'var(--text3)' }}>{user.email}</div>
+                <div className="user-email-text" style={{ fontSize: '11px', color: 'var(--text3)' }}>{user.email}</div>
               </td>
-              <td>
+              <td data-label="Role">
                 <span className={`role-badge ${user.role}`}>
                   {formatRole(user.role)}
                 </span>
               </td>
-              <td>{isAdmin ? '-' : (user.sub_kk?.name || '-')}</td>
-              <td>
-                {isAdmin ? '-' : (
-                  <>
-                    <div style={{ fontSize: '12px' }}>{user.nidn || '-'}</div>
-                    <div style={{ fontSize: '10px', color: 'var(--text3)' }}>{user.nip || '-'}</div>
-                  </>
-                )}
+              <td data-label="Sub-KK">{isAdmin ? '-' : (user.sub_kk?.name || '-')}</td>
+              <td data-label="NIDN">
+                {isAdmin ? '-' : (user.nidn || '-')}
               </td>
-              <td>
+              <td data-label="Aksi">
                 {!isMe && (
-                  <div style={{ display: 'flex', gap: '8px' }}>
-                    <button className="btn btn-ghost btn-sm" onClick={() => onEditUser(user)}>✏️ Edit</button>
-                    <button className="btn btn-outline btn-sm" onClick={() => onResetPassword(user)}>🔑 Reset Password</button>
-                    <button className="btn btn-danger btn-sm" onClick={(e) => { e.stopPropagation(); onDeleteUser(user.id); }}>🗑️ Hapus</button>
+                  <div className="action-buttons-wrap" style={{ display: 'flex', gap: '8px' }}>
+                    <button className="btn btn-ghost btn-sm" onClick={() => onEditUser(user)}>Edit</button>
+                    <button className="btn btn-outline btn-sm" onClick={() => onResetPassword(user)}>Reset Password</button>
+                    <button className="btn btn-danger btn-sm" onClick={(e) => { e.stopPropagation(); onDeleteUser(user.id); }}>Hapus</button>
                   </div>
                 )}
               </td>

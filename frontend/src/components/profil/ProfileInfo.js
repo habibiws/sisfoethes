@@ -6,7 +6,7 @@ export default function ProfileInfo({ user, onEdit }) {
     if (role === 'admin') return 'Admin';
     if (role === 'ketua_kk') return 'Ketua KK';
     if (role === 'ketua_sub_kk') return 'Ketua Sub-KK';
-    return 'Anggota Biasa';
+    return 'Anggota';
   };
 
   const getRoleTagClass = (role) => {
@@ -25,7 +25,7 @@ export default function ProfileInfo({ user, onEdit }) {
             <div className="profile-section-title">
               <BookOpen size={16} /> Identitas Akademik
             </div>
-            
+
             <div className="form-grid mb-16">
               <div className="info-field">
                 <label><Hash size={15} /> NIDN</label>
@@ -95,7 +95,7 @@ export default function ProfileInfo({ user, onEdit }) {
       )}
 
       {onEdit && user?.role !== 'admin' && (
-        <div className="btn-row" style={{ marginTop: '16px', borderTop: 'none', paddingTop: 0 }}>
+        <div className="btn-row" style={{ marginTop: '16px', marginBottom: '16px', borderTop: 'none', paddingTop: 0 }}>
           <button className="btn btn-primary" onClick={onEdit}>
             Edit Profil
           </button>

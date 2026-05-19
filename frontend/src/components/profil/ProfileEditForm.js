@@ -20,7 +20,7 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
 
   return (
     <form onSubmit={onSave} className="profile-edit-container">
-      
+
       {/* Section 1: Identitas Akademik */}
       <div className="profile-card">
         <div className="profile-section-title">
@@ -29,31 +29,31 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
 
         <div className="form-group mb-16">
           <label><User size={15} /> Nama Lengkap</label>
-          <input 
+          <input
             type="text" required
-            value={formData.name} 
-            onChange={e => setFormData({...formData, name: e.target.value})} 
-            placeholder="Nama Lengkap beserta gelar" 
+            value={formData.name}
+            onChange={e => setFormData({ ...formData, name: e.target.value })}
+            placeholder="Nama Lengkap beserta gelar"
           />
         </div>
 
         <div className="form-grid mb-16">
           <div className="form-group">
             <label><Hash size={15} /> NIDN</label>
-            <input 
+            <input
               type="text" required
-              value={formData.nidn} 
-              onChange={e => setFormData({...formData, nidn: e.target.value})} 
-              placeholder="NIDN" 
+              value={formData.nidn}
+              onChange={e => setFormData({ ...formData, nidn: e.target.value })}
+              placeholder="NIDN"
             />
           </div>
           <div className="form-group">
             <label><Briefcase size={15} /> Program Studi</label>
-            <input 
+            <input
               type="text" required
-              value={formData.prodi} 
-              onChange={e => setFormData({...formData, prodi: e.target.value})} 
-              placeholder="Program Studi" 
+              value={formData.prodi}
+              onChange={e => setFormData({ ...formData, prodi: e.target.value })}
+              placeholder="Program Studi"
             />
           </div>
         </div>
@@ -61,9 +61,9 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
         <div className="form-group mb-16">
           <label><Layers size={15} /> Sub-Kelompok Keahlian</label>
           {canEditSubKk ? (
-            <select 
-              value={formData.sub_kk_id} 
-              onChange={e => setFormData({...formData, sub_kk_id: e.target.value})}
+            <select
+              value={formData.sub_kk_id}
+              onChange={e => setFormData({ ...formData, sub_kk_id: e.target.value })}
             >
               <option value="">-- Pilih Sub-KK --</option>
               {subKks.map(sub => (
@@ -92,18 +92,18 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
         <div className="form-grid mb-16">
           <div className="form-group">
             <label><FileText size={15} /> NIP</label>
-            <input 
-              type="text" 
-              value={formData.nip || ''} 
-              onChange={e => setFormData({...formData, nip: e.target.value})} 
-              placeholder="NIP" 
+            <input
+              type="text"
+              value={formData.nip || ''}
+              onChange={e => setFormData({ ...formData, nip: e.target.value })}
+              placeholder="NIP"
             />
           </div>
           <div className="form-group">
             <label><User size={15} /> Center of Excellence (CoE)</label>
-            <select 
-              value={formData.coe || ''} 
-              onChange={e => setFormData({...formData, coe: e.target.value})}
+            <select
+              value={formData.coe || ''}
+              onChange={e => setFormData({ ...formData, coe: e.target.value })}
             >
               <option value="">-- Pilih CoE --</option>
               <option value="INTEREST">INTEREST</option>
@@ -115,9 +115,9 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
 
         <div className="form-group mb-16">
           <label><Award size={15} /> Jabatan Fungsional</label>
-          <select 
-            value={formData.jabatan_fungsional || ''} 
-            onChange={e => setFormData({...formData, jabatan_fungsional: e.target.value})}
+          <select
+            value={formData.jabatan_fungsional || ''}
+            onChange={e => setFormData({ ...formData, jabatan_fungsional: e.target.value })}
           >
             <option value="">-- Pilih Jabatan --</option>
             <option value="NJFA 2">NJFA 2</option>

@@ -41,6 +41,8 @@ class UserController extends Controller
             'nidn' => 'nullable|string',
             'nip' => 'nullable|string',
             'prodi' => 'nullable|string',
+            'coe' => 'nullable|string',
+            'jabatan_fungsional' => 'nullable|string',
         ]);
 
         // Logika pembatasan role (sama seperti di AuthController)
@@ -61,6 +63,8 @@ class UserController extends Controller
             'nidn' => $request->nidn,
             'nip' => $request->nip,
             'prodi' => $request->prodi,
+            'coe' => $request->coe,
+            'jabatan_fungsional' => $request->jabatan_fungsional,
         ]);
 
         return response()->json([
@@ -88,6 +92,8 @@ class UserController extends Controller
             'nidn' => 'nullable|string',
             'nip' => 'nullable|string',
             'prodi' => 'nullable|string',
+            'coe' => 'nullable|string',
+            'jabatan_fungsional' => 'nullable|string',
         ]);
 
         // Proteksi tabrakan role
@@ -103,7 +109,7 @@ class UserController extends Controller
             }
         }
 
-        $user->update($request->only(['name', 'email', 'role', 'sub_kk_id', 'nidn', 'nip', 'prodi']));
+        $user->update($request->only(['name', 'email', 'role', 'sub_kk_id', 'nidn', 'nip', 'prodi', 'coe', 'jabatan_fungsional']));
 
         return response()->json([
             'message' => 'User berhasil diperbarui',

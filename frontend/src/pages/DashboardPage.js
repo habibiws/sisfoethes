@@ -50,7 +50,7 @@ export default function DashboardPage() {
       admin: 'Admin',
       ketua_kk: 'Ketua KK',
       ketua_sub_kk: 'Ketua Sub-KK',
-      anggota: 'Anggota Biasa'
+      anggota: 'Anggota'
     };
     const roleLabel = roleMap[data.user.role] || 'Dosen';
     return `${getGreeting()}, ${data.user.name} · Hak Akses: ${roleLabel}`;
