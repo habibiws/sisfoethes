@@ -79,20 +79,44 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        $validatedData = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'nidn' => 'nullable|string',
             'prodi' => 'nullable|string',
             'nip' => 'nullable|string',
             'coe' => 'nullable|string',
             'jabatan_fungsional' => 'nullable|string',
-        ]);
+        ];
 
+        if (in_array($user->role, ['admin', 'ketua_kk'])) {
+            $rules['sub_kk_id'] = 'nullable|exists:sub_kks,id';
+        }
+
+        $validatedData = $request->validate($rules);
         $user->update($validatedData);
 
         return response()->json([
             'message' => 'Profil berhasil diperbarui',
             'user' => $user->load('subKk')
         ]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $request->validate([
+            'old_password' => 'required|string',
+            'new_password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json(['message' => 'Password lama tidak sesuai'], 422);
+        }
+
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+
+        return response()->json(['message' => 'Password berhasil diubah']);
     }
 }

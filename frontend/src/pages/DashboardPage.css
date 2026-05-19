@@ -1,50 +1,170 @@
-/* ─── STAT CARDS ─── */
-.stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+/* ─── STAT CARDS GRID ─── */
+.stat-grid { 
+  display: grid; 
+  grid-template-columns: repeat(3, 1fr) !important; 
+  gap: 16px; 
+  margin-bottom: 24px; 
+}
+
 .stat-card {
-  background: var(--white); border-radius: var(--radius-lg);
-  padding: 20px 24px; border: 1px solid var(--border);
-  position: relative; overflow: hidden;
+  background: var(--white); 
+  border-radius: var(--radius-lg);
+  padding: 20px 24px; 
+  border: 1px solid var(--border);
+  position: relative; 
+  overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
 }
+
 .stat-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(15, 35, 64, 0.12);
-  border-color: var(--navy-text-light);
+  border-color: var(--navy-light);
 }
+
 .stat-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
-  width: 5px; background: var(--navy);
+  content: ''; 
+  position: absolute; 
+  left: 0; 
+  top: 0; 
+  bottom: 0;
+  width: 5px; 
+  background: var(--navy);
   border-radius: 5px 0 0 5px;
   transition: width 0.3s;
 }
-.stat-card:hover::before { width: 8px; }
+
+.stat-card:hover::before { 
+  width: 8px; 
+}
+
+/* Dynamic Colors */
+.stat-card.navy::before { background: var(--navy); }
 .stat-card.red::before { background: var(--red); }
 .stat-card.teal::before { background: var(--teal); }
 .stat-card.gold::before { background: var(--gold); }
-.stat-card.navy::before { background: var(--navy); }
-.stat-label { font-size: calc(12px * var(--font-scale, 1)); font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px; }
-.stat-value { font-family: 'Fraunces', serif; font-size: calc(36px * var(--font-scale, 1)); font-weight: 700; color: var(--navy-text); line-height: 1; }
-.stat-meta { font-size: calc(13px * var(--font-scale, 1)); color: var(--text3); margin-top: 6px; }
+.stat-card.purple::before { background: #9B51E0; }
+.stat-card.orange::before { background: #C0571A; }
+
+.stat-label { 
+  font-size: calc(13px * var(--font-scale, 1)); 
+  font-weight: 700; 
+  color: var(--text3); 
+  text-transform: uppercase; 
+  letter-spacing: 0.8px; 
+  margin-bottom: 8px; 
+}
+
+.stat-value { 
+  font-family: 'Fraunces', serif; 
+  font-size: calc(32px * var(--font-scale, 1)); 
+  font-weight: 700; 
+  color: var(--navy-text); 
+  line-height: 1; 
+}
+
+.stat-meta { 
+  font-size: calc(13px * var(--font-scale, 1)); 
+  color: var(--text3); 
+  margin-top: 6px; 
+}
+
 .stat-icon {
-  position: absolute; right: 18px; top: 18px;
-  font-size: calc(24px * var(--font-scale, 1)); opacity: 0.15;
+  position: absolute; 
+  right: 18px; 
+  top: 18px;
+  font-size: calc(24px * var(--font-scale, 1)); 
+  opacity: 0.15;
   transition: all 0.3s;
 }
-.stat-card:hover .stat-icon { opacity: 0.3; transform: scale(1.2); }
 
-@media (max-width: 1024px) {
-  .stat-grid { grid-template-columns: 1fr 1fr; }
-}
-@media (max-width: 600px) {
-  .stat-grid { grid-template-columns: 1fr; }
+.stat-card:hover .stat-icon { 
+  opacity: 0.3; 
+  transform: scale(1.2); 
 }
 
 /* ─── CARDS ─── */
 .card {
-  background: var(--white); border-radius: var(--radius-lg);
-  border: 1px solid var(--border); padding: 20px;
+  background: var(--white); 
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border); 
+  padding: 20px;
   box-shadow: var(--shadow);
+  transition: box-shadow 0.3s, border-color 0.3s;
 }
-.card-title { font-size: calc(15px * var(--font-scale, 1)); font-weight: 700; color: var(--navy-text); margin-bottom: 4px; }
-.card-sub { font-size: calc(12px * var(--font-scale, 1)); color: var(--text3); }
+
+.card:hover {
+  box-shadow: 0 4px 20px rgba(15, 35, 64, 0.05);
+}
+
+.card-title { 
+  font-size: calc(16px * var(--font-scale, 1)); 
+  font-weight: 700; 
+  color: var(--navy-text); 
+  margin-bottom: 4px; 
+}
+
+.card-sub { 
+  font-size: calc(13px * var(--font-scale, 1)); 
+  color: var(--text3); 
+}
+
+/* ─── ANIMATIONS ─── */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.08;
+  }
+}
+
+/* ─── PERSONAL SUMMARY CARD HOVERS ─── */
+.personal-welcome-card {
+  box-shadow: 0 8px 30px rgba(15, 35, 64, 0.15) !important;
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--navy);
+  transition: all 0.2s;
+}
+
+.btn-gold:hover {
+  background: #E8B94F;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 168, 67, 0.35);
+}
+
+/* ─── RESPONSIVENESS ─── */
+@media (max-width: 1200px) {
+  .stat-grid { 
+    grid-template-columns: 1fr 1fr !important; 
+  }
+}
+
+@media (max-width: 768px) {
+  .stat-grid { 
+    grid-template-columns: 1fr !important; 
+  }
+  
+  .grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+}

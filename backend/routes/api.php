@@ -17,6 +17,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/me', [AuthController::class, 'updateProfile']);
+    Route::post('/me/password', [AuthController::class, 'changePassword']);
 
     // User Management (Admin/Ketua KK only)
     Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
@@ -29,6 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/laporan/rekap', [\App\Http\Controllers\LaporanController::class, 'getRekap']);
     Route::get('/laporan/detail/{userId}', [\App\Http\Controllers\LaporanController::class, 'getDetail']);
     Route::post('/laporan/remind/{userId}', [\App\Http\Controllers\LaporanController::class, 'remind']);
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'getDashboardData']);
 
     // Capaian - Publikasi
     Route::get('/publikasis', [\App\Http\Controllers\PublikasiController::class, 'index']);

@@ -11,10 +11,10 @@ import './ProfilPage.css';
 
 /**
  * ProfilPage - Halaman manajemen profil pengguna (Dosen).
- * Dibuat secara modular sesuai prinsip 1 fungsi 1 file untuk skalabilitas.
+ * Dibuat secara modular dan fully responsive.
  */
 export default function ProfilPage() {
-  const { user, fetchUser, isSubmitting: isAuthSubmitting } = useAuthStore();
+  const { user, fetchUser } = useAuthStore();
   const { showAlert } = useModalStore();
 
   const [isEditing, setIsEditing] = useState(false);
@@ -28,12 +28,11 @@ export default function ProfilPage() {
     if (user) {
       setFormData({
         name: user.name || '',
-        email: user.email || '',
         nidn: user.nidn || '',
         prodi: user.prodi || '',
         sub_kk_id: user.sub_kk_id || '',
         nip: user.nip || '',
-        kode_dosen: user.kode_dosen || '',
+        coe: user.coe || '',
         jabatan_fungsional: user.jabatan_fungsional || ''
       });
       setIsLoading(false);
@@ -47,21 +46,16 @@ export default function ProfilPage() {
     setIsSaving(true);
     
     try {
-      // Panggil API update profil
-      // Gunakan _method: 'PUT' untuk method spoofing karena PHP built-in server sering bermasalah dengan PUT request native
-      const response = await api.post(`/users/${user.id}`, {
-        ...formData,
-        _method: 'PUT' 
-      });
-      
-      const result = response.data;
+      // Panggil API update profil personal (POST /me)
+      const response = await api.post('/me', formData);
       
       if (response.status === 200) {
+        showAlert('Profil Anda berhasil diperbarui!', 'Berhasil', 'success');
         // Refresh data dari server
         await fetchUser();
         setIsEditing(false);
       } else {
-        showAlert(result.message || 'Gagal memperbarui profil', 'Error', 'error');
+        showAlert(response.data?.message || 'Gagal memperbarui profil', 'Error', 'error');
       }
     } catch (error) {
       console.error('Update error:', error);
@@ -74,7 +68,7 @@ export default function ProfilPage() {
   if (isLoading) {
     return (
       <Layout title="Profil Saya">
-        <div className="profile-container">
+        <div className="profile-container" style={{ display: 'flex', justifyContent: 'center', marginTop: '40px' }}>
           <div className="alert alert-info">Memuat data profil...</div>
         </div>
       </Layout>
@@ -82,36 +76,35 @@ export default function ProfilPage() {
   }
 
   return (
-    <Layout title="Pengaturan Profil" subtitle="Kelola informasi pribadi dan kepegawaian Anda di sini.">
+    <Layout title="Pengaturan Profil" subtitle="Kelola informasi akun dan data akademik Anda.">
       <div className="profile-container">
         
         {/* Header Profil (Gradient Card) */}
         <ProfileHeader user={user} isEditing={isEditing} />
 
         {/* Body Profil (Info atau Form Edit) */}
-        <div className="profile-body-card">
-          {user?.role !== 'admin' ? (
-            <>
-              {!isEditing ? (
-                <ProfileInfo 
-                  user={user} 
-                  onEdit={() => setIsEditing(true)} 
-                />
-              ) : (
-                <ProfileEditForm 
-                  formData={formData}
-                  setFormData={setFormData}
-                  onSave={handleSave}
-                  onCancel={() => setIsEditing(false)}
-                  isSaving={isSaving}
-                  userRole={user?.role}
-                />
-              )}
-            </>
-          ) : null}
+        {user?.role !== 'admin' ? (
+          <>
+            {!isEditing ? (
+              <ProfileInfo 
+                user={user} 
+                onEdit={() => setIsEditing(true)} 
+              />
+            ) : (
+              <ProfileEditForm 
+                formData={formData}
+                setFormData={setFormData}
+                onSave={handleSave}
+                onCancel={() => setIsEditing(false)}
+                isSaving={isSaving}
+                userRole={user?.role}
+              />
+            )}
+          </>
+        ) : null}
 
-          <ProfileSecurity />
-        </div>
+        {/* Section Keamanan (Berfungsi secara Real ke Database) */}
+        <ProfileSecurity />
 
       </div>
     </Layout>
