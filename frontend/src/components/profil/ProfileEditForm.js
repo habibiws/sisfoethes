@@ -132,7 +132,7 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
         </div>
       </div>
 
-      <div className="btn-row" style={{ marginTop: '16px', borderTop: 'none', paddingTop: 0 }}>
+      <div className="btn-row" style={{ marginTop: '16px', marginBottom: '16px', borderTop: 'none', paddingTop: 0 }}>
         <button type="button" className="btn btn-ghost" onClick={onCancel} disabled={isSaving}>
           Batal
         </button>

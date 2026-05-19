@@ -128,38 +128,38 @@ export default function UserRolePage() {
           </div>
         )}
 
-        {isAddModalOpen && (
-          <AddUserModal 
-            onClose={() => setIsAddModalOpen(false)} 
-            onSave={handleAddUser}
-          />
-        )}
-
-        {editUser && (
-          <EditUserModal 
-            user={editUser}
-            onClose={() => setEditUser(null)}
-            onSave={handleEditUser}
-          />
-        )}
-
-        {resetPwUser && (
-          <ResetPasswordModal 
-            user={resetPwUser}
-            onClose={() => setResetPwUser(null)}
-            onReset={handleResetPassword}
-          />
-        )}
-
-        {deleteUser && (
-          <DeleteUserModal 
-            user={deleteUser}
-            onClose={() => setDeleteUser(null)}
-            onConfirm={handleDeleteUser}
-          />
-        )}
-
       </div>
+
+      {isAddModalOpen && (
+        <AddUserModal 
+          onClose={() => setIsAddModalOpen(false)} 
+          onSave={handleAddUser}
+        />
+      )}
+
+      {editUser && (
+        <EditUserModal 
+          user={editUser}
+          onClose={() => setEditUser(null)}
+          onSave={handleEditUser}
+        />
+      )}
+
+      {resetPwUser && (
+        <ResetPasswordModal 
+          user={resetPwUser}
+          onClose={() => setResetPwUser(null)}
+          onReset={handleResetPassword}
+        />
+      )}
+
+      {deleteUser && (
+        <DeleteUserModal 
+          user={deleteUser}
+          onClose={() => setDeleteUser(null)}
+          onConfirm={handleDeleteUser}
+        />
+      )}
     </Layout>
   );
 }

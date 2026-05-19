@@ -9,7 +9,8 @@ export default function AddUserModal({ onClose, onSave }) {
     email: '',
     password: '',
     role: 'anggota',
-    sub_kk_id: ''
+    sub_kk_id: '',
+    prodi: ''
   });
 
   const [subKks, setSubKks] = useState([]);
@@ -82,6 +83,20 @@ export default function AddUserModal({ onClose, onSave }) {
               placeholder="Minimal 8 karakter"
               minLength={8}
             />
+          </div>
+          <div className="form-group mb-16">
+            <label>Program Studi</label>
+            <select
+              name="prodi"
+              required
+              value={formData.prodi}
+              onChange={handleChange}
+            >
+              <option value="">-- Pilih Program Studi --</option>
+              <option value="Teknik Elektro">Teknik Elektro</option>
+              <option value="Teknik Komputer">Teknik Komputer</option>
+              <option value="Teknik Telekomunikasi">Teknik Telekomunikasi</option>
+            </select>
           </div>
           <div className="form-grid mb-16">
             <div className="form-group">

@@ -115,12 +115,16 @@ export default function EditUserModal({ user, onClose, onSave }) {
 
           <div className="form-group mb-24">
             <label><BookOpen size={14} /> Program Studi</label>
-            <input 
-              type="text" required
+            <select 
+              required
               value={formData.prodi}
               onChange={e => setFormData({...formData, prodi: e.target.value})}
-              placeholder="Program Studi"
-            />
+            >
+              <option value="">-- Pilih Program Studi --</option>
+              <option value="Teknik Elektro">Teknik Elektro</option>
+              <option value="Teknik Komputer">Teknik Komputer</option>
+              <option value="Teknik Telekomunikasi">Teknik Telekomunikasi</option>
+            </select>
           </div>
 
           {/* Section 2: Data Profesional */}
