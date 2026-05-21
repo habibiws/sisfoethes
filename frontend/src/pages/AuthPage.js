@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAuthStore from '../store/authStore';
 import useModalStore from '../store/modalStore';
+import logoKkEthes from '../assets/logo-kk-ethes.png';
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -86,9 +87,9 @@ export default function AuthPage() {
       {/* LEFT PANEL */}
       <div className="auth-left">
         <div className="auth-brand-logo">
-          <div className="auth-logo-box">KK</div>
+          <img src={logoKkEthes} alt="Logo KK ETHES" className="auth-logo-img" />
           <div className="auth-brand-text">
-            <div className="auth-brand-title">ETHES</div>
+            <div className="auth-brand-title">KK ETHES</div>
             <div className="auth-brand-sub">Tel-U Surabaya</div>
           </div>
         </div>
@@ -97,17 +98,8 @@ export default function AuthPage() {
           <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>Kelompok Keahlian</em><br />
           ETHES
         </h1>
-        <p className="auth-hero-desc">
-          Platform terpadu untuk pencatatan capaian Tridharma — publikasi, hibah, paten, pengabdian, pelatihan & sertifikasi — bagi seluruh dosen anggota KK Electrical Engineering and Advanced Technologies.
-        </p>
-
-        <div className="feature-list" style={{ display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative', zIndex: 10 }}>
-          <div className="feature-item" style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div className="feature-dot" style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(255,255,255,0.08)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>📄</div>
-            <div className="feature-text" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.65)' }}><strong style={{ color: 'white' }}>Input & Pantau Publikasi</strong> — jurnal internasional, prosiding</div>
-          </div>
-        </div>
-        <p className="bottom-text" style={{ marginTop: '48px', fontSize: '12px', color: 'rgba(255,255,255,0.3)', position: 'relative', zIndex: 10 }}>© 2026 KK ETHES · Universitas Telkom Kampus Surabaya</p>
+        
+        <p className="bottom-text" style={{ marginTop: 'auto', fontSize: '12px', color: 'rgba(255,255,255,0.3)', position: 'relative', zIndex: 10 }}>© 2026 KK ETHES · Universitas Telkom Kampus Surabaya</p>
       </div>
 
       {/* RIGHT PANEL */}
@@ -134,7 +126,6 @@ export default function AuthPage() {
           {tab === 'login' && (
             <div>
               <div className="auth-title">Selamat Datang</div>
-              <div className="auth-sub">Masuk dengan email institusi Anda</div>
               <form onSubmit={handleLogin}>
                 <div className="form-group mb-12">
                   <label>Email Institusi <span className="req">*</span></label>
@@ -157,7 +148,7 @@ export default function AuthPage() {
 
               <form onSubmit={handleRegister}>
                 <div className="form-group mb-12">
-                  <label>Nama Lengkap + Gelar <span className="req">*</span></label>
+                  <label>Nama Lengkap <span className="req">*</span></label>
                   <input type="text" value={regName} onChange={e => setRegName(e.target.value)} required placeholder="cth: Mohamad Yani, S.T., M.Phil., Ph.D." />
                 </div>
 
@@ -178,7 +169,7 @@ export default function AuthPage() {
                 </div>
 
                 <div className="form-group mb-12">
-                  <label>Role / Peran <span className="req">*</span></label>
+                  <label>Peran <span className="req">*</span></label>
                   <select value={regRole} onChange={e => setRegRole(e.target.value)} required>
                     <option value="anggota">Anggota</option>
                     <option value="ketua_sub_kk">Ketua Sub-KK</option>

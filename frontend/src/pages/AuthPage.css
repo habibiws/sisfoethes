@@ -42,11 +42,10 @@
 }
 
 .auth-brand-logo { display:flex; align-items:center; gap:14px; margin-bottom:60px; position: relative; z-index: 10; }
-.auth-logo-box {
-  width:52px; height:52px; background:var(--red); border-radius:14px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Fraunces',serif; font-size: calc(20px * var(--font-scale, 1)); font-weight:700; color:white;
-  box-shadow:0 8px 24px rgba(192,57,43,0.4);
+.auth-logo-img {
+  height: 48px;
+  object-fit: contain;
+  border-radius: 8px;
 }
 .auth-brand-text { display:flex; flex-direction:column; }
 .auth-brand-title { font-size: calc(20px * var(--font-scale, 1)); font-weight:800; color:white; line-height:1; }
@@ -62,5 +61,122 @@
   border-radius:7px; cursor:pointer; transition:all 0.2s; border:none; background:none; color:var(--text3);
 }
 .auth-tab.active { background:var(--navy); color:white; box-shadow:0 2px 8px rgba(15,35,64,0.2); }
-.auth-title { font-family:'Fraunces',serif; font-size: calc(24px * var(--font-scale, 1)); font-weight:700; color: var(--navy-text); margin-bottom:6px; }
+.auth-title { font-family:'Fraunces',serif; font-size: calc(24px * var(--font-scale, 1)); font-weight:700; color: var(--navy-text); margin-bottom:24px; }
 .auth-sub { font-size: calc(13px * var(--font-scale, 1)); color:var(--text3); margin-bottom:24px; }
+
+/* ─── 4-TIER RESPONSIVE STYLING ─── */
+
+/* 1. Tablet Landscape (<= 1024px) */
+@media (max-width: 1024px) {
+  .auth-left {
+    padding: 40px;
+  }
+  .auth-right {
+    width: 420px;
+    padding: 40px 36px;
+  }
+  .auth-hero-headline {
+    font-size: calc(38px * var(--font-scale, 1));
+  }
+}
+
+/* 2. Tablet Portrait - LAYOUT STACK (<= 768px) */
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+  }
+
+  .auth-left {
+    flex: none;
+    height: auto;
+    padding: 32px 24px;
+    align-items: center;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .auth-brand-logo {
+    margin-bottom: 0;
+    justify-content: center;
+  }
+
+  /* Hide heading & description entirely to make it a compact elegant header */
+  .auth-hero-headline, 
+  .auth-hero-desc {
+    display: none;
+  }
+
+  .bottom-text {
+    display: none; /* Hide bottom text from header, can place it inside form footer if needed */
+  }
+
+  .auth-right {
+    width: 100%;
+    height: auto;
+    overflow-y: visible;
+    flex: 1;
+    padding: 40px 48px;
+    background: var(--bg);
+  }
+
+  .auth-box-wrap {
+    margin: 0 auto;
+    max-width: 520px;
+  }
+}
+
+/* 3. Mobile (<= 640px) */
+@media (max-width: 640px) {
+  .auth-left {
+    padding: 24px 16px;
+  }
+
+  .auth-logo-img {
+    height: 40px;
+  }
+
+  .auth-brand-title {
+    font-size: calc(18px * var(--font-scale, 1));
+  }
+
+  .auth-right {
+    padding: 28px 20px;
+  }
+
+  /* Stack grid forms into 1 column for NIDN/Prodi & Password inputs */
+  .form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+}
+
+/* 4. Small Mobile (<= 480px) */
+@media (max-width: 480px) {
+  .auth-left {
+    padding: 20px 12px;
+  }
+
+  .auth-brand-logo {
+    gap: 10px;
+  }
+
+  .auth-logo-img {
+    height: 36px;
+  }
+
+  .auth-brand-title {
+    font-size: calc(16px * var(--font-scale, 1));
+  }
+
+  .auth-right {
+    padding: 24px 16px;
+  }
+
+  .auth-title {
+    font-size: calc(20px * var(--font-scale, 1));
+    margin-bottom: 20px;
+  }
+}
