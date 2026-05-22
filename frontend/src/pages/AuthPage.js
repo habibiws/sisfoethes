@@ -88,10 +88,6 @@ export default function AuthPage() {
       <div className="auth-left">
         <div className="auth-brand-logo">
           <img src={logoKkEthes} alt="Logo KK ETHES" className="auth-logo-img" />
-          <div className="auth-brand-text">
-            <div className="auth-brand-title">KK ETHES</div>
-            <div className="auth-brand-sub">Tel-U Surabaya</div>
-          </div>
         </div>
         <h1 className="auth-hero-headline">
           Sistem Informasi<br />

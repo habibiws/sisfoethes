@@ -47,9 +47,7 @@
   object-fit: contain;
   border-radius: 8px;
 }
-.auth-brand-text { display:flex; flex-direction:column; }
-.auth-brand-title { font-size: calc(20px * var(--font-scale, 1)); font-weight:800; color:white; line-height:1; }
-.auth-brand-sub { font-size: calc(10px * var(--font-scale, 1)); color:rgba(255,255,255,0.45); letter-spacing:1.2px; text-transform:uppercase; margin-top:3px; }
+
 .auth-hero-headline {
   font-family:'Fraunces',serif; font-size: calc(46px * var(--font-scale, 1)); font-weight:700; color:white; line-height:1.15; margin-bottom:20px; position: relative; z-index: 10;
 }
@@ -138,9 +136,7 @@
     height: 40px;
   }
 
-  .auth-brand-title {
-    font-size: calc(18px * var(--font-scale, 1));
-  }
+
 
   .auth-right {
     padding: 28px 20px;
@@ -167,9 +163,7 @@
     height: 36px;
   }
 
-  .auth-brand-title {
-    font-size: calc(16px * var(--font-scale, 1));
-  }
+
 
   .auth-right {
     padding: 24px 16px;
