@@ -11,7 +11,7 @@ export default function GlobalModal() {
     <>
       {alertConfig && (
         <div className="modal-overlay" onClick={hideAlert} style={{ zIndex: 20000 }}>
-          <div className="modal-content animate-pop" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px', textAlign: 'center', padding: '30px' }}>
+          <div className="modal animate-pop" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px', textAlign: 'center', padding: '30px' }}>
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
               {alertConfig.type === 'error' ? (
                 <div style={{ background: '#FCE4EC', color: '#C2185B', padding: '16px', borderRadius: '50%' }}>
@@ -36,7 +36,7 @@ export default function GlobalModal() {
 
       {confirmConfig && (
         <div className="modal-overlay" onClick={() => { if(confirmConfig.onCancel) confirmConfig.onCancel(); hideConfirm(); }} style={{ zIndex: 20000 }}>
-          <div className="modal-content animate-pop" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px', padding: '24px' }}>
+          <div className="modal animate-pop" onClick={e => e.stopPropagation()} style={{ maxWidth: '400px', padding: '24px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ margin: 0, fontSize: '18px', color: 'var(--navy-text)' }}>{confirmConfig.title}</h3>
               <button className="btn btn-ghost btn-icon" onClick={() => { if(confirmConfig.onCancel) confirmConfig.onCancel(); hideConfirm(); }}>

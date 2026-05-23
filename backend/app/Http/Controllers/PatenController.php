@@ -16,9 +16,8 @@ class PatenController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string',
-            'jenis_hki' => 'required|string|in:paten,paten_sederhana,hak_cipta,desain_industri,merek',
+            'jenis_hki' => 'required|string|in:paten,paten_sederhana,hak_cipta,desain_industri,merek,dtlst,rahasia_dagang',
             'nomor_registrasi' => 'nullable|string',
-            'status' => 'required|string|in:terdaftar,granted,dalam_proses',
             'tahun' => 'required|integer',
         ]);
 
@@ -34,9 +33,8 @@ class PatenController extends Controller
 
         $validated = $request->validate([
             'judul' => 'required|string',
-            'jenis_hki' => 'required|string|in:paten,paten_sederhana,hak_cipta,desain_industri,merek',
+            'jenis_hki' => 'required|string|in:paten,paten_sederhana,hak_cipta,desain_industri,merek,dtlst,rahasia_dagang',
             'nomor_registrasi' => 'nullable|string',
-            'status' => 'required|string|in:terdaftar,granted,dalam_proses',
             'tahun' => 'required|integer',
         ]);
 

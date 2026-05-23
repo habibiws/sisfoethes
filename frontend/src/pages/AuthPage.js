@@ -93,7 +93,7 @@ export default function AuthPage() {
           Sistem Informasi<br />
           <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>Kelompok Keahlian</em><br />
           <span style={{ fontSize: 'calc(26px * var(--font-scale, 1))', fontWeight: 600, display: 'block', marginTop: '12px', lineHeight: 1.3 }}>
-            Electrical Engineering and Advanced Technologies
+            Electrical Engineering and <br /> Advanced Technologies
           </span>
         </h1>
       </div>

@@ -11,6 +11,7 @@ export default function TabPelatihan() {
   const [participations, setParticipations] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(null); // to store event_id being processed
+  const [expandedId, setExpandedId] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -91,9 +92,8 @@ export default function TabPelatihan() {
             const isBusy = isProcessing === event.id;
 
             return (
-              <div key={event.id} className="entry-item" style={{ flexDirection: 'column', alignItems: 'stretch' }}>
+              <div key={event.id} className="entry-item" style={{ flexDirection: 'column', alignItems: 'stretch', cursor: 'pointer' }} onClick={() => setExpandedId(expandedId === event.id ? null : event.id)}>
                 <div style={{ display: 'flex', gap: '16px' }}>
-                  <div className="entry-icon" style={{ background: '#E8EAF6', color: '#3F51B5' }}>🎓</div>
                   <div className="entry-body">
                     <div className="entry-title">{event.judul}</div>
                     <div className="entry-meta" style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
@@ -114,7 +114,7 @@ export default function TabPelatihan() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between'
-                }}>
+                }} onClick={e => e.stopPropagation()}>
                   <div style={{ fontSize: '13px', color: isParticipating ? '#2E7D32' : 'var(--text3)', fontWeight: isParticipating ? 600 : 400 }}>
                     {isParticipating ? '✓ Status: Terdaftar / Hadir' : 'Belum ditandai sebagai peserta'}
                   </div>
@@ -125,9 +125,44 @@ export default function TabPelatihan() {
                     disabled={isBusy}
                     style={isParticipating ? { borderColor: '#2E7D32', color: '#2E7D32' } : {}}
                   >
-                    {isBusy ? 'Memproses...' : (isParticipating ? 'Batal Ikut' : '✅ Tandai Saya Ikut')}
+                    {isBusy ? 'Memproses...' : (isParticipating ? 'Batal Ikut' : 'Tandai Saya Ikut')}
                   </button>
                 </div>
+
+                {expandedId === event.id && (
+                  <div className="entry-detail" onClick={e => e.stopPropagation()} style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border)' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Judul Event</div>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{event.judul}</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Penyelenggara</div>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{event.penyelenggara}</div>
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Jenis Event</div>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatJenis(event.jenis)}</div>
+                      </div>
+                      {event.topik && (
+                        <div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Topik</div>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{event.topik}</div>
+                        </div>
+                      )}
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tanggal Mulai</div>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatDate(event.tanggal_mulai)}</div>
+                      </div>
+                      {event.tanggal_selesai && (
+                        <div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tanggal Selesai</div>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatDate(event.tanggal_selesai)}</div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             );
           })}

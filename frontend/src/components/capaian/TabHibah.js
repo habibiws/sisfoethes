@@ -22,6 +22,7 @@ export default function TabHibah() {
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
+  const [expandedId, setExpandedId] = useState(null);
 
   const resetForm = () => {
     setEditingId(null);
@@ -91,7 +92,6 @@ export default function TabHibah() {
       fetchData();
       setIsDirty(false);
       resetForm();
-      showAlert('Data hibah berhasil disimpan.', 'Berhasil', 'success');
     } catch (err) {
       showAlert(err.response?.data?.message || 'Gagal menyimpan data.', 'Error', 'error');
     } finally {
@@ -118,10 +118,10 @@ export default function TabHibah() {
       </div>
 
       {showForm && (
-        <div className="modal-overlay" onClick={handleSafeClose} style={{ zIndex: 10000 }}>
+        <div className="modal-overlay" onClick={handleSafeClose}>
           <div className="modal animate-pop" style={{ maxWidth: '650px', width: '100%', padding: '0', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
             <div className="modal-header" style={{ padding: '24px 28px', borderBottom: '1px solid var(--border)', marginBottom: 0 }}>
-              <h3 className="modal-title" style={{ margin: 0 }}>{editingId ? '📝 Edit Hibah' : '💰 Tambah Hibah Baru'}</h3>
+              <h3 className="modal-title" style={{ margin: 0 }}>{editingId ? 'Edit Hibah' : 'Tambah Hibah Baru'}</h3>
               <button className="modal-close" onClick={handleSafeClose}>✕</button>
             </div>
           <form onSubmit={handleSubmit} style={{ padding: '28px' }}>
@@ -180,26 +180,62 @@ export default function TabHibah() {
       ) : (
         <div className="entry-list">
           {data.map(item => (
-            <div key={item.id} className="entry-item">
-              <div className="entry-icon" style={{ background: '#E6F4E4', color: '#2E7D32' }}>💰</div>
-              <div className="entry-body">
-                <div className="entry-title">{item.judul}</div>
-                <div className="entry-meta">
-                  <span style={{color:'#2E7D32', fontWeight:600}}>{formatSumber(item.sumber_dana)}</span> · {item.nama_pemberi} · {item.tahun}
-                  <div style={{marginTop: '4px'}}>
-                    <span style={{background:'var(--bg2)', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', textTransform:'capitalize'}}>{item.posisi}</span>
+            <div key={item.id} className="entry-item" style={{ flexDirection: 'column', alignItems: 'stretch', cursor: 'pointer' }} onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                <div className="entry-body">
+                  <div className="entry-title">{item.judul}</div>
+                  <div className="entry-meta">
+                    <span style={{color:'#2E7D32', fontWeight:600}}>{formatSumber(item.sumber_dana)}</span> · {item.nama_pemberi} · {item.tahun}
+                    <div style={{marginTop: '4px'}}>
+                      <span style={{background:'var(--bg2)', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', textTransform:'capitalize'}}>{item.posisi}</span>
+                      {item.jumlah_dana && (
+                        <span style={{background:'#E6F4E4', color:'#2E7D32', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', marginLeft:'8px'}}>
+                          Rp {parseInt(item.jumlah_dana).toLocaleString('id-ID')}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="entry-actions" onClick={e => e.stopPropagation()}>
+                  <button className="btn btn-ghost btn-sm" onClick={() => handleEdit(item)}>Edit</button>
+                  <button className="btn btn-ghost btn-sm" style={{ color: 'var(--red)' }} onClick={() => handleDelete(item.id)}>Hapus</button>
+                </div>
+              </div>
+
+              {expandedId === item.id && (
+                <div className="entry-detail" onClick={e => e.stopPropagation()} style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border)' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Judul Penelitian</div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.judul}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Sumber Dana</div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatSumber(item.sumber_dana)}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Posisi</div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)', textTransform: 'capitalize' }}>{item.posisi}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Nama Pemberi Dana</div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.nama_pemberi}</div>
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tahun Pelaksanaan</div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.tahun}</div>
+                    </div>
                     {item.jumlah_dana && (
-                      <span style={{background:'#E6F4E4', color:'#2E7D32', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', marginLeft:'8px'}}>
-                        Rp {parseInt(item.jumlah_dana).toLocaleString('id-ID')}
-                      </span>
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Jumlah Dana</div>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>
+                          Rp {parseInt(item.jumlah_dana).toLocaleString('id-ID')}
+                        </div>
+                      </div>
                     )}
                   </div>
                 </div>
-              </div>
-              <div className="entry-actions">
-                <button className="btn btn-ghost btn-icon" onClick={() => handleEdit(item)}>✏️</button>
-                <button className="btn btn-ghost btn-icon" style={{ color: 'var(--red)' }} onClick={() => handleDelete(item.id)}>🗑️</button>
-              </div>
+              )}
             </div>
           ))}
         </div>

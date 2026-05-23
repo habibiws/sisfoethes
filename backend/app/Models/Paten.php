@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 
-#[Fillable(['user_id', 'judul', 'jenis_hki', 'nomor_registrasi', 'status', 'tahun'])]
+#[Fillable(['user_id', 'judul', 'jenis_hki', 'nomor_registrasi', 'tahun'])]
 class Paten extends Model
 {
     public function user()
