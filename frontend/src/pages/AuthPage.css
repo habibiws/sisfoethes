@@ -41,7 +41,15 @@
   width: 100%;
 }
 
-.auth-brand-logo { display:flex; align-items:center; gap:14px; margin-bottom:60px; position: relative; z-index: 10; }
+.auth-brand-logo {
+  position: absolute;
+  top: 60px;
+  left: 60px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  z-index: 10;
+}
 .auth-logo-img {
   height: 48px;
   object-fit: contain;
@@ -97,6 +105,7 @@
   }
 
   .auth-brand-logo {
+    position: static;
     margin-bottom: 0;
     justify-content: center;
   }

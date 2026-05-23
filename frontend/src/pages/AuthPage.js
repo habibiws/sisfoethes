@@ -92,10 +92,10 @@ export default function AuthPage() {
         <h1 className="auth-hero-headline">
           Sistem Informasi<br />
           <em style={{ fontStyle: 'italic', color: 'var(--gold)' }}>Kelompok Keahlian</em><br />
-          ETHES
+          <span style={{ fontSize: 'calc(26px * var(--font-scale, 1))', fontWeight: 600, display: 'block', marginTop: '12px', lineHeight: 1.3 }}>
+            Electrical Engineering and Advanced Technologies
+          </span>
         </h1>
-        
-        <p className="bottom-text" style={{ marginTop: 'auto', fontSize: '12px', color: 'rgba(255,255,255,0.3)', position: 'relative', zIndex: 10 }}>© 2026 KK ETHES · Universitas Telkom Kampus Surabaya</p>
       </div>
 
       {/* RIGHT PANEL */}
@@ -124,11 +124,11 @@ export default function AuthPage() {
               <div className="auth-title">Selamat Datang</div>
               <form onSubmit={handleLogin}>
                 <div className="form-group mb-12">
-                  <label>Email Institusi <span className="req">*</span></label>
+                  <label>Email Institusi</label>
                   <input type="email" value={loginEmail} onChange={e => setLoginEmail(e.target.value)} placeholder="nama@telkomuniversity.ac.id" />
                 </div>
                 <div className="form-group mb-16">
-                  <label>Kata Sandi <span className="req">*</span></label>
+                  <label>Kata Sandi</label>
                   <input type="password" value={loginPass} onChange={e => setLoginPass(e.target.value)} placeholder="Kata sandi Anda" />
                 </div>
                 <button type="submit" className="btn btn-primary" style={{ width: '100%', padding: '12px' }} disabled={isSubmitting}>
@@ -144,17 +144,17 @@ export default function AuthPage() {
 
               <form onSubmit={handleRegister}>
                 <div className="form-group mb-12">
-                  <label>Nama Lengkap <span className="req">*</span></label>
+                  <label>Nama Lengkap</label>
                   <input type="text" value={regName} onChange={e => setRegName(e.target.value)} required placeholder="cth: Mohamad Yani, S.T., M.Phil., Ph.D." />
                 </div>
 
                 <div className="form-grid mb-12">
                   <div className="form-group">
-                    <label>NIDN <span className="req">*</span></label>
+                    <label>NIDN</label>
                     <input type="text" value={regNidn} onChange={e => setRegNidn(e.target.value)} required placeholder="0701038901" />
                   </div>
                   <div className="form-group">
-                    <label>Program Studi <span className="req">*</span></label>
+                    <label>Program Studi</label>
                     <select value={regProdi} onChange={e => setRegProdi(e.target.value)} required>
                       <option value="">-- Pilih --</option>
                       <option value="Teknik Elektro">Teknik Elektro</option>
@@ -165,7 +165,7 @@ export default function AuthPage() {
                 </div>
 
                 <div className="form-group mb-12">
-                  <label>Peran <span className="req">*</span></label>
+                  <label>Peran</label>
                   <select value={regRole} onChange={e => setRegRole(e.target.value)} required>
                     <option value="anggota">Anggota</option>
                     <option value="ketua_sub_kk">Ketua Sub-KK</option>
@@ -174,7 +174,7 @@ export default function AuthPage() {
                 </div>
 
                 <div className="form-group mb-12">
-                  <label>Sub-Kelompok Keahlian <span className="req">*</span></label>
+                  <label>Sub-Kelompok Keahlian</label>
                   <select value={regSubKk} onChange={e => setRegSubKk(e.target.value)} required>
                     <option value="">-- Pilih Sub-KK --</option>
                     {subKks.length > 0 ? (
@@ -192,17 +192,17 @@ export default function AuthPage() {
                 </div>
 
                 <div className="form-group mb-12">
-                  <label>Email Institusi <span className="req">*</span></label>
+                  <label>Email Institusi</label>
                   <input type="email" value={regEmail} onChange={e => setRegEmail(e.target.value)} required placeholder="nama@telkomuniversity.ac.id" />
                 </div>
 
                 <div className="form-grid mb-16">
                   <div className="form-group">
-                    <label>Kata Sandi <span className="req">*</span></label>
+                    <label>Kata Sandi</label>
                     <input type="password" value={regPass} onChange={e => setRegPass(e.target.value)} required placeholder="Min. 8 karakter" />
                   </div>
                   <div className="form-group">
-                    <label>Konfirmasi Sandi <span className="req">*</span></label>
+                    <label>Konfirmasi Sandi</label>
                     <input type="password" value={regPassConfirm} onChange={e => setRegPassConfirm(e.target.value)} required placeholder="Ulangi sandi" />
                   </div>
                 </div>
