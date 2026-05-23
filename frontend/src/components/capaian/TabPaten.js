@@ -110,21 +110,13 @@ export default function TabPaten() {
 
   return (
     <div className="tab-pane animate-fade-in">
-      <div className="flex-between mb-16">
-        <h3 className="section-title">Paten & HKI</h3>
-        {!showForm && (
-          <button className="btn btn-primary btn-sm" onClick={() => setShowForm(true)}>+ Tambah Baru</button>
-        )}
-      </div>
-
-      {showForm && (
-        <div className="modal-overlay" onClick={handleSafeClose}>
-          <div className="modal animate-pop" style={{ maxWidth: '650px', width: '100%', padding: '0', overflow: 'hidden' }} onClick={e => e.stopPropagation()}>
-            <div className="modal-header" style={{ padding: '24px 28px', borderBottom: '1px solid var(--border)', marginBottom: 0 }}>
-              <h3 className="modal-title" style={{ margin: 0 }}>{editingId ? 'Edit HKI' : 'Tambah HKI Baru'}</h3>
-              <button className="modal-close" onClick={handleSafeClose}>✕</button>
-            </div>
-          <form onSubmit={handleSubmit} style={{ padding: '28px' }}>
+      {showForm ? (
+        <div className="card animate-fade-in" style={{ background: 'var(--white)', border: '1px solid var(--border)', borderRadius: '16px', padding: '28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', paddingBottom: '16px', borderBottom: '1px solid var(--border)' }}>
+            <h3 className="section-title" style={{ margin: 0 }}>{editingId ? 'Edit HKI' : 'Tambah HKI Baru'}</h3>
+            <button className="modal-close" onClick={handleSafeClose} style={{ fontSize: '18px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text3)' }}>✕</button>
+          </div>
+          <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group full">
                 <label>Judul Invensi / Karya <span className="req">*</span></label>
@@ -152,74 +144,80 @@ export default function TabPaten() {
                 <input type="number" name="tahun" required value={formData.tahun} onChange={handleChange} placeholder="2026" />
               </div>
             </div>
-            <div className="btn-row mt-20" style={{ justifyContent: 'flex-end', display: 'flex', gap: '12px' }}>
+            <div className="btn-row mt-24" style={{ justifyContent: 'flex-end', display: 'flex', gap: '12px' }}>
               <button type="button" className="btn btn-ghost" onClick={handleSafeClose} disabled={isSubmitting}>Batal</button>
               <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
                 {isSubmitting ? 'Menyimpan...' : 'Simpan'}
               </button>
             </div>
           </form>
-          </div>
-        </div>
-      )}
-
-      {isLoading ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>Memuat data...</div>
-      ) : data.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
-          Belum ada data Paten/HKI terdaftar.
         </div>
       ) : (
-        <div className="entry-list">
-          {data.map(item => (
-            <div key={item.id} className="entry-item" style={{ flexDirection: 'column', alignItems: 'stretch', cursor: 'pointer' }} onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                <div className="entry-body">
-                  <div className="entry-title">{item.judul}</div>
-                  <div className="entry-meta">
-                    <span style={{color:'#E65100', fontWeight:600}}>{formatJenis(item.jenis_hki)}</span> · {item.tahun}
-                    <div style={{marginTop: '4px'}}>
-                      {item.nomor_registrasi && (
-                        <span style={{color:'var(--text3)', fontSize:'11px'}}>
-                          No: {item.nomor_registrasi}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <div className="entry-actions" onClick={e => e.stopPropagation()}>
-                  <button className="btn btn-ghost btn-sm" onClick={() => handleEdit(item)}>Edit</button>
-                  <button className="btn btn-ghost btn-sm" style={{ color: 'var(--red)' }} onClick={() => handleDelete(item.id)}>Hapus</button>
-                </div>
-              </div>
+        <>
+          <div className="flex-between mb-16">
+            <h3 className="section-title">Paten & HKI</h3>
+            <button className="btn btn-primary btn-sm" onClick={() => setShowForm(true)}>+ Tambah Baru</button>
+          </div>
 
-              {expandedId === item.id && (
-                <div className="entry-detail" onClick={e => e.stopPropagation()} style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border)' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-                    <div>
-                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Judul Invensi / Karya</div>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.judul}</div>
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Jenis HKI</div>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatJenis(item.jenis_hki)}</div>
-                    </div>
-                    {item.nomor_registrasi && (
-                      <div>
-                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Nomor Sertifikat</div>
-                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.nomor_registrasi}</div>
+          {isLoading ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>Memuat data...</div>
+          ) : data.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text3)' }}>
+              Belum ada data Paten/HKI terdaftar.
+            </div>
+          ) : (
+            <div className="entry-list">
+              {data.map(item => (
+                <div key={item.id} className="entry-item" style={{ flexDirection: 'column', alignItems: 'stretch', cursor: 'pointer' }} onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <div className="entry-body">
+                      <div className="entry-title">{item.judul}</div>
+                      <div className="entry-meta">
+                        <span style={{color:'#E65100', fontWeight:600}}>{formatJenis(item.jenis_hki)}</span> · {item.tahun}
+                        <div style={{marginTop: '4px'}}>
+                          {item.nomor_registrasi && (
+                            <span style={{color:'var(--text3)', fontSize:'11px'}}>
+                              No: {item.nomor_registrasi}
+                            </span>
+                          )}
+                        </div>
                       </div>
-                    )}
-                    <div>
-                      <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tahun Terbit / Granted</div>
-                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.tahun}</div>
+                    </div>
+                    <div className="entry-actions" onClick={e => e.stopPropagation()}>
+                      <button className="btn btn-ghost btn-sm" onClick={() => handleEdit(item)}>Edit</button>
+                      <button className="btn btn-ghost btn-sm" style={{ color: 'var(--red)' }} onClick={() => handleDelete(item.id)}>Hapus</button>
                     </div>
                   </div>
+
+                  {expandedId === item.id && (
+                    <div className="entry-detail" onClick={e => e.stopPropagation()} style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border)' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                        <div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Judul Invensi / Karya</div>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.judul}</div>
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Jenis HKI</div>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatJenis(item.jenis_hki)}</div>
+                        </div>
+                        {item.nomor_registrasi && (
+                          <div>
+                            <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Nomor Sertifikat</div>
+                            <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.nomor_registrasi}</div>
+                          </div>
+                        )}
+                        <div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tahun Terbit / Granted</div>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.tahun}</div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
+              ))}
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );
