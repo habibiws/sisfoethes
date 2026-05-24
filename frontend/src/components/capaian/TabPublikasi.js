@@ -12,6 +12,18 @@ const DEFAULT_FORM_DATA = {
   doi_url: ''
 };
 
+const formatUrl = (url) => {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('10.')) {
+    return `https://doi.org/${trimmed}`;
+  }
+  return `https://${trimmed}`;
+};
+
 export default function TabPublikasi() {
   const { showAlert, showConfirm } = useModalStore();
   const [showForm, setShowForm] = useState(false);
@@ -234,7 +246,7 @@ export default function TabPublikasi() {
                           <div>
                             <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>DOI / URL</div>
                             <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>
-                              <a href={item.doi_url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--navy)', textDecoration: 'underline' }}>{item.doi_url}</a>
+                              <a href={formatUrl(item.doi_url)} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--navy)', textDecoration: 'underline' }}>{item.doi_url}</a>
                             </div>
                           </div>
                         )}

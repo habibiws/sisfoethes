@@ -3,6 +3,18 @@ import api from '../../services/api';
 import { X, FileText, Wallet, Award, Globe, GraduationCap } from 'lucide-react';
 import useModalStore from '../../store/modalStore';
 
+const formatUrl = (url) => {
+  if (!url) return '';
+  const trimmed = url.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+  if (trimmed.startsWith('10.')) {
+    return `https://doi.org/${trimmed}`;
+  }
+  return `https://${trimmed}`;
+};
+
 export default function LaporanDetailModal({ user, year, onClose }) {
   const { showAlert } = useModalStore();
   const [activeTab, setActiveTab] = useState('publikasi');
@@ -136,7 +148,7 @@ export default function LaporanDetailModal({ user, year, onClose }) {
                         </div>
                         {pub.doi_url && (
                           <div style={{ marginTop: '8px', fontSize: '12px' }}>
-                            <strong>DOI / URL:</strong> <a href={pub.doi_url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--navy-text)', fontWeight: 600 }}>{pub.doi_url}</a>
+                            <strong>DOI / URL:</strong> <a href={formatUrl(pub.doi_url)} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--navy-text)', fontWeight: 600 }}>{pub.doi_url}</a>
                           </div>
                         )}
                       </div>
