@@ -4,7 +4,7 @@ import { Mail, ArrowRight } from 'lucide-react';
 export default function LaporanTable({ users, onShowDetail, onRemindUser }) {
   const getStatusStyle = (status) => {
     if (status === 'Lengkap') return { dot: '#27AE60', text: '#27AE60', bg: 'transparent' };
-    if (status === 'Parsial') return { dot: 'var(--gold)', text: 'var(--gold)', bg: '#FAFDF8' };
+    if (status === 'Sebagian') return { dot: 'var(--gold)', text: 'var(--gold)', bg: '#FAFDF8' };
     return { dot: 'var(--red)', text: 'var(--red)', bg: '#FFF9F9' };
   };
 
@@ -94,7 +94,7 @@ export default function LaporanTable({ users, onShowDetail, onRemindUser }) {
                               alignItems: 'center', 
                               gap: '4px',
                               padding: '4px 8px',
-                              ...(row.completeness === 'Parsial' ? { color: 'var(--gold)', borderColor: 'var(--gold)', background: 'transparent' } : {})
+                              ...(row.completeness === 'Sebagian' ? { color: 'var(--gold)', borderColor: 'var(--gold)', background: 'transparent' } : {})
                             }}
                           >
                             <Mail size={12} /> Ingatkan

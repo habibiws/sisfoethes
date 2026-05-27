@@ -30,7 +30,7 @@ export default function TabPublikasi() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
@@ -142,11 +142,11 @@ export default function TabPublikasi() {
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group full">
-                <label>Judul Artikel <span className="req">*</span></label>
+                <label>Judul Artikel     </label>
                 <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap artikel" />
               </div>
               <div className="form-group">
-                <label>Jenis Publikasi <span className="req">*</span></label>
+                <label>Jenis Publikasi     </label>
                 <select required value={formData.jenis} onChange={handleChange} name="jenis">
                   <option value="">-- Pilih --</option>
                   <option value="jurnal_internasional_scopus">Jurnal Internasional Scopus</option>
@@ -157,7 +157,7 @@ export default function TabPublikasi() {
                 </select>
               </div>
               <div className="form-group">
-                <label>Posisi Penulis <span className="req">*</span></label>
+                <label>Posisi Penulis     </label>
                 <select required value={formData.posisi_penulis} onChange={handleChange} name="posisi_penulis">
                   <option value="">-- Pilih --</option>
                   <option value="penulis_pertama">Penulis Pertama</option>
@@ -166,11 +166,11 @@ export default function TabPublikasi() {
                 </select>
               </div>
               <div className="form-group full">
-                <label>Nama Jurnal / Prosiding <span className="req">*</span></label>
+                <label>Nama Jurnal / Prosiding     </label>
                 <input type="text" required value={formData.nama_jurnal} onChange={handleChange} name="nama_jurnal" placeholder="Nama jurnal atau prosiding" />
               </div>
               <div className="form-group">
-                <label>Tahun Terbit <span className="req">*</span></label>
+                <label>Tahun Terbit     </label>
                 <input type="number" required value={formData.tahun_terbit} onChange={handleChange} name="tahun_terbit" placeholder="2026" />
               </div>
               <div className="form-group">
@@ -207,9 +207,9 @@ export default function TabPublikasi() {
                     <div className="entry-body">
                       <div className="entry-title">{item.judul}</div>
                       <div className="entry-meta">
-                        <span style={{color:'var(--navy)', fontWeight:600}}>{formatJenis(item.jenis)}</span> · {item.nama_jurnal} · {item.tahun_terbit}
-                        <div style={{marginTop: '4px'}}>
-                          <span style={{background:'var(--bg2)', padding:'2px 8px', borderRadius:'10px', fontSize:'11px'}}>{formatPosisi(item.posisi_penulis)}</span>
+                        <span style={{ color: 'var(--navy)', fontWeight: 600 }}>{formatJenis(item.jenis)}</span> · {item.nama_jurnal} · {item.tahun_terbit}
+                        <div style={{ marginTop: '4px' }}>
+                          <span style={{ background: 'var(--bg2)', padding: '2px 8px', borderRadius: '10px', fontSize: '11px' }}>{formatPosisi(item.posisi_penulis)}</span>
                         </div>
                       </div>
                     </div>

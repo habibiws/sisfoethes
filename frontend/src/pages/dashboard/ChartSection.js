@@ -6,7 +6,7 @@ export default function ChartSection({ data }) {
   const navigate = useNavigate();
   const summary = data?.global_summary || {
     total_dosen: 0,
-    completeness_distribution: { lengkap: 0, parsial: 0, belum: 0 },
+    completeness_distribution: { lengkap: 0, sebagian: 0, belum: 0 },
     sub_kk_progress: [],
     viewable_sub_kk_ids: []
   };
@@ -17,7 +17,7 @@ export default function ChartSection({ data }) {
   // Pie chart data
   const pieData = [
     { name: 'Lengkap', value: dist.lengkap, color: '#27AE60' },
-    { name: 'Parsial', value: dist.parsial, color: '#D4A843' },
+    { name: 'Sebagian', value: dist.sebagian, color: '#D4A843' },
     { name: 'Belum Input', value: dist.belum, color: '#C0392B' }
   ].filter(d => d.value > 0);
 
@@ -102,7 +102,7 @@ export default function ChartSection({ data }) {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: 'calc(13px * var(--font-scale, 1))', fontWeight: 600 }}>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#D4A843', display: 'inline-block' }}></span>
-              <span>Parsial ({dist.parsial})</span>
+              <span>Sebagian ({dist.sebagian})</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: 'calc(13px * var(--font-scale, 1))', fontWeight: 600 }}>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#C0392B', display: 'inline-block' }}></span>

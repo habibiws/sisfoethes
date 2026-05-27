@@ -19,7 +19,7 @@ export default function TabAbdimas() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
@@ -121,11 +121,11 @@ export default function TabAbdimas() {
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group full">
-                <label>Judul Kegiatan <span className="req">*</span></label>
+                <label>Judul Kegiatan</label>
                 <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap abdimas" />
               </div>
               <div className="form-group">
-                <label>Skema <span className="req">*</span></label>
+                <label>Skema  </label>
                 <select name="skema" required value={formData.skema} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="mandiri">Mandiri</option>
@@ -134,7 +134,7 @@ export default function TabAbdimas() {
                 </select>
               </div>
               <div className="form-group">
-                <label>Posisi <span className="req">*</span></label>
+                <label>Posisi  </label>
                 <select name="posisi" required value={formData.posisi} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="ketua">Ketua</option>
@@ -142,7 +142,7 @@ export default function TabAbdimas() {
                 </select>
               </div>
               <div className="form-group full">
-                <label>Mitra Sasaran <span className="req">*</span></label>
+                <label>Mitra Sasaran  </label>
                 <input type="text" name="mitra" required value={formData.mitra} onChange={handleChange} placeholder="Contoh: Desa Suka Maju, UMKM XYZ" />
               </div>
               <div className="form-group">
@@ -150,7 +150,7 @@ export default function TabAbdimas() {
                 <input type="text" name="lokasi" value={formData.lokasi} onChange={handleChange} placeholder="Contoh: Kab. Bandung" />
               </div>
               <div className="form-group">
-                <label>Tahun Pelaksanaan <span className="req">*</span></label>
+                <label>Tahun Pelaksanaan  </label>
                 <input type="number" name="tahun" required value={formData.tahun} onChange={handleChange} placeholder="2026" />
               </div>
               <div className="form-group">
@@ -187,11 +187,11 @@ export default function TabAbdimas() {
                     <div className="entry-body">
                       <div className="entry-title">{item.judul}</div>
                       <div className="entry-meta">
-                        <span style={{color:'#C2185B', fontWeight:600}}>{formatSkema(item.skema)}</span> · Mitra: {item.mitra} · {item.tahun}
-                        <div style={{marginTop: '4px'}}>
-                          <span style={{background:'var(--bg2)', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', textTransform:'capitalize'}}>{item.posisi}</span>
+                        <span style={{ color: '#C2185B', fontWeight: 600 }}>{formatSkema(item.skema)}</span> · Mitra: {item.mitra} · {item.tahun}
+                        <div style={{ marginTop: '4px' }}>
+                          <span style={{ background: 'var(--bg2)', padding: '2px 8px', borderRadius: '10px', fontSize: '11px', textTransform: 'capitalize' }}>{item.posisi}</span>
                           {item.lokasi && (
-                            <span style={{color:'var(--text3)', fontSize:'11px', marginLeft:'8px'}}>
+                            <span style={{ color: 'var(--text3)', fontSize: '11px', marginLeft: '8px' }}>
                               {item.lokasi}
                             </span>
                           )}

@@ -18,7 +18,7 @@ export default function TabHibah() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
@@ -119,11 +119,11 @@ export default function TabHibah() {
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group full">
-                <label>Judul Penelitian <span className="req">*</span></label>
+                <label>Judul Penelitian   </label>
                 <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap penelitian" />
               </div>
               <div className="form-group">
-                <label>Sumber Dana <span className="req">*</span></label>
+                <label>Sumber Dana   </label>
                 <select name="sumber_dana" required value={formData.sumber_dana} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="internal">Internal Institusi</option>
@@ -132,7 +132,7 @@ export default function TabHibah() {
                 </select>
               </div>
               <div className="form-group">
-                <label>Posisi <span className="req">*</span></label>
+                <label>Posisi   </label>
                 <select name="posisi" required value={formData.posisi} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="ketua">Ketua Peneliti</option>
@@ -140,11 +140,11 @@ export default function TabHibah() {
                 </select>
               </div>
               <div className="form-group full">
-                <label>Nama Pemberi Dana <span className="req">*</span></label>
+                <label>Nama Pemberi Dana   </label>
                 <input type="text" name="nama_pemberi" required value={formData.nama_pemberi} onChange={handleChange} placeholder="Contoh: Kemenristekdikti, LPDP, Telkom University" />
               </div>
               <div className="form-group">
-                <label>Tahun Pelaksanaan <span className="req">*</span></label>
+                <label>Tahun Pelaksanaan   </label>
                 <input type="number" name="tahun" required value={formData.tahun} onChange={handleChange} placeholder="2026" />
               </div>
               <div className="form-group">
@@ -181,11 +181,11 @@ export default function TabHibah() {
                     <div className="entry-body">
                       <div className="entry-title">{item.judul}</div>
                       <div className="entry-meta">
-                        <span style={{color:'#2E7D32', fontWeight:600}}>{formatSumber(item.sumber_dana)}</span> · {item.nama_pemberi} · {item.tahun}
-                        <div style={{marginTop: '4px'}}>
-                          <span style={{background:'var(--bg2)', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', textTransform:'capitalize'}}>{item.posisi}</span>
+                        <span style={{ color: '#2E7D32', fontWeight: 600 }}>{formatSumber(item.sumber_dana)}</span> · {item.nama_pemberi} · {item.tahun}
+                        <div style={{ marginTop: '4px' }}>
+                          <span style={{ background: 'var(--bg2)', padding: '2px 8px', borderRadius: '10px', fontSize: '11px', textTransform: 'capitalize' }}>{item.posisi}</span>
                           {item.jumlah_dana && (
-                            <span style={{background:'#E6F4E4', color:'#2E7D32', padding:'2px 8px', borderRadius:'10px', fontSize:'11px', marginLeft:'8px'}}>
+                            <span style={{ background: '#E6F4E4', color: '#2E7D32', padding: '2px 8px', borderRadius: '10px', fontSize: '11px', marginLeft: '8px' }}>
                               Rp {parseInt(item.jumlah_dana).toLocaleString('id-ID')}
                             </span>
                           )}

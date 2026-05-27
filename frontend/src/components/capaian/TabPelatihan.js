@@ -160,7 +160,19 @@ export default function TabPelatihan() {
                           <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{formatDate(event.tanggal_selesai)}</div>
                         </div>
                       )}
+                      <div>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Estimasi Biaya</div>
+                        <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>
+                          {event.estimasi_biaya ? `Rp ${parseFloat(event.estimasi_biaya).toLocaleString('id-ID')}` : 'Tanpa Biaya'}
+                        </div>
+                      </div>
                     </div>
+                    {event.keterangan && (
+                      <div style={{ marginTop: '12px', borderTop: '1px dashed var(--border)', paddingTop: '12px' }}>
+                        <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '4px' }}>Keterangan / Informasi Tambahan</div>
+                        <div style={{ fontSize: '13px', color: 'var(--text2)', whiteSpace: 'pre-line', lineHeight: '1.6' }}>{event.keterangan}</div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

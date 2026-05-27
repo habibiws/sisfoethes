@@ -97,7 +97,7 @@ class DashboardController extends Controller
             if ($catsCount === 5) {
                 $completeness = 'Lengkap';
             } elseif ($catsCount > 0) {
-                $completeness = 'Parsial';
+                $completeness = 'Sebagian';
             }
 
             return [
@@ -128,7 +128,7 @@ class DashboardController extends Controller
 
         $completenessDist = [
             'lengkap' => $processedUsers->where('completeness', 'Lengkap')->count(),
-            'parsial' => $processedUsers->where('completeness', 'Parsial')->count(),
+            'sebagian' => $processedUsers->where('completeness', 'Sebagian')->count(),
             'belum' => $processedUsers->where('completeness', 'Belum')->count()
         ];
 
@@ -144,7 +144,7 @@ class DashboardController extends Controller
                 'name' => $sub->name,
                 'total_members' => $totalMembers,
                 'completed' => $members->where('completeness', 'Lengkap')->count(),
-                'partial' => $members->where('completeness', 'Parsial')->count(),
+                'partial' => $members->where('completeness', 'Sebagian')->count(),
                 'none' => $members->where('completeness', 'Belum')->count()
             ];
         });

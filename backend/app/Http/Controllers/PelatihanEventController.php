@@ -29,11 +29,12 @@ class PelatihanEventController extends Controller
             'tanggal_selesai' => 'nullable|date',
             'triwulan' => 'required|integer|between:1,4',
             'tahun' => 'required|integer',
-            'status' => 'required|string|in:direncanakan,terlaksana,dibatalkan',
             'estimasi_biaya' => 'nullable|numeric|min:0',
+            'keterangan' => 'nullable|string',
         ]);
 
         $validated['created_by'] = auth()->id();
+        $validated['status'] = null;
         $event = PelatihanEvent::create($validated);
 
         return response()->json(['message' => 'Event Pelatihan berhasil ditambahkan', 'data' => $event], 201);
@@ -56,8 +57,8 @@ class PelatihanEventController extends Controller
             'tanggal_selesai' => 'nullable|date',
             'triwulan' => 'required|integer|between:1,4',
             'tahun' => 'required|integer',
-            'status' => 'required|string|in:direncanakan,terlaksana,dibatalkan',
             'estimasi_biaya' => 'nullable|numeric|min:0',
+            'keterangan' => 'nullable|string',
         ]);
 
         $event->update($validated);

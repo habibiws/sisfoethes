@@ -8,13 +8,13 @@ export default function TopPerformers({ data }) {
 
   const getStatusBadgeClass = (status) => {
     if (status === 'Lengkap') return 'tag-green';
-    if (status === 'Parsial') return 'tag-gold';
+    if (status === 'Sebagian') return 'tag-gold';
     return 'tag-red';
   };
 
   const getStatusDotClass = (status) => {
     if (status === 'Lengkap') return 'dot-green';
-    if (status === 'Parsial') return 'dot-amber';
+    if (status === 'Sebagian') return 'dot-amber';
     return 'dot-red';
   };
 

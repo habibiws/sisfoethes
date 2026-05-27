@@ -16,7 +16,7 @@ export default function TabPaten() {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Form State
   const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState(DEFAULT_FORM_DATA);
@@ -119,11 +119,11 @@ export default function TabPaten() {
           <form onSubmit={handleSubmit}>
             <div className="form-grid">
               <div className="form-group full">
-                <label>Judul Invensi / Karya <span className="req">*</span></label>
+                <label>Judul Karya    </label>
                 <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap HKI" />
               </div>
               <div className="form-group">
-                <label>Jenis HKI <span className="req">*</span></label>
+                <label>Jenis HKI    </label>
                 <select name="jenis_hki" required value={formData.jenis_hki} onChange={handleChange}>
                   <option value="">-- Pilih --</option>
                   <option value="paten">Paten</option>
@@ -140,7 +140,7 @@ export default function TabPaten() {
                 <input type="text" name="nomor_registrasi" value={formData.nomor_registrasi} onChange={handleChange} placeholder="Nomor sertifikat HKI" />
               </div>
               <div className="form-group">
-                <label>Tahun Terbit / Granted <span className="req">*</span></label>
+                <label>Tahun Terbit    </label>
                 <input type="number" name="tahun" required value={formData.tahun} onChange={handleChange} placeholder="2026" />
               </div>
             </div>
@@ -173,10 +173,10 @@ export default function TabPaten() {
                     <div className="entry-body">
                       <div className="entry-title">{item.judul}</div>
                       <div className="entry-meta">
-                        <span style={{color:'#E65100', fontWeight:600}}>{formatJenis(item.jenis_hki)}</span> · {item.tahun}
-                        <div style={{marginTop: '4px'}}>
+                        <span style={{ color: '#E65100', fontWeight: 600 }}>{formatJenis(item.jenis_hki)}</span> · {item.tahun}
+                        <div style={{ marginTop: '4px' }}>
                           {item.nomor_registrasi && (
-                            <span style={{color:'var(--text3)', fontSize:'11px'}}>
+                            <span style={{ color: 'var(--text3)', fontSize: '11px' }}>
                               No: {item.nomor_registrasi}
                             </span>
                           )}
@@ -193,7 +193,7 @@ export default function TabPaten() {
                     <div className="entry-detail" onClick={e => e.stopPropagation()} style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid var(--border)' }}>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
                         <div>
-                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Judul Invensi / Karya</div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Judul Karya</div>
                           <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.judul}</div>
                         </div>
                         <div>
@@ -207,7 +207,7 @@ export default function TabPaten() {
                           </div>
                         )}
                         <div>
-                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tahun Terbit / Granted</div>
+                          <div style={{ fontSize: '11px', color: 'var(--text3)', textTransform: 'uppercase', marginBottom: '2px' }}>Tahun Terbit</div>
                           <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--navy-text)' }}>{item.tahun}</div>
                         </div>
                       </div>

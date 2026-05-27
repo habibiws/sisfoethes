@@ -35,11 +35,18 @@
 }
 
 /* PRINT STYLES */
+.print-header { display: none; }
+
 @media print {
+  @page { margin: 1.5cm; size: landscape; }
+  
   body {
     background: #fff !important;
     color: #000 !important;
+    font-family: 'Times New Roman', Times, serif !important;
   }
+  
+  /* Hide non-essential UI */
   .sidebar,
   .navbar,
   .filter-bar-laporan,
@@ -49,16 +56,23 @@
   .filter-select,
   .modal-overlay,
   .accessibility-menu-trigger,
-  .header-actions {
+  .header-actions,
+  .laporan-header,
+  .pelatihan-summary-bar {
     display: none !important;
   }
+
+  /* Reset layout constraints */
   .layout-container {
     padding: 0 !important;
     margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
   }
   .content-wrap {
     margin-left: 0 !important;
     padding: 0 !important;
+    max-width: 100% !important;
   }
   .card {
     border: none !important;
@@ -66,16 +80,80 @@
     padding: 0 !important;
     background: transparent !important;
   }
+  
+  /* Print Header (Kop Surat) */
+  .print-header {
+    display: block !important;
+    margin-bottom: 20px;
+  }
+  .print-header-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 15px;
+  }
+  .print-logo {
+    width: 140px;
+    height: auto;
+  }
+  .print-header-text h2 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #000;
+  }
+  .print-header-text p {
+    margin: 2px 0;
+    font-size: 14px;
+    color: #000;
+  }
+  .print-hr {
+    border: none;
+    border-top: 3px solid #000;
+    border-bottom: 1px solid #000;
+    height: 2px;
+    margin-bottom: 10px;
+  }
+  .print-meta {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+
+  /* Table Adjustments for Print */
   .user-table {
-    border: 1px solid #ddd !important;
+    border: 1px solid #000 !important;
     width: 100% !important;
     border-collapse: collapse !important;
   }
-  .user-table th, .user-table td {
-    padding: 8px 10px !important;
-    border-bottom: 1px solid #ddd !important;
+  .user-table th {
+    background: #f0f0f0 !important;
+    color: #000 !important;
+    font-weight: bold !important;
+    border: 1px solid #000 !important;
+    padding: 8px !important;
+    -webkit-print-color-adjust: exact;
   }
+  .user-table td {
+    padding: 6px 8px !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+  }
+  
+  /* Hide specific columns/elements in table */
   .user-table td:last-child, .user-table th:last-child {
-    display: none !important; /* Hide Actions column when printing */
+    display: none !important; /* Hide Actions */
+  }
+  .user-table .tag-navy, .user-table .dot {
+    background: transparent !important;
+    color: #000 !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+  
+  /* Ensure status text remains visible but unstyled */
+  .user-table td span {
+    color: #000 !important;
   }
 }

@@ -35,7 +35,7 @@ export default function LaporanFilter({ filters, onFilterChange, subKks }) {
         >
           <option value="">Semua Status</option>
           <option value="Lengkap">Lengkap</option>
-          <option value="Parsial">Parsial</option>
+          <option value="Sebagian">Sebagian</option>
           <option value="Belum">Belum Input</option>
         </select>
 

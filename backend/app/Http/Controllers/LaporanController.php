@@ -80,7 +80,7 @@ class LaporanController extends Controller
 
             // Logika Completeness:
             // Lengkap: Minimal 1 entry di setiap dari 5 kategori
-            // Parsial: Punya entry di sebagian kategori (tapi tidak semua 5)
+            // Sebagian: Punya entry di sebagian kategori (tapi tidak semua 5)
             // Belum: Nol entry di semua kategori
             $categoriesWithData = 0;
             if ($pubCount > 0) $categoriesWithData++;
@@ -93,7 +93,7 @@ class LaporanController extends Controller
             if ($categoriesWithData === 5) {
                 $completeness = 'Lengkap';
             } elseif ($categoriesWithData > 0) {
-                $completeness = 'Parsial';
+                $completeness = 'Sebagian';
             }
 
             return [
