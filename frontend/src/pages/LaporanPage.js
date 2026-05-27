@@ -162,7 +162,7 @@ export default function LaporanPage() {
                 onRemindUser={handleRemindUser}
               />
             )}
-            <LaporanExportGrid />
+            <LaporanExportGrid selectedYear={selectedYear} subKkId={filters.sub_kk_id} />
           </>
         )}
 

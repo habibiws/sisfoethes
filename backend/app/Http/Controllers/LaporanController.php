@@ -10,6 +10,10 @@ use App\Models\Hibah;
 use App\Models\Paten;
 use App\Models\Abdimas;
 use App\Models\PelatihanParticipation;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\CapaianReminderMail;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\RekapCapaianExport;
 
 class LaporanController extends Controller
 {
@@ -99,6 +103,7 @@ class LaporanController extends Controller
             return [
                 'id' => $user->id,
                 'name' => $user->name,
+                'email' => $user->email,
                 'nidn' => $user->nidn,
                 'role' => $user->role,
                 'sub_kk' => $user->subKk ? [
@@ -220,10 +225,35 @@ class LaporanController extends Controller
             return response()->json(['message' => 'Dosen tidak ditemukan.'], 404);
         }
 
-        // Mocking sending email
-        // Real implementation can leverage: Mail::to($user->email)->send(new CapaianReminderMail($user));
-        return response()->json([
-            'message' => "Pengingat berhasil dikirimkan ke email {$user->name} ({$user->email})"
-        ]);
+        // Send real email
+        try {
+            Mail::to($user->email)->send(new CapaianReminderMail($user, $currentUser));
+            return response()->json([
+                'message' => "Pengingat berhasil dikirimkan ke email {$user->name} ({$user->email})"
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Gagal mengirim email: " . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Export rekap data to Excel.
+     */
+    public function exportRekap(Request $request)
+    {
+        $currentUser = auth()->user();
+        if (in_array($currentUser->role, ['anggota'])) {
+            return response()->json(['message' => 'Anda tidak memiliki hak akses untuk ekspor laporan.'], 403);
+        }
+
+        // Re-use logic from getRekap to fetch processed users
+        $response = $this->getRekap($request);
+        $data = $response->getData(true);
+        $users = $data['users'];
+        $year = $request->input('tahun');
+
+        return Excel::download(new RekapCapaianExport($users, $year), 'rekap_capaian_dosen.xlsx');
     }
 }
