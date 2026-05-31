@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Laporan & Distribusi Capaian
     Route::get('/laporan/rekap', [\App\Http\Controllers\LaporanController::class, 'getRekap']);
     Route::get('/laporan/export/rekap', [\App\Http\Controllers\LaporanController::class, 'exportRekap']);
+    Route::get('/laporan/export/detail', [\App\Http\Controllers\LaporanController::class, 'exportDetail']);
+    Route::get('/laporan/category-detail', [\App\Http\Controllers\LaporanController::class, 'getCategoryDetail']);
     Route::get('/laporan/detail/{userId}', [\App\Http\Controllers\LaporanController::class, 'getDetail']);
     Route::post('/laporan/remind/{userId}', [\App\Http\Controllers\LaporanController::class, 'remind']);
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'getDashboardData']);

@@ -256,4 +256,77 @@ class LaporanController extends Controller
 
         return Excel::download(new RekapCapaianExport($users, $year), 'rekap_capaian_dosen.xlsx');
     }
+
+    /**
+     * Export detailed tridharma data (multi-sheet) to Excel.
+     */
+    public function exportDetail(Request $request)
+    {
+        $currentUser = auth()->user();
+        if (in_array($currentUser->role, ['anggota'])) {
+            return response()->json(['message' => 'Anda tidak memiliki hak akses untuk ekspor laporan.'], 403);
+        }
+
+        $year = $request->input('tahun');
+        $subKkId = $request->input('sub_kk_id');
+
+        return Excel::download(new \App\Exports\DetailCapaianExport($year, $subKkId), 'detail_capaian_tridharma.xlsx');
+    }
+
+    /**
+     * Get list of detailed category data for summary cards.
+     */
+    public function getCategoryDetail(Request $request)
+    {
+        $currentUser = auth()->user();
+        if (in_array($currentUser->role, ['anggota'])) {
+            return response()->json(['message' => 'Anda tidak memiliki hak akses.'], 403);
+        }
+
+        $category = $request->input('category');
+        $year = $request->input('tahun');
+        $subKkId = $request->input('sub_kk_id');
+
+        switch ($category) {
+            case 'publikasi':
+                $query = Publikasi::with('user.subKk');
+                if ($year) $query->where('tahun_terbit', $year);
+                if ($subKkId) $query->whereHas('user', fn($q) => $q->where('sub_kk_id', $subKkId));
+                $data = $query->orderBy('tahun_terbit', 'desc')->get();
+                break;
+            case 'hibah':
+                $query = Hibah::with('user.subKk');
+                if ($year) $query->where('tahun', $year);
+                if ($subKkId) $query->whereHas('user', fn($q) => $q->where('sub_kk_id', $subKkId));
+                $data = $query->orderBy('tahun', 'desc')->get();
+                break;
+            case 'paten':
+                $query = Paten::with('user.subKk');
+                if ($year) $query->where('tahun', $year);
+                if ($subKkId) $query->whereHas('user', fn($q) => $q->where('sub_kk_id', $subKkId));
+                $data = $query->orderBy('tahun', 'desc')->get();
+                break;
+            case 'abdimas':
+                $query = Abdimas::with('user.subKk');
+                if ($year) $query->where('tahun', $year);
+                if ($subKkId) $query->whereHas('user', fn($q) => $q->where('sub_kk_id', $subKkId));
+                $data = $query->orderBy('tahun', 'desc')->get();
+                break;
+            case 'pelatihan':
+                $query = PelatihanParticipation::with(['user.subKk', 'event']);
+                if ($year) {
+                    $query->whereHas('event', fn($q) => $q->where('tahun', $year));
+                }
+                if ($subKkId) $query->whereHas('user', fn($q) => $q->where('sub_kk_id', $subKkId));
+                $data = $query->get()->sortByDesc('event.tahun')->values();
+                break;
+            default:
+                return response()->json(['message' => 'Kategori tidak valid.'], 400);
+        }
+
+        return response()->json([
+            'category' => $category,
+            'data' => $data
+        ]);
+    }
 }

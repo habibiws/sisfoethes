@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
-import { Printer } from 'lucide-react';
 import LaporanStats from '../components/laporan/LaporanStats';
 import LaporanFilter from '../components/laporan/LaporanFilter';
 import LaporanTable from '../components/laporan/LaporanTable';
 import LaporanExportGrid from '../components/laporan/LaporanExportGrid';
 import LaporanDetailModal from '../components/laporan/LaporanDetailModal';
+import LaporanCategoryDetailModal from '../components/laporan/LaporanCategoryDetailModal';
 import api from '../services/api';
 import useModalStore from '../store/modalStore';
 import useAuthStore from '../store/authStore';
@@ -31,6 +31,7 @@ export default function LaporanPage() {
   
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
   const fetchRekap = async () => {
     try {
@@ -87,10 +88,6 @@ export default function LaporanPage() {
     );
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   // Snappy client-side filtering for search & status (perfect responsive UX)
   const filteredUsers = data.users.filter(u => {
     const matchesSearch = u.name.toLowerCase().includes(filters.search.toLowerCase());
@@ -116,36 +113,20 @@ export default function LaporanPage() {
               return <option key={yr} value={yr.toString()}>Tahun {yr}</option>;
             })}
           </select>
-          <button className="btn btn-outline" onClick={handlePrint} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Printer size={16} /> Cetak Laporan
-          </button>
         </div>
       }
     >
       <div className="laporan-container">
-        
-        {/* PRINT ONLY HEADER */}
-        <div className="print-header">
-          <div className="print-header-content">
-            <img src={require('../assets/ethes-bbft.png')} alt="ETHES Logo" className="print-logo" />
-            <div className="print-header-text">
-              <h2>LAPORAN REKAPITULASI CAPAIAN TRIDHARMA</h2>
-              <p>Kelompok Keahlian Electrical Engineering and Advanced Technologies (ETHES)</p>
-              <p>Telkom University Surabaya</p>
-            </div>
-          </div>
-          <hr className="print-hr" />
-          <div className="print-meta">
-            Periode: {selectedYear ? `Tahun ${selectedYear}` : 'Semua Tahun'} | Dicetak pada: {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </div>
-        </div>
         {isLoading && data.summary === null ? (
           <div className="loading-state" style={{ padding: '40px', textAlign: 'center', fontWeight: 600, color: 'var(--text3)' }}>
             Memuat data laporan...
           </div>
         ) : (
           <>
-            <LaporanStats summary={data.summary} />
+            <LaporanStats 
+              summary={data.summary} 
+              onCardClick={(cat) => setSelectedCategory(cat)} 
+            />
             <LaporanFilter 
               filters={filters} 
               onFilterChange={handleFilterChange} 
@@ -171,6 +152,15 @@ export default function LaporanPage() {
             user={selectedUser} 
             year={selectedYear} 
             onClose={() => setSelectedUser(null)} 
+          />
+        )}
+
+        {selectedCategory && (
+          <LaporanCategoryDetailModal
+            category={selectedCategory}
+            year={selectedYear}
+            subKkId={filters.sub_kk_id}
+            onClose={() => setSelectedCategory(null)}
           />
         )}
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Users, FileText, Wallet, Award, Globe, GraduationCap, ChevronRight } from 'lucide-react';
 
-export default function LaporanStats({ summary }) {
+export default function LaporanStats({ summary, onCardClick }) {
   if (!summary) return null;
 
   const formatDana = (value) => {
@@ -21,7 +21,8 @@ export default function LaporanStats({ summary }) {
       icon: <Users size={22} />, 
       color: '#3498DB', 
       bg: '#EBF5FB',
-      isInteractive: false 
+      isInteractive: false,
+      category: 'dosen'
     },
     { 
       label: 'Publikasi', 
@@ -29,7 +30,8 @@ export default function LaporanStats({ summary }) {
       icon: <FileText size={22} />, 
       color: '#27AE60', 
       bg: '#E8F5EA',
-      isInteractive: true
+      isInteractive: true,
+      category: 'publikasi'
     },
     { 
       label: 'Dana Hibah', 
@@ -37,7 +39,8 @@ export default function LaporanStats({ summary }) {
       icon: <Wallet size={22} />, 
       color: 'var(--gold)', 
       bg: '#FAFDF8',
-      isInteractive: true
+      isInteractive: true,
+      category: 'hibah'
     },
     { 
       label: 'Paten & HKI', 
@@ -45,7 +48,8 @@ export default function LaporanStats({ summary }) {
       icon: <Award size={22} />, 
       color: '#2F80ED', 
       bg: '#EBF2F9',
-      isInteractive: true
+      isInteractive: true,
+      category: 'paten'
     },
     { 
       label: 'Abdimas', 
@@ -53,7 +57,8 @@ export default function LaporanStats({ summary }) {
       icon: <Globe size={22} />, 
       color: 'var(--red)', 
       bg: '#FFF9F9',
-      isInteractive: true
+      isInteractive: true,
+      category: 'abdimas'
     },
     { 
       label: 'Pelatihan', 
@@ -61,7 +66,8 @@ export default function LaporanStats({ summary }) {
       icon: <GraduationCap size={22} />, 
       color: '#9B51E0', 
       bg: 'rgba(155, 81, 224, 0.08)',
-      isInteractive: true
+      isInteractive: true,
+      category: 'pelatihan'
     },
   ];
 
@@ -71,7 +77,7 @@ export default function LaporanStats({ summary }) {
         <div 
           key={i} 
           className={`laporan-stat-item ${s.isInteractive ? 'interactive' : ''}`}
-          onClick={() => s.isInteractive && window.alert(`Fitur List Data ${s.label} akan segera hadir!`)}
+          onClick={() => s.isInteractive && onCardClick && onCardClick(s.category)}
         >
           <div className="laporan-stat-icon stat-icon" style={{ background: s.bg, color: s.color }}>
             {s.icon}
