@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Accessibility, Moon, Sun, Type, Maximize } from 'lucide-react';
 import useUiStore from '../../store/uiStore';
+import { FEATURES, getFeatureFlag } from '../../utils/featureFlags';
 
 export default function AccessibilityMenu({ isSidebarCollapsed }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -20,6 +21,8 @@ export default function AccessibilityMenu({ isSidebarCollapsed }) {
   }, []);
 
   const toggleTheme = () => setTheme(theme === 'light' ? 'dark' : 'light');
+
+  const showDarkMode = getFeatureFlag(FEATURES.DARK_MODE, false);
 
   const levels = [
     { id: 'xs', label: 'XS' },
@@ -49,15 +52,17 @@ export default function AccessibilityMenu({ isSidebarCollapsed }) {
       {isExpanded && (
         <div className="acc-options animate-slide-right floating">
           {/* Dark Mode Toggle */}
-          <div className="acc-option-row">
-            <div className="acc-option-label">
-              {theme === 'light' ? <Moon size={14} /> : <Sun size={14} />}
-              <span>Mode Gelap</span>
+          {showDarkMode && (
+            <div className="acc-option-row">
+              <div className="acc-option-label">
+                {theme === 'light' ? <Moon size={14} /> : <Sun size={14} />}
+                <span>Mode Gelap</span>
+              </div>
+              <div className={`toggle-switch ${theme === 'dark' ? 'active' : ''}`} onClick={toggleTheme}>
+                <div className="toggle-handle"></div>
+              </div>
             </div>
-            <div className={`toggle-switch ${theme === 'dark' ? 'active' : ''}`} onClick={toggleTheme}>
-              <div className="toggle-handle"></div>
-            </div>
-          </div>
+          )}
 
           {/* Font Size Selector */}
           <div className="acc-option-col">

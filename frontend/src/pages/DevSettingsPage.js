@@ -14,7 +14,8 @@ export default function DevSettingsPage() {
   const [flags, setFlags] = useState({
     [FEATURES.PRINT_REPORT]: false,
     [FEATURES.EMAIL_REMINDER]: true,
-    [FEATURES.EXPORT_EXCEL]: true
+    [FEATURES.EXPORT_EXCEL]: true,
+    [FEATURES.DARK_MODE]: false
   });
 
   useEffect(() => {
@@ -22,7 +23,8 @@ export default function DevSettingsPage() {
     setFlags({
       [FEATURES.PRINT_REPORT]: getFeatureFlag(FEATURES.PRINT_REPORT, false),
       [FEATURES.EMAIL_REMINDER]: getFeatureFlag(FEATURES.EMAIL_REMINDER, true),
-      [FEATURES.EXPORT_EXCEL]: getFeatureFlag(FEATURES.EXPORT_EXCEL, true)
+      [FEATURES.EXPORT_EXCEL]: getFeatureFlag(FEATURES.EXPORT_EXCEL, true),
+      [FEATURES.DARK_MODE]: getFeatureFlag(FEATURES.DARK_MODE, false)
     });
   }, []);
 
@@ -90,6 +92,21 @@ export default function DevSettingsPage() {
                   type="checkbox"
                   checked={flags[FEATURES.EXPORT_EXCEL]}
                   onChange={() => handleToggle(FEATURES.EXPORT_EXCEL)}
+                />
+                <span className="slider"></span>
+              </label>
+            </div>
+
+            {/* Feature 4: Dark Mode */}
+            <div className="feature-item">
+              <div className="feature-info">
+                <span className="feature-title">Mode Gelap</span>
+              </div>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={flags[FEATURES.DARK_MODE]}
+                  onChange={() => handleToggle(FEATURES.DARK_MODE)}
                 />
                 <span className="slider"></span>
               </label>

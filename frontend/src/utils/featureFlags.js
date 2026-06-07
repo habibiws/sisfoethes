@@ -1,7 +1,8 @@
 export const FEATURES = {
   PRINT_REPORT: 'print_report',
   EMAIL_REMINDER: 'email_reminder',
-  EXPORT_EXCEL: 'export_excel'
+  EXPORT_EXCEL: 'export_excel',
+  DARK_MODE: 'dark_mode'
 };
 
 export const getFeatureFlag = (flagName, defaultValue = false) => {
