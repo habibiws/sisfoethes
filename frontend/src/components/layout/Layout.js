@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Sidebar from './Sidebar';
-import { GraduationCap, Menu } from 'lucide-react';
+import { Menu, Bell } from 'lucide-react';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '../../store/authStore';
 import useUiStore from '../../store/uiStore';
@@ -57,27 +57,28 @@ export default function Layout({ title, subtitle, headerActions, children }) {
           </button>
           
           <Link to="/dashboard" className="nav-brand-sidebar header-brand">
-            <div className="brand-icon">
-              <GraduationCap size={18} strokeWidth={2.5} />
-            </div>
-            <div className="brand-text">
-              <div className="brand-main">SISFO <span className="brand-highlight">KK ETHES</span></div>
-              <div className="brand-sub">Telkom University Surabaya</div>
-            </div>
+            <img 
+              src={require('../../assets/ethes-btfw.png')} 
+              alt="ETHES Logo" 
+              className="header-logo-img" 
+            />
           </Link>
         </div>
 
         <div className="nav-right" ref={navRightRef} style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '15px' }}>
           
           {/* NOTIFICATION BELL */}
-          <div style={{ position: 'relative', cursor: 'pointer' }} onClick={(e) => {
-            e.stopPropagation();
-            setIsNotifOpen(!isNotifOpen);
-            setIsProfileOpen(false);
-          }}>
-            <div style={{ fontSize: '18px', padding: '5px' }}>🔔</div>
+          <div 
+            className="bell-hover"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsNotifOpen(!isNotifOpen);
+              setIsProfileOpen(false);
+            }}
+          >
+            <Bell size={18} style={{ color: 'rgba(255, 255, 255, 0.85)', display: 'block' }} />
             {user?.role !== 'admin' && (!user?.nip || !user?.coe || !user?.jabatan_fungsional) && (
-              <div style={{ position: 'absolute', top: '2px', right: '4px', width: '8px', height: '8px', background: 'var(--red)', borderRadius: '50%', border: '2px solid var(--navy)' }}></div>
+              <div style={{ position: 'absolute', top: '4px', right: '4px', width: '6px', height: '6px', background: 'var(--red)', borderRadius: '50%', border: '1px solid var(--navy)' }}></div>
             )}
 
             {/* NOTIFICATION DROPDOWN */}

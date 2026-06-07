@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, LayoutDashboard, PlusCircle, BookOpen, BarChart2, Users } from 'lucide-react';
 import AccessibilityMenu from './AccessibilityMenu';
 import useAuthStore from '../../store/authStore';
 
@@ -38,29 +38,29 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
       <div className="sidebar-section">
         <div className="sidebar-label">Menu Utama</div>
         <Link to="/dashboard" className={`sidebar-item ${isActive('/dashboard')}`}>
-          <div className="si-icon illus">
-            <img src="/assets/icons/dashboard.png" alt="Dashboard" />
+          <div className="si-icon">
+            <LayoutDashboard size={16} />
           </div>
           <span className="si-text">Dashboard</span>
         </Link>
         {user?.role !== 'admin' && (
           <Link to="/capaian" className={`sidebar-item ${isActive('/capaian')}`}>
-            <div className="si-icon illus">
-              <img src="/assets/icons/capaian.png" alt="Capaian" />
+            <div className="si-icon">
+              <PlusCircle size={16} />
             </div>
             <span className="si-text">Input Capaian</span>
           </Link>
         )}
         <Link to="/pelatihan" className={`sidebar-item ${isActive('/pelatihan')}`}>
-          <div className="si-icon illus">
-            <img src="/assets/icons/pelatihan.png" alt="Pelatihan" />
+          <div className="si-icon">
+            <BookOpen size={16} />
           </div>
           <span className="si-text">Kelola Pelatihan</span>
         </Link>
         {user && ['admin', 'ketua_kk', 'ketua_sub_kk'].includes(user.role) && (
           <Link to="/laporan" className={`sidebar-item ${isActive('/laporan')}`}>
-            <div className="si-icon illus">
-              <img src="/assets/icons/laporan.png" alt="Laporan" />
+            <div className="si-icon">
+              <BarChart2 size={16} />
             </div>
             <span className="si-text">Laporan</span>
           </Link>
@@ -68,8 +68,8 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
         
         {(user?.role === 'admin' || user?.role === 'ketua_kk') && (
           <Link to="/users" className={`sidebar-item ${isActive('/users')}`}>
-            <div className="si-icon illus">
-              <img src="/assets/icons/users.png" alt="Users" />
+            <div className="si-icon">
+              <Users size={16} />
             </div>
             <span className="si-text">User & Role</span>
           </Link>
