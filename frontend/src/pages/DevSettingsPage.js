@@ -3,9 +3,12 @@ import Layout from '../components/layout/Layout';
 import { Terminal, Shield, RefreshCw } from 'lucide-react';
 import { FEATURES, getFeatureFlag, setFeatureFlag } from '../utils/featureFlags';
 import useModalStore from '../store/modalStore';
+import useAuthStore from '../store/authStore';
+import { Navigate } from 'react-router-dom';
 import './DevSettingsPage.css';
 
 export default function DevSettingsPage() {
+  const { user: currentUser } = useAuthStore();
   const { showAlert } = useModalStore();
 
   const [flags, setFlags] = useState({
@@ -13,6 +16,11 @@ export default function DevSettingsPage() {
     [FEATURES.EMAIL_REMINDER]: true, // Default true
     [FEATURES.EXPORT_EXCEL]: true     // Default true
   });
+
+  // Proteksi Halaman: Hanya Ketua KK dan Admin yang diperbolehkan mengakses halaman developer
+  if (currentUser && currentUser.role !== 'ketua_kk' && currentUser.role !== 'admin') {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   useEffect(() => {
     // Load current values
