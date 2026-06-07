@@ -17,11 +17,6 @@ export default function DevSettingsPage() {
     [FEATURES.EXPORT_EXCEL]: true     // Default true
   });
 
-  // Proteksi Halaman: Hanya Ketua KK dan Admin yang diperbolehkan mengakses halaman developer
-  if (currentUser && currentUser.role !== 'ketua_kk' && currentUser.role !== 'admin') {
-    return <Navigate to="/dashboard" replace />;
-  }
-
   useEffect(() => {
     // Load current values
     setFlags({
@@ -30,6 +25,11 @@ export default function DevSettingsPage() {
       [FEATURES.EXPORT_EXCEL]: getFeatureFlag(FEATURES.EXPORT_EXCEL, true)
     });
   }, []);
+
+  // Proteksi Halaman: Hanya Ketua KK dan Admin yang diperbolehkan mengakses halaman developer
+  if (currentUser && currentUser.role !== 'ketua_kk' && currentUser.role !== 'admin') {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const handleToggle = (key) => {
     const newValue = !flags[key];
