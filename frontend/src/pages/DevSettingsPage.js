@@ -2,14 +2,12 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
 import { Terminal } from 'lucide-react';
 import { FEATURES, getFeatureFlag, setFeatureFlag } from '../utils/featureFlags';
-import useModalStore from '../store/modalStore';
 import useAuthStore from '../store/authStore';
 import { Navigate } from 'react-router-dom';
 import './DevSettingsPage.css';
 
 export default function DevSettingsPage() {
   const { user: currentUser } = useAuthStore();
-  const { showAlert } = useModalStore();
 
   const [flags, setFlags] = useState({
     [FEATURES.PRINT_REPORT]: false,
@@ -37,9 +35,6 @@ export default function DevSettingsPage() {
     const newValue = !flags[key];
     setFlags(prev => ({ ...prev, [key]: newValue }));
     setFeatureFlag(key, newValue);
-    
-    // Snappy alert confirmation
-    showAlert(`Fitur ${key.toUpperCase().replace('_', ' ')} berhasil di-${newValue ? 'aktifkan' : 'nonaktifkan'}!`, 'Berhasil', 'success');
   };
 
   return (
