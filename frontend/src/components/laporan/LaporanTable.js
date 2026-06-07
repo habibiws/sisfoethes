@@ -1,7 +1,7 @@
 import React from 'react';
 import { Mail, ArrowRight, Eye } from 'lucide-react';
 
-export default function LaporanTable({ users, onShowDetail, onRemindUser }) {
+export default function LaporanTable({ users, onShowDetail, onRemindUser, showReminderAction = true }) {
   const getStatusStyle = (status) => {
     if (status === 'Lengkap') return { dot: '#27AE60', text: '#27AE60', bg: 'transparent' };
     if (status === 'Sebagian') return { dot: 'var(--gold)', text: 'var(--gold)', bg: '#FAFDF8' };
@@ -89,7 +89,7 @@ export default function LaporanTable({ users, onShowDetail, onRemindUser }) {
                       >
                         Detail <ArrowRight size={12} />
                       </button>
-                      {row.completeness !== 'Lengkap' && (
+                      {row.completeness !== 'Lengkap' && showReminderAction && (
                         <button 
                           className={`btn btn-sm ${row.completeness === 'Belum' ? 'btn-red' : 'btn-outline'}`}
                           onClick={() => onRemindUser(row)}
@@ -163,7 +163,7 @@ export default function LaporanTable({ users, onShowDetail, onRemindUser }) {
                 <button className="btn btn-outline btn-sm" onClick={() => onShowDetail(row)} style={{ flex: 1, justifyContent: 'center' }}>
                   <Eye size={14} /> Detail
                 </button>
-                {row.completeness !== 'Lengkap' && (
+                {row.completeness !== 'Lengkap' && showReminderAction && (
                   <button 
                     className={`btn btn-sm ${row.completeness === 'Belum' ? 'btn-red' : 'btn-outline'}`}
                     onClick={() => onRemindUser(row)}

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
+import { Printer } from 'lucide-react';
 import LaporanStats from '../components/laporan/LaporanStats';
 import LaporanFilter from '../components/laporan/LaporanFilter';
 import LaporanTable from '../components/laporan/LaporanTable';
 import LaporanExportGrid from '../components/laporan/LaporanExportGrid';
 import LaporanDetailModal from '../components/laporan/LaporanDetailModal';
 import LaporanCategoryDetailModal from '../components/laporan/LaporanCategoryDetailModal';
+import { FEATURES, getFeatureFlag } from '../utils/featureFlags';
 import api from '../services/api';
 import useModalStore from '../store/modalStore';
 import useAuthStore from '../store/authStore';
@@ -32,6 +34,11 @@ export default function LaporanPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // Read feature flags
+  const showPrintFeature = getFeatureFlag(FEATURES.PRINT_REPORT, false);
+  const showReminderFeature = getFeatureFlag(FEATURES.EMAIL_REMINDER, true);
+  const showExportFeature = getFeatureFlag(FEATURES.EXPORT_EXCEL, true);
 
   const fetchRekap = async () => {
     try {
@@ -113,10 +120,34 @@ export default function LaporanPage() {
               return <option key={yr} value={yr.toString()}>Tahun {yr}</option>;
             })}
           </select>
+          {showPrintFeature && (
+            <button className="btn btn-outline" onClick={() => window.print()} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <Printer size={16} /> Cetak Laporan
+            </button>
+          )}
         </div>
       }
     >
       <div className="laporan-container">
+        
+        {/* PRINT ONLY HEADER */}
+        {showPrintFeature && (
+          <div className="print-header">
+            <div className="print-header-content">
+              <img src={require('../assets/ethes-bbft.png')} alt="ETHES Logo" className="print-logo" />
+              <div className="print-header-text">
+                <h2>LAPORAN REKAPITULASI CAPAIAN TRIDHARMA</h2>
+                <p>Kelompok Keahlian Electrical Engineering and Advanced Technologies (ETHES)</p>
+                <p>Telkom University Surabaya</p>
+              </div>
+            </div>
+            <hr className="print-hr" />
+            <div className="print-meta">
+              Periode: {selectedYear ? `Tahun ${selectedYear}` : 'Semua Tahun'} | Dicetak pada: {new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}
+            </div>
+          </div>
+        )}
+
         {isLoading && data.summary === null ? (
           <div className="loading-state" style={{ padding: '40px', textAlign: 'center', fontWeight: 600, color: 'var(--text3)' }}>
             Memuat data laporan...
@@ -141,9 +172,12 @@ export default function LaporanPage() {
                 users={filteredUsers} 
                 onShowDetail={(user) => setSelectedUser(user)} 
                 onRemindUser={handleRemindUser}
+                showReminderAction={showReminderFeature}
               />
             )}
-            <LaporanExportGrid selectedYear={selectedYear} subKkId={filters.sub_kk_id} />
+            {showExportFeature && (
+              <LaporanExportGrid selectedYear={selectedYear} subKkId={filters.sub_kk_id} />
+            )}
           </>
         )}
 
