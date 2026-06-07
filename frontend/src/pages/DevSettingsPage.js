@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/layout/Layout';
-import { Terminal, Shield, RefreshCw } from 'lucide-react';
+import { Terminal } from 'lucide-react';
 import { FEATURES, getFeatureFlag, setFeatureFlag } from '../utils/featureFlags';
 import useModalStore from '../store/modalStore';
 import useAuthStore from '../store/authStore';
@@ -13,8 +13,8 @@ export default function DevSettingsPage() {
 
   const [flags, setFlags] = useState({
     [FEATURES.PRINT_REPORT]: false,
-    [FEATURES.EMAIL_REMINDER]: true, // Default true
-    [FEATURES.EXPORT_EXCEL]: true     // Default true
+    [FEATURES.EMAIL_REMINDER]: true,
+    [FEATURES.EXPORT_EXCEL]: true
   });
 
   useEffect(() => {
@@ -40,38 +40,20 @@ export default function DevSettingsPage() {
     showAlert(`Fitur ${key.toUpperCase().replace('_', ' ')} berhasil di-${newValue ? 'aktifkan' : 'nonaktifkan'}!`, 'Berhasil', 'success');
   };
 
-  const handleResetDefaults = () => {
-    setFeatureFlag(FEATURES.PRINT_REPORT, false);
-    setFeatureFlag(FEATURES.EMAIL_REMINDER, true);
-    setFeatureFlag(FEATURES.EXPORT_EXCEL, true);
-    
-    setFlags({
-      [FEATURES.PRINT_REPORT]: false,
-      [FEATURES.EMAIL_REMINDER]: true,
-      [FEATURES.EXPORT_EXCEL]: true
-    });
-
-    showAlert('Pengaturan pengembang berhasil dikembalikan ke default.', 'Berhasil', 'success');
-  };
-
   return (
-    <Layout
-      title="Opsi Pengembang (Developer Options)"
-      subtitle="Konfigurasi bendera fitur (feature flags) lokal untuk menyembunyikan/menampilkan fungsionalitas UI"
-    >
+    <Layout title="Developer Option">
       <div className="dev-settings-container">
         <div className="dev-settings-card">
           <div className="dev-settings-header">
             <Terminal size={18} />
-            <span>Fitur Bendera Toggles (Feature Flags)</span>
+            <span>Feature Flags</span>
           </div>
 
           <div className="feature-list">
             {/* Feature 1: Print Report */}
             <div className="feature-item">
               <div className="feature-info">
-                <span className="feature-title">Fitur Cetak Laporan (Print PDF)</span>
-                <span className="feature-desc">Menampilkan tombol cetak laporan di Halaman Laporan. Matikan jika belum ingin diekspos ke user.</span>
+                <span className="feature-title">Fitur Cetak Laporan</span>
               </div>
               <label className="switch">
                 <input
@@ -86,8 +68,7 @@ export default function DevSettingsPage() {
             {/* Feature 2: Email Reminder */}
             <div className="feature-item">
               <div className="feature-info">
-                <span className="feature-title">Fitur Pengingat Email (Email Reminder)</span>
-                <span className="feature-desc">Mengaktifkan tombol pengingat email "Ingatkan" pada baris tabel dosen di Halaman Laporan.</span>
+                <span className="feature-title">Fitur Pengingat Email</span>
               </div>
               <label className="switch">
                 <input
@@ -102,8 +83,7 @@ export default function DevSettingsPage() {
             {/* Feature 3: Export Excel */}
             <div className="feature-item">
               <div className="feature-info">
-                <span className="feature-title">Format Ekspor Laporan (Excel)</span>
-                <span className="feature-desc">Menampilkan widget / grid untuk ekspor file rekap capaian dan data lengkap dalam format Excel.</span>
+                <span className="feature-title">Format Ekspor Laporan</span>
               </div>
               <label className="switch">
                 <input
@@ -113,26 +93,6 @@ export default function DevSettingsPage() {
                 />
                 <span className="slider"></span>
               </label>
-            </div>
-          </div>
-
-          <div style={{ marginTop: '24px', display: 'flex', justifyContent: 'flex-end' }}>
-            <button 
-              className="btn btn-outline btn-sm" 
-              onClick={handleResetDefaults}
-              style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
-            >
-              <RefreshCw size={12} /> Kembalikan ke Default
-            </button>
-          </div>
-        </div>
-
-        <div className="dev-settings-card" style={{ background: '#fef08a', borderColor: '#fef08a', display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-          <Shield size={20} style={{ color: '#854d0e', flexShrink: 0, marginTop: '2px' }} />
-          <div>
-            <div style={{ fontWeight: 700, color: '#854d0e', fontSize: '13px' }}>Catatan Pengembang</div>
-            <div style={{ fontSize: '12px', color: '#713f12', marginTop: '4px', lineHeight: 1.5, fontWeight: 500 }}>
-              Halaman ini bersifat rahasia dan tidak ditautkan di menu mana pun (hanya dapat diakses melalui URL langsung <code style={{ background: 'rgba(0,0,0,0.06)', padding: '2px 4px', borderRadius: '4px' }}>/developer</code>). Pengaturan disimpan secara instan di dalam <code style={{ background: 'rgba(0,0,0,0.06)', padding: '2px 4px', borderRadius: '4px' }}>localStorage</code> browser Anda.
             </div>
           </div>
         </div>
