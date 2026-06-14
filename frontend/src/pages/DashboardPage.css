@@ -168,3 +168,33 @@
     grid-template-columns: 1fr !important;
   }
 }
+
+/* ─── SECTION HEADERS & DIVIDERS ─── */
+.dashboard-section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 36px;
+  margin-bottom: 20px;
+}
+
+.dashboard-section-header.first {
+  margin-top: 8px;
+}
+
+.dashboard-section-title {
+  font-size: calc(13px * var(--font-scale, 1));
+  font-weight: 800;
+  color: var(--navy);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.dashboard-section-line {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(90deg, #cbd5e1 0%, rgba(203, 213, 225, 0) 100%);
+  border-radius: 2px;
+}

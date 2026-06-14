@@ -105,9 +105,17 @@ export default function DashboardPage() {
         ) : (
           <>
             {/* 1. Personal Welcome & Accomplishment card (Always visible on top) */}
+            <div className="dashboard-section-header first">
+              <h3 className="dashboard-section-title">Capaian Pribadi</h3>
+              <div className="dashboard-section-line"></div>
+            </div>
             <PersonalSummary data={data} selectedYear={selectedYear} />
 
             {/* 2. Global summary stat cards */}
+            <div className="dashboard-section-header">
+              <h3 className="dashboard-section-title">Capaian Kelompok Keahlian (KK)</h3>
+              <div className="dashboard-section-line"></div>
+            </div>
             <StatCards data={data} />
 
             {/* 3. Recharts Donut & Sub-KK stacked progress bar */}
