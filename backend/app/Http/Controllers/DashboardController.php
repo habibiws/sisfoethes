@@ -138,6 +138,8 @@ class DashboardController extends Controller
         }
         $totalDosenIkutPelatihan = $dosenIkutQuery->distinct('user_id')->count('user_id');
 
+        $avgParticipants = $totalEventPelatihan > 0 ? round($totalLatih / $totalEventPelatihan, 1) : 0;
+
         $completenessDist = [
             'lengkap' => $processedUsers->where('completeness', 'Lengkap')->count(),
             'sebagian' => $processedUsers->where('completeness', 'Sebagian')->count(),
@@ -203,6 +205,7 @@ class DashboardController extends Controller
                 'total_pelatihan' => $totalLatih,
                 'total_event_pelatihan' => $totalEventPelatihan,
                 'total_dosen_ikut_pelatihan' => $totalDosenIkutPelatihan,
+                'avg_participants' => $avgParticipants,
                 'total_dana_hibah' => $totalDana,
                 'completeness_distribution' => $completenessDist,
                 'sub_kk_progress' => $subKkProgress,

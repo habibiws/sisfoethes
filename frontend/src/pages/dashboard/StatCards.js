@@ -32,7 +32,7 @@ export default function StatCards({ data }) {
     {
       label: 'Total Anggota KK',
       value: summary.total_dosen,
-      meta: 'Dosen Aktif Berkelompok',
+      meta: 'Dosen Aktif Terdaftar',
       colorClass: 'navy',
       icon: <Users size={24} />,
       onClick: () => {
@@ -82,7 +82,7 @@ export default function StatCards({ data }) {
     {
       label: 'Event Pelatihan',
       value: summary.total_event_pelatihan ?? 0,
-      meta: `${summary.total_pelatihan} keikutsertaan · ${summary.total_dosen_ikut_pelatihan ?? 0} dosen`,
+      meta: `Rata-rata ${summary.avg_participants ?? 0} peserta per event`,
       colorClass: 'orange',
       icon: <GraduationCap size={24} />,
       onClick: () => {
