@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SubKk;
+use App\Models\PelatihanEvent;
 use App\Models\Publikasi;
 use App\Models\Hibah;
 use App\Models\Paten;
@@ -126,6 +127,17 @@ class DashboardController extends Controller
         $totalAbdimas = $processedUsers->sum('counts.abdimas');
         $totalLatih = $processedUsers->sum('counts.pelatihan');
 
+        // Pelatihan breakdown: unique events & unique participating lecturers
+        $eventQuery = PelatihanEvent::query();
+        if ($year) $eventQuery->where('tahun', $year);
+        $totalEventPelatihan = $eventQuery->count();
+
+        $dosenIkutQuery = PelatihanParticipation::query();
+        if ($year) {
+            $dosenIkutQuery->whereHas('event', fn($q) => $q->where('tahun', $year));
+        }
+        $totalDosenIkutPelatihan = $dosenIkutQuery->distinct('user_id')->count('user_id');
+
         $completenessDist = [
             'lengkap' => $processedUsers->where('completeness', 'Lengkap')->count(),
             'sebagian' => $processedUsers->where('completeness', 'Sebagian')->count(),
@@ -189,6 +201,8 @@ class DashboardController extends Controller
                 'total_paten' => $totalPaten,
                 'total_abdimas' => $totalAbdimas,
                 'total_pelatihan' => $totalLatih,
+                'total_event_pelatihan' => $totalEventPelatihan,
+                'total_dosen_ikut_pelatihan' => $totalDosenIkutPelatihan,
                 'total_dana_hibah' => $totalDana,
                 'completeness_distribution' => $completenessDist,
                 'sub_kk_progress' => $subKkProgress,
