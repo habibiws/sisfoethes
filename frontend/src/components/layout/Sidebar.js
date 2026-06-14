@@ -10,14 +10,6 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
   const isActive = (path) => location.pathname === path ? 'active' : '';
 
-  // Format Role Display
-  const formatRole = (role) => {
-    if (role === 'admin') return 'Admin';
-    if (role === 'ketua_kk') return 'Ketua KK';
-    if (role === 'ketua_sub_kk') return 'Ketua Sub-KK';
-    return 'Anggota';
-  };
-
   return (
     <aside className={`sidebar ${isOpen ? '' : 'collapsed'}`}>
       <div className="sidebar-header" style={{ padding: '4px 0', marginBottom: '8px' }}>
@@ -78,12 +70,6 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
 
       <div style={{ marginTop: 'auto' }}>
         <AccessibilityMenu isSidebarCollapsed={!isOpen} />
-        <div className="sidebar-divider"></div>
-        <div className="sidebar-info">
-          <div className="sidebar-info-label">Peran Aktif</div>
-          <div className="sidebar-info-val">{user ? formatRole(user.role) : 'Memuat...'}</div>
-          <div className="sidebar-info-sub">{user?.sub_kk?.name || 'Semester Genap 24/25'}</div>
-        </div>
       </div>
     </aside>
   );
