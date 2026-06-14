@@ -80,9 +80,9 @@ export default function StatCards({ data }) {
       }
     },
     {
-      label: 'Partisipasi Pelatihan',
+      label: 'Sertifikasi & Pelatihan',
       value: summary.total_pelatihan,
-      meta: 'Sertifikasi & Event Diikuti',
+      meta: 'Total Keikutsertaan Dosen',
       colorClass: 'orange',
       icon: <GraduationCap size={24} />,
       onClick: () => {
