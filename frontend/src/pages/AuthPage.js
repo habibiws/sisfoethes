@@ -145,13 +145,13 @@ export default function AuthPage() {
               <form onSubmit={handleRegister}>
                 <div className="form-group mb-12">
                   <label>Nama Lengkap</label>
-                  <input type="text" value={regName} onChange={e => setRegName(e.target.value)} required placeholder="cth: Mohamad Yani, S.T., M.Phil., Ph.D." />
+                  <input type="text" value={regName} onChange={e => setRegName(e.target.value)} required placeholder="cth: Dr. John Doe, M.T." />
                 </div>
 
                 <div className="form-grid mb-12">
                   <div className="form-group">
                     <label>NIDN</label>
-                    <input type="text" value={regNidn} onChange={e => setRegNidn(e.target.value)} required placeholder="0701038901" />
+                    <input type="text" value={regNidn} onChange={e => setRegNidn(e.target.value)} required placeholder="Masukkan NIDN" />
                   </div>
                   <div className="form-group">
                     <label>Program Studi</label>
