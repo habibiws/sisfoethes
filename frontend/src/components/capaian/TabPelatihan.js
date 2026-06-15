@@ -88,7 +88,6 @@ export default function TabPelatihan() {
         
         {/* Year Filter */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ fontSize: '13px', color: 'var(--text3)', fontWeight: 500 }}>Filter Tahun:</span>
           <select 
             value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value === 'all' ? 'all' : parseInt(e.target.value))}
