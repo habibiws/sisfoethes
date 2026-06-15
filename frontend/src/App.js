@@ -7,6 +7,7 @@ import CapaianPage from './pages/CapaianPage';
 import UserRolePage from './pages/UserRolePage';
 import PelatihanPage from './pages/PelatihanPage';
 import LaporanPage from './pages/LaporanPage';
+import LaporanCategoryPage from './pages/LaporanCategoryPage';
 import DevSettingsPage from './pages/DevSettingsPage';
 import useAuthStore from './store/authStore';
 import GlobalModal from './components/layout/GlobalModal';
@@ -49,6 +50,7 @@ function App() {
         <Route path="/users" element={<ProtectedRoute><UserRolePage /></ProtectedRoute>} />
         <Route path="/pelatihan" element={<ProtectedRoute><PelatihanPage /></ProtectedRoute>} />
         <Route path="/laporan" element={<ProtectedRoute><LaporanPage /></ProtectedRoute>} />
+        <Route path="/laporan/:category" element={<ProtectedRoute><LaporanCategoryPage /></ProtectedRoute>} />
         <Route path="/developer" element={<ProtectedRoute><DevSettingsPage /></ProtectedRoute>} />
         <Route path="/" element={<Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />} />
       </Routes>

@@ -6,12 +6,11 @@ import LaporanFilter from '../components/laporan/LaporanFilter';
 import LaporanTable from '../components/laporan/LaporanTable';
 import LaporanExportGrid from '../components/laporan/LaporanExportGrid';
 import LaporanDetailModal from '../components/laporan/LaporanDetailModal';
-import LaporanCategoryDetailModal from '../components/laporan/LaporanCategoryDetailModal';
 import { FEATURES, getFeatureFlag } from '../utils/featureFlags';
 import api from '../services/api';
 import useModalStore from '../store/modalStore';
 import useAuthStore from '../store/authStore';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import './LaporanPage.css';
 
 export default function LaporanPage() {
@@ -33,7 +32,7 @@ export default function LaporanPage() {
   
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const navigate = useNavigate();
 
   // Read feature flags
   const showPrintFeature = getFeatureFlag(FEATURES.PRINT_REPORT, false);
@@ -156,7 +155,7 @@ export default function LaporanPage() {
           <>
             <LaporanStats 
               summary={data.summary} 
-              onCardClick={(cat) => setSelectedCategory(cat)} 
+              onCardClick={(cat) => navigate(`/laporan/${cat}?tahun=${selectedYear}&sub_kk_id=${filters.sub_kk_id}`)} 
             />
             <LaporanFilter 
               filters={filters} 
@@ -186,15 +185,6 @@ export default function LaporanPage() {
             user={selectedUser} 
             year={selectedYear} 
             onClose={() => setSelectedUser(null)} 
-          />
-        )}
-
-        {selectedCategory && (
-          <LaporanCategoryDetailModal
-            category={selectedCategory}
-            year={selectedYear}
-            subKkId={filters.sub_kk_id}
-            onClose={() => setSelectedCategory(null)}
           />
         )}
       </div>
