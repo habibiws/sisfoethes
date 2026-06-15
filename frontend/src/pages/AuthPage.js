@@ -145,7 +145,7 @@ export default function AuthPage() {
               <form onSubmit={handleRegister}>
                 <div className="form-group mb-12">
                   <label>Nama Lengkap</label>
-                  <input type="text" value={regName} onChange={e => setRegName(e.target.value)} required placeholder="cth: Dr. John Doe, M.T." />
+                  <input type="text" value={regName} onChange={e => setRegName(e.target.value)} required placeholder="Nama dan Gelar" />
                 </div>
 
                 <div className="form-grid mb-12">

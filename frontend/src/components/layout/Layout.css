@@ -259,7 +259,7 @@
 }
 
 .header-brand:hover .header-logo-img {
-  transform: scale(1.08) rotate(-2deg);
+  transform: scale(1.05);
 }
 
 /* Wiggling Bell Notification */
