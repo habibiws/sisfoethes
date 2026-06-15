@@ -43,12 +43,14 @@ export default function Sidebar({ isOpen, toggleSidebar }) {
             <span className="si-text">Input Capaian</span>
           </Link>
         )}
-        <Link to="/pelatihan" className={`sidebar-item ${isActive('/pelatihan')}`}>
-          <div className="si-icon">
-            <BookOpen size={16} />
-          </div>
-          <span className="si-text">Kelola Pelatihan</span>
-        </Link>
+        {user && ['admin', 'ketua_kk', 'ketua_sub_kk'].includes(user.role) && (
+          <Link to="/pelatihan" className={`sidebar-item ${isActive('/pelatihan')}`}>
+            <div className="si-icon">
+              <BookOpen size={16} />
+            </div>
+            <span className="si-text">Kelola Pelatihan</span>
+          </Link>
+        )}
         {user && ['admin', 'ketua_kk', 'ketua_sub_kk'].includes(user.role) && (
           <Link to="/laporan" className={`sidebar-item ${isActive('/laporan')}`}>
             <div className="si-icon">
