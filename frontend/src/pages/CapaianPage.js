@@ -8,7 +8,7 @@ import TabPaten from '../components/capaian/TabPaten';
 import TabAbdimas from '../components/capaian/TabAbdimas';
 import TabPelatihan from '../components/capaian/TabPelatihan';
 import useAuthStore from '../store/authStore';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import './CapaianPage.css';
 
 /**
@@ -17,7 +17,9 @@ import './CapaianPage.css';
  */
 export default function CapaianPage() {
   const { user } = useAuthStore();
-  const [activeTab, setActiveTab] = useState('publikasi');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const tabFromQuery = searchParams.get('tab');
+  const [activeTab, setActiveTab] = useState(tabFromQuery || 'publikasi');
   const [stats, setStats] = useState({
     publikasi: 0,
     hibah: 0,
@@ -25,6 +27,12 @@ export default function CapaianPage() {
     abdimas: 0,
     pelatihan: 0
   });
+
+  useEffect(() => {
+    if (tabFromQuery) {
+      setActiveTab(tabFromQuery);
+    }
+  }, [tabFromQuery]);
 
   // Fetch stats from backend
   useEffect(() => {
@@ -70,7 +78,10 @@ export default function CapaianPage() {
             <button 
               key={tab.id}
               className={`tab-btn ${activeTab === tab.id ? 'active' : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                setSearchParams({ tab: tab.id });
+              }}
             >
               <span className="tab-icon">{tab.icon}</span>
               <span className="tab-label">{tab.label}</span>

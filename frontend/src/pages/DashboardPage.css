@@ -198,3 +198,14 @@
   background: linear-gradient(90deg, #cbd5e1 0%, rgba(203, 213, 225, 0) 100%);
   border-radius: 2px;
 }
+
+/* personal-stat-card hover style */
+.personal-stat-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.personal-stat-card:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}

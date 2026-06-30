@@ -72,7 +72,19 @@ export default function PersonalSummary({ data, selectedYear }) {
         {/* 5 Personal Categories Grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '12px', margin: '24px 0 20px 0' }}>
           {categories.map(cat => (
-            <div key={cat.key} style={{ background: 'rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '12px 8px', textAlign: 'center', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <div 
+              key={cat.key} 
+              onClick={() => user.role !== 'admin' && navigate(`/capaian?tab=${cat.key}`)}
+              className="personal-stat-card"
+              style={{ 
+                background: 'rgba(255, 255, 255, 0.08)', 
+                borderRadius: '12px', 
+                padding: '12px 8px', 
+                textAlign: 'center', 
+                border: '1px solid rgba(255,255,255,0.05)',
+                cursor: user.role !== 'admin' ? 'pointer' : 'default'
+              }}
+            >
               <div style={{ fontSize: 'calc(12px * var(--font-scale, 1))', color: 'rgba(255,255,255,0.65)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '4px' }}>
                 {cat.label}
               </div>

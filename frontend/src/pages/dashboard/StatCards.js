@@ -46,7 +46,11 @@ export default function StatCards({ data }) {
       colorClass: 'red',
       icon: <FileText size={24} />,
       onClick: () => {
-        if (user.role !== 'admin') navigate('/capaian');
+        if (canViewLaporan) {
+          navigate('/laporan/publikasi');
+        } else {
+          navigate('/capaian?tab=publikasi');
+        }
       }
     },
     {
@@ -56,7 +60,11 @@ export default function StatCards({ data }) {
       colorClass: 'teal',
       icon: <Wallet size={24} />,
       onClick: () => {
-        if (user.role !== 'admin') navigate('/capaian');
+        if (canViewLaporan) {
+          navigate('/laporan/hibah');
+        } else {
+          navigate('/capaian?tab=hibah');
+        }
       }
     },
     {
@@ -66,7 +74,11 @@ export default function StatCards({ data }) {
       colorClass: 'gold',
       icon: <Award size={24} />,
       onClick: () => {
-        if (user.role !== 'admin') navigate('/capaian');
+        if (canViewLaporan) {
+          navigate('/laporan/paten');
+        } else {
+          navigate('/capaian?tab=paten');
+        }
       }
     },
     {
@@ -76,7 +88,11 @@ export default function StatCards({ data }) {
       colorClass: 'purple',
       icon: <Globe size={24} />,
       onClick: () => {
-        if (user.role !== 'admin') navigate('/capaian');
+        if (canViewLaporan) {
+          navigate('/laporan/abdimas');
+        } else {
+          navigate('/capaian?tab=abdimas');
+        }
       }
     },
     {
@@ -86,7 +102,11 @@ export default function StatCards({ data }) {
       colorClass: 'orange',
       icon: <GraduationCap size={24} />,
       onClick: () => {
-        navigate('/pelatihan');
+        if (canViewLaporan) {
+          navigate('/laporan/pelatihan');
+        } else {
+          navigate('/capaian?tab=pelatihan');
+        }
       }
     }
   ];
