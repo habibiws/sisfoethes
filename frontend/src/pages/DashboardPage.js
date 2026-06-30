@@ -53,25 +53,25 @@ export default function DashboardPage() {
       anggota: 'Anggota'
     };
     const roleLabel = roleMap[data.user.role] || 'Dosen';
-    return `${getGreeting()}, ${data.user.name} · Hak Akses: ${roleLabel}`;
+    return /* `${getGreeting()}, ${data.user.name} · Hak Akses: ${roleLabel}` */;
   };
 
   return (
-    <Layout 
-      title="Dashboard KK ETHES" 
+    <Layout
+      title="Dashboard KK ETHES"
       subtitle={getSubtitle()}
       headerActions={
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-          <select 
-            className="filter-select select-input" 
-            value={selectedYear} 
+          <select
+            className="filter-select select-input"
+            value={selectedYear}
             onChange={(e) => setSelectedYear(e.target.value)}
-            style={{ 
-              padding: '8px 12px', 
-              borderRadius: '8px', 
-              border: '1px solid var(--border)', 
-              fontSize: '13px', 
-              background: 'var(--white)', 
+            style={{
+              padding: '8px 12px',
+              borderRadius: '8px',
+              border: '1px solid var(--border)',
+              fontSize: '13px',
+              background: 'var(--white)',
               fontWeight: 600,
               cursor: 'pointer'
             }}
@@ -90,7 +90,7 @@ export default function DashboardPage() {
           // Premium Skeleton Loading States
           <div className="skeleton-container">
             <div className="skeleton-card personal-welcome" style={{ height: '240px', borderRadius: '16px', background: 'var(--border)', opacity: 0.15, marginBottom: '24px', animation: 'pulse 1.5s infinite' }}></div>
-            
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '24px' }}>
               {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="skeleton-card stat" style={{ height: '120px', borderRadius: '16px', background: 'var(--border)', opacity: 0.15, animation: 'pulse 1.5s infinite' }}></div>

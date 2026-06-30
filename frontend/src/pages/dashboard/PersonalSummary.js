@@ -58,7 +58,13 @@ export default function PersonalSummary({ data, selectedYear }) {
               {getGreeting()}, {user.name}
             </h2>
             <p style={{ margin: '6px 0 0 0', fontSize: 'calc(13px * var(--font-scale, 1))', color: 'rgba(255, 255, 255, 0.7)', fontWeight: 500 }}>
-              Berikut adalah ringkasan capaian pribadi Anda pada tahun filter <strong style={{ color: 'white' }}>{selectedYear || 'Semua Tahun'}</strong>
+              {selectedYear ? (
+                <>
+                  Berikut adalah ringkasan capaian pribadi Anda pada tahun <strong style={{ color: 'white' }}>{selectedYear}</strong>
+                </>
+              ) : (
+                'Berikut adalah ringkasan seluruh capaian pribadi Anda'
+              )}
             </p>
           </div>
         </div>

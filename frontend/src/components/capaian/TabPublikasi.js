@@ -175,7 +175,7 @@ export default function TabPublikasi() {
               </div>
               <div className="form-group">
                 <label>DOI / URL</label>
-                <input type="text" value={formData.doi_url} onChange={handleChange} name="doi_url" placeholder="https://doi.org/..." />
+                <input type="text" value={formData.doi_url} onChange={handleChange} name="doi_url" placeholder="DOI / URL" />
               </div>
             </div>
             <div className="btn-row mt-24" style={{ justifyContent: 'flex-end', display: 'flex', gap: '12px' }}>

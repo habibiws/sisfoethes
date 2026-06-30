@@ -120,7 +120,7 @@ export default function TabPaten() {
             <div className="form-grid">
               <div className="form-group full">
                 <label>Judul Karya    </label>
-                <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap HKI" />
+                <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul karya" />
               </div>
               <div className="form-group">
                 <label>Jenis HKI    </label>
@@ -137,7 +137,7 @@ export default function TabPaten() {
               </div>
               <div className="form-group">
                 <label>Nomor Sertifikat</label>
-                <input type="text" name="nomor_registrasi" value={formData.nomor_registrasi} onChange={handleChange} placeholder="Nomor sertifikat HKI" />
+                <input type="text" name="nomor_registrasi" value={formData.nomor_registrasi} onChange={handleChange} placeholder="Nomor sertifikat" />
               </div>
               <div className="form-group">
                 <label>Tahun Terbit    </label>

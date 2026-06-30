@@ -122,7 +122,7 @@ export default function TabAbdimas() {
             <div className="form-grid">
               <div className="form-group full">
                 <label>Judul Kegiatan</label>
-                <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul lengkap abdimas" />
+                <input type="text" name="judul" required value={formData.judul} onChange={handleChange} placeholder="Judul" />
               </div>
               <div className="form-group">
                 <label>Skema  </label>
