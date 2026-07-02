@@ -46,11 +46,7 @@ export default function StatCards({ data }) {
       colorClass: 'red',
       icon: <FileText size={24} />,
       onClick: () => {
-        if (canViewLaporan) {
-          navigate('/laporan/publikasi');
-        } else {
-          navigate('/capaian?tab=publikasi');
-        }
+        navigate('/laporan/publikasi');
       }
     },
     {
@@ -60,11 +56,7 @@ export default function StatCards({ data }) {
       colorClass: 'teal',
       icon: <Wallet size={24} />,
       onClick: () => {
-        if (canViewLaporan) {
-          navigate('/laporan/hibah');
-        } else {
-          navigate('/capaian?tab=hibah');
-        }
+        navigate('/laporan/hibah');
       }
     },
     {
@@ -74,11 +66,7 @@ export default function StatCards({ data }) {
       colorClass: 'gold',
       icon: <Award size={24} />,
       onClick: () => {
-        if (canViewLaporan) {
-          navigate('/laporan/paten');
-        } else {
-          navigate('/capaian?tab=paten');
-        }
+        navigate('/laporan/paten');
       }
     },
     {
@@ -88,11 +76,7 @@ export default function StatCards({ data }) {
       colorClass: 'purple',
       icon: <Globe size={24} />,
       onClick: () => {
-        if (canViewLaporan) {
-          navigate('/laporan/abdimas');
-        } else {
-          navigate('/capaian?tab=abdimas');
-        }
+        navigate('/laporan/abdimas');
       }
     },
     {
@@ -102,11 +86,7 @@ export default function StatCards({ data }) {
       colorClass: 'orange',
       icon: <GraduationCap size={24} />,
       onClick: () => {
-        if (canViewLaporan) {
-          navigate('/laporan/pelatihan');
-        } else {
-          navigate('/capaian?tab=pelatihan');
-        }
+        navigate('/laporan/pelatihan');
       }
     }
   ];

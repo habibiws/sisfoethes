@@ -58,10 +58,7 @@ export default function LaporanCategoryPage() {
     fetchDetail();
   }, [category, year, subKkId]);
 
-  // Guard: Redirect user biasa (anggota) ke dashboard
-  if (currentUser && currentUser.role === 'anggota') {
-    return <Navigate to="/dashboard" replace />;
-  }
+  // Guard: Allowed for all authenticated users (anggota, ketua_sub_kk, ketua_kk, admin)
 
   const handleFilterChange = (key, val) => {
     const newParams = new URLSearchParams(searchParams);
@@ -284,7 +281,13 @@ export default function LaporanCategoryPage() {
       title={
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <button 
-            onClick={() => navigate('/laporan')} 
+            onClick={() => {
+              if (currentUser?.role === 'anggota') {
+                navigate('/dashboard');
+              } else {
+                navigate('/laporan');
+              }
+            }} 
             className="btn btn-ghost" 
             style={{ padding: '6px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
