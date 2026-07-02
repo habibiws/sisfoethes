@@ -77,9 +77,13 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
               ))}
             </select>
           ) : (
-            <div className="info-box readonly">
-              {formData.sub_kk_name || '-'}
-            </div>
+            <input
+              type="text"
+              readOnly
+              disabled
+              value={formData.sub_kk_name || ''}
+              style={{ background: '#f5f5f5', color: '#888', cursor: 'not-allowed' }}
+            />
           )}
         </div>
       </div>
