@@ -9,7 +9,7 @@ export default function UserTable({ users, currentUserId, onResetPassword, onEdi
   };
 
   return (
-    <table className="user-table">
+    <table className="user-role-table">
       <thead>
         <tr>
           <th>Nama & Email</th>

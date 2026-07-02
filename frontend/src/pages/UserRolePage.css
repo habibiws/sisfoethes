@@ -31,12 +31,12 @@
 }
 
 /* ─── USER TABLE (DESKTOP) ─── */
-.user-table {
+.user-role-table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.user-table th {
+.user-role-table th {
   text-align: left;
   padding: 14px 18px;
   background: var(--bg);
@@ -48,7 +48,7 @@
   border-bottom: 2px solid var(--border);
 }
 
-.user-table td {
+.user-role-table td {
   padding: 16px 18px;
   border-bottom: 1px solid var(--border);
   vertical-align: middle;
@@ -57,11 +57,11 @@
   font-weight: 500;
 }
 
-.user-table tr:last-child td {
+.user-role-table tr:last-child td {
   border-bottom: none;
 }
 
-.user-table tr:hover {
+.user-role-table tr:hover {
   background: rgba(15, 35, 64, 0.015);
 }
 
@@ -157,19 +157,19 @@
     margin-bottom: 16px;
   }
 
-  .user-table thead {
+  .user-role-table thead {
     display: none; /* Hide standard headers */
   }
 
-  .user-table, 
-  .user-table tbody, 
-  .user-table tr, 
-  .user-table td {
+  .user-role-table, 
+  .user-role-table tbody, 
+  .user-role-table tr, 
+  .user-role-table td {
     display: block;
     width: 100%;
   }
 
-  .user-table tr {
+  .user-role-table tr {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
@@ -179,12 +179,12 @@
     transition: all 0.2s;
   }
 
-  .user-table tr:hover {
+  .user-role-table tr:hover {
     box-shadow: 0 4px 16px rgba(15, 35, 64, 0.05);
     background: var(--white);
   }
 
-  .user-table td {
+  .user-role-table td {
     border-bottom: 1px solid rgba(15, 35, 64, 0.04);
     padding: 12px 0;
     display: flex;
@@ -194,7 +194,7 @@
     text-align: right;
   }
 
-  .user-table td::before {
+  .user-role-table td::before {
     content: attr(data-label);
     font-weight: 700;
     color: var(--text3);
@@ -205,7 +205,7 @@
     margin-right: 16px;
   }
 
-  .user-table td:last-child {
+  .user-role-table td:last-child {
     border-bottom: none;
     padding-bottom: 0;
     margin-top: 12px;
@@ -213,7 +213,7 @@
     align-items: stretch;
   }
 
-  .user-table td:last-child::before {
+  .user-role-table td:last-child::before {
     margin-bottom: 8px;
     text-align: left;
   }
