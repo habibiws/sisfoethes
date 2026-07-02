@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, FileText, Wallet, Award, Globe, GraduationCap, ChevronRight } from 'lucide-react';
+import { Users, FileText, Wallet, Award, Globe, GraduationCap, Info } from 'lucide-react';
 
 export default function LaporanStats({ summary, onCardClick }) {
   if (!summary) return null;
@@ -87,8 +87,21 @@ export default function LaporanStats({ summary, onCardClick }) {
             <div className="laporan-stat-label">{s.label}</div>
           </div>
           {s.isInteractive && (
-            <div className="laporan-stat-hover-text">
-              Detail <ChevronRight size={10} style={{ display: 'inline', marginBottom: '-2px' }} />
+            <div 
+              className="laporan-stat-info-icon" 
+              style={{ 
+                position: 'absolute', 
+                top: '12px', 
+                right: '12px', 
+                color: s.color, 
+                opacity: 0.7,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}
+              title="Klik untuk melihat detail"
+            >
+              <Info size={14} />
             </div>
           )}
         </div>
