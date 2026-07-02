@@ -31,6 +31,7 @@ export default function ProfilPage() {
         nidn: user.nidn || '',
         prodi: user.prodi || '',
         sub_kk_id: user.sub_kk_id || '',
+        sub_kk_name: user.sub_kk?.name || '',
         nip: user.nip || '',
         coe: user.coe || '',
         jabatan_fungsional: user.jabatan_fungsional || ''
