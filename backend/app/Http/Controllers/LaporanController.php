@@ -279,10 +279,8 @@ class LaporanController extends Controller
     public function getCategoryDetail(Request $request)
     {
         $currentUser = auth()->user();
-        if (in_array($currentUser->role, ['anggota'])) {
-            return response()->json(['message' => 'Anda tidak memiliki hak akses.'], 403);
-        }
-
+        // Allowed for all authenticated users to view category detail report
+        
         $category = $request->input('category');
         $year = $request->input('tahun');
         $subKkId = $request->input('sub_kk_id');
