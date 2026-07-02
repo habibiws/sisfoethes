@@ -14,7 +14,7 @@ export default function DashboardPage() {
   const { user: currentUser } = useAuthStore();
   const { showAlert } = useModalStore();
 
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
+  const [selectedYear, setSelectedYear] = useState('');
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
