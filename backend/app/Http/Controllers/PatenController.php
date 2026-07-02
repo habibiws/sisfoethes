@@ -18,10 +18,14 @@ class PatenController extends Controller
             'judul' => 'required|string',
             'jenis_hki' => 'required|string|in:paten,paten_sederhana,hak_cipta,desain_industri,merek,dtlst,rahasia_dagang',
             'nomor_registrasi' => 'nullable|string',
+            'status' => 'nullable|string|in:terdaftar,granted,dalam_proses',
             'tahun' => 'required|integer',
         ]);
 
         $validated['user_id'] = auth()->id();
+        if (empty($validated['status'])) {
+            $validated['status'] = 'granted';
+        }
         $paten = Paten::create($validated);
 
         return response()->json(['message' => 'Paten/HKI berhasil ditambahkan', 'data' => $paten], 201);
@@ -35,8 +39,13 @@ class PatenController extends Controller
             'judul' => 'required|string',
             'jenis_hki' => 'required|string|in:paten,paten_sederhana,hak_cipta,desain_industri,merek,dtlst,rahasia_dagang',
             'nomor_registrasi' => 'nullable|string',
+            'status' => 'nullable|string|in:terdaftar,granted,dalam_proses',
             'tahun' => 'required|integer',
         ]);
+
+        if (empty($validated['status'])) {
+            $validated['status'] = $paten->status ?? 'granted';
+        }
 
         $paten->update($validated);
 
