@@ -119,7 +119,7 @@ export default function DashboardPage() {
             <StatCards data={data} />
 
             {/* 3. Recharts Donut & Sub-KK stacked progress bar */}
-            <ChartSection data={data} />
+            <ChartSection data={data} selectedYear={selectedYear} />
 
             {/* 4. Category distribution BarChart */}
             <CategoryChart data={data} />

@@ -10,18 +10,25 @@ import { FEATURES, getFeatureFlag } from '../utils/featureFlags';
 import api from '../services/api';
 import useModalStore from '../store/modalStore';
 import useAuthStore from '../store/authStore';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import './LaporanPage.css';
 
 export default function LaporanPage() {
   const { user: currentUser } = useAuthStore();
   const { showAlert, showConfirm } = useModalStore();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear().toString());
-  const [filters, setFilters] = useState({
-    sub_kk_id: '',
-    status: '',
-    search: ''
+  const [selectedYear, setSelectedYear] = useState(() => {
+    // Sesuai filter tahun dashboard (default "semua tahun" alias "" jika kosong, atau tahun saat ini)
+    return searchParams.has('tahun') ? searchParams.get('tahun') : new Date().getFullYear().toString();
+  });
+
+  const [filters, setFilters] = useState(() => {
+    return {
+      sub_kk_id: searchParams.get('sub_kk_id') || '',
+      status: '',
+      search: ''
+    };
   });
 
   const [data, setData] = useState({
@@ -33,6 +40,19 @@ export default function LaporanPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedUser, setSelectedUser] = useState(null);
   const navigate = useNavigate();
+
+  // Sync URL search params with local states (essential for dashboard clicking and backward navigation)
+  useEffect(() => {
+    const urlSubKk = searchParams.get('sub_kk_id') || '';
+    const urlYear = searchParams.has('tahun') ? searchParams.get('tahun') : new Date().getFullYear().toString();
+    
+    if (urlSubKk !== filters.sub_kk_id) {
+      setFilters(prev => ({ ...prev, sub_kk_id: urlSubKk }));
+    }
+    if (urlYear !== selectedYear) {
+      setSelectedYear(urlYear);
+    }
+  }, [searchParams]);
 
   // Read feature flags
   const showPrintFeature = getFeatureFlag(FEATURES.PRINT_REPORT, false);
@@ -76,6 +96,23 @@ export default function LaporanPage() {
       ...prev,
       [name]: value
     }));
+
+    if (name === 'sub_kk_id') {
+      setSearchParams(prev => {
+        if (value) prev.set('sub_kk_id', value);
+        else prev.delete('sub_kk_id');
+        return prev;
+      }, { replace: true });
+    }
+  };
+
+  const handleYearChange = (year) => {
+    setSelectedYear(year);
+    setSearchParams(prev => {
+      if (year !== null) prev.set('tahun', year);
+      else prev.delete('tahun');
+      return prev;
+    }, { replace: true });
   };
 
   const handleRemindUser = (targetUser) => {
@@ -110,7 +147,7 @@ export default function LaporanPage() {
           <select 
             className="filter-select select-input" 
             value={selectedYear} 
-            onChange={(e) => setSelectedYear(e.target.value)}
+            onChange={(e) => handleYearChange(e.target.value)}
             style={{ padding: '8px 12px', borderRadius: '8px', border: '1px solid var(--border)', fontSize: '13px', background: 'var(--white)', fontWeight: 600 }}
           >
             <option value="">Semua Tahun</option>

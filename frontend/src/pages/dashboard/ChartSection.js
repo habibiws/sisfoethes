@@ -2,7 +2,7 @@ import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 
-export default function ChartSection({ data }) {
+export default function ChartSection({ data, selectedYear }) {
   const navigate = useNavigate();
   const summary = data?.global_summary || {
     total_dosen: 0,
@@ -26,7 +26,7 @@ export default function ChartSection({ data }) {
 
   const handleSubKkClick = (subKkId) => {
     if (viewableSubKkIds.includes(subKkId)) {
-      navigate(`/laporan?sub_kk_id=${subKkId}`);
+      navigate(`/laporan?sub_kk_id=${subKkId}&tahun=${selectedYear || ''}`);
     }
   };
 
