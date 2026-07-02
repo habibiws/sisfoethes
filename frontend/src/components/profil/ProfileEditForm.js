@@ -77,13 +77,9 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
               ))}
             </select>
           ) : (
-            <input
-              type="text"
-              readOnly
-              disabled
-              value={formData.sub_kk_name || ''}
-              style={{ background: '#f5f5f5', color: '#888', cursor: 'not-allowed' }}
-            />
+            <span style={{ display: 'block', padding: '10px 0', fontSize: '14px', fontWeight: 600, color: 'var(--navy-text)' }}>
+              {formData.sub_kk_name || ''}
+            </span>
           )}
         </div>
       </div>
