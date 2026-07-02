@@ -79,9 +79,6 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
           ) : (
             <div className="info-box readonly">
               {formData.sub_kk_name || 'Terdaftar di KK ETHES'}
-              <div className="form-hint" style={{ marginTop: '4px', fontSize: '11px', color: 'var(--text3)' }}>
-                Hanya Ketua KK yang dapat mengubah Sub-KK Anda.
-              </div>
             </div>
           )}
         </div>
