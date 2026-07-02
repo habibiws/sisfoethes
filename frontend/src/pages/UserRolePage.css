@@ -30,6 +30,14 @@
   padding-bottom: 12px;
 }
 
+.desktop-user-table-wrap {
+  display: block;
+}
+
+.mobile-user-list {
+  display: none;
+}
+
 /* ─── USER TABLE (DESKTOP) ─── */
 .user-role-table {
   width: 100%;
@@ -144,10 +152,10 @@
   }
 }
 
-/* 3. Tablet Portrait & Mobile (≤ 768px) - HYBRID CARD-LIST VIEW */
+/* 3. Tablet Portrait & Mobile (≤ 768px) - PREMIUM CARD LAYOUT */
 @media (max-width: 768px) {
   .user-table-wrap {
-    padding: 16px;
+    padding: 0;
     background: transparent;
     border: none;
     box-shadow: none;
@@ -155,78 +163,115 @@
   
   .user-table-wrap::before {
     margin-bottom: 16px;
+    padding-left: 4px;
   }
 
-  .user-role-table thead {
-    display: none; /* Hide standard headers */
+  .desktop-user-table-wrap {
+    display: none;
   }
 
-  .user-role-table, 
-  .user-role-table tbody, 
-  .user-role-table tr, 
-  .user-role-table td {
-    display: block;
+  .mobile-user-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
   }
 
-  .user-role-table tr {
+  .mobile-user-card {
     background: var(--white);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
-    margin-bottom: 16px;
     padding: 16px;
     box-shadow: var(--shadow);
-    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: all 0.2s ease;
   }
 
-  .user-role-table tr:hover {
-    box-shadow: 0 4px 16px rgba(15, 35, 64, 0.05);
-    background: var(--white);
+  .mobile-user-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(15, 35, 64, 0.06);
   }
 
-  .user-role-table td {
-    border-bottom: 1px solid rgba(15, 35, 64, 0.04);
-    padding: 12px 0;
+  .mobile-user-card.card-me {
+    background: rgba(15, 35, 64, 0.015);
+    border-color: rgba(15, 35, 64, 0.12);
+  }
+
+  .mobile-user-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    font-size: calc(13px * var(--font-scale, 1));
-    text-align: right;
+    align-items: flex-start;
+    gap: 12px;
+    border-bottom: 1.5px solid rgba(15, 35, 64, 0.04);
+    padding-bottom: 12px;
   }
 
-  .user-role-table td::before {
-    content: attr(data-label);
+  .mobile-user-name {
+    font-size: calc(14px * var(--font-scale, 1));
+    font-weight: 700;
+    color: var(--navy-text);
+    line-height: 1.3;
+  }
+
+  .me-badge {
+    font-size: calc(10px * var(--font-scale, 1));
+    color: var(--text3);
+    font-weight: 500;
+    margin-left: 6px;
+    background: rgba(15, 35, 64, 0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+
+  .mobile-user-email {
+    font-size: calc(12px * var(--font-scale, 1));
+    color: var(--text3);
+    margin-top: 4px;
+    font-weight: 500;
+  }
+
+  .mobile-user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .mobile-detail-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: calc(13px * var(--font-scale, 1));
+  }
+
+  .detail-label {
     font-weight: 700;
     color: var(--text3);
     font-size: calc(11px * var(--font-scale, 1));
     text-transform: uppercase;
-    letter-spacing: 0.6px;
-    text-align: left;
-    margin-right: 16px;
+    letter-spacing: 0.5px;
   }
 
-  .user-role-table td:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-    margin-top: 12px;
-    flex-direction: column;
-    align-items: stretch;
+  .detail-value {
+    font-weight: 600;
+    color: var(--text);
+    text-align: right;
   }
 
-  .user-role-table td:last-child::before {
-    margin-bottom: 8px;
-    text-align: left;
+  .mobile-user-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(15, 35, 64, 0.04);
+    padding-top: 12px;
   }
 
-  .action-buttons-wrap {
-    flex-direction: column;
-    gap: 8px !important;
-    width: 100%;
-  }
-
-  .action-buttons-wrap .btn {
-    width: 100%;
+  .mobile-user-actions .btn {
+    flex: 1;
+    font-size: calc(11px * var(--font-scale, 1)) !important;
+    padding: 8px 4px !important;
     justify-content: center;
+    white-space: nowrap;
   }
 }
 
@@ -234,5 +279,14 @@
 @media (max-width: 640px) {
   .user-role-container {
     padding: 0 12px;
+  }
+  
+  .mobile-user-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .mobile-user-actions .btn {
+    width: 100%;
   }
 }
