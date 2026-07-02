@@ -194,7 +194,6 @@ export default function LaporanDetailModal({ user, year, onClose }) {
                           <div><strong>Jenis HKI:</strong> {getFormatEnum(pat.jenis_hki)}</div>
                           <div><strong>Tahun:</strong> {pat.tahun}</div>
                           <div><strong>Nomor Registrasi:</strong> {pat.nomor_registrasi || '—'}</div>
-                          <div><strong>Status:</strong> <span style={{ fontWeight: 700, color: pat.status === 'granted' ? '#27AE60' : 'var(--gold)' }}>{getFormatEnum(pat.status)}</span></div>
                         </div>
                       </div>
                     ))

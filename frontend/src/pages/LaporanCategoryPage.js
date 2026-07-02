@@ -136,7 +136,6 @@ export default function LaporanCategoryPage() {
                 <th>Sumber Dana</th>
                 <th>Jumlah Dana</th>
                 <th style={{ textAlign: 'center' }}>Tahun</th>
-                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -155,9 +154,6 @@ export default function LaporanCategoryPage() {
                     Rp {item.jumlah_dana ? item.jumlah_dana.toLocaleString('id-ID') : '0'}
                   </td>
                   <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.tahun}</td>
-                  <td>
-                    <span className="tag-outline" style={{ textTransform: 'capitalize' }}>{item.status}</span>
-                  </td>
                 </tr>
               ))}
             </tbody>
@@ -174,7 +170,6 @@ export default function LaporanCategoryPage() {
                 <th>Sub-KK</th>
                 <th>Judul Paten/HKI</th>
                 <th>Jenis</th>
-                <th>Status</th>
                 <th style={{ textAlign: 'center' }}>Tahun</th>
               </tr>
             </thead>
@@ -190,9 +185,6 @@ export default function LaporanCategoryPage() {
                   </td>
                   <td style={{ fontWeight: 600, maxWidth: '300px', wordBreak: 'break-word' }}>{item.judul}</td>
                   <td>{item.jenis}</td>
-                  <td>
-                    <span className="tag-outline" style={{ textTransform: 'capitalize' }}>{item.status}</span>
-                  </td>
                   <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.tahun}</td>
                 </tr>
               ))}
