@@ -52,7 +52,7 @@ export default function StatCards({ data }) {
     {
       label: 'Total Dana Hibah',
       value: formatCurrency(summary.total_dana_hibah),
-      meta: 'Pendanaan Riset Disetujui',
+      meta: 'Pendanaan Riset',
       colorClass: 'teal',
       icon: <Wallet size={24} />,
       onClick: () => {
