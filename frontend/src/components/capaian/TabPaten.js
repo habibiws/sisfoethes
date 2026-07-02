@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 import useModalStore from '../../store/modalStore';
 import useDirtyState from '../../hooks/useDirtyState';
+import { Info } from 'lucide-react';
 
 const DEFAULT_FORM_DATA = {
   judul: '',
@@ -183,9 +184,32 @@ export default function TabPaten() {
                         </div>
                       </div>
                     </div>
-                    <div className="entry-actions" onClick={e => e.stopPropagation()}>
-                      <button className="btn btn-ghost btn-sm" onClick={() => handleEdit(item)}>Edit</button>
-                      <button className="btn btn-ghost btn-sm" style={{ color: 'var(--red)' }} onClick={() => handleDelete(item.id)}>Hapus</button>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                      <button
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: expandedId === item.id ? 'var(--navy)' : 'var(--text3)',
+                          cursor: 'pointer',
+                          padding: '6px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          borderRadius: '50%',
+                          transition: 'all 0.2s',
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setExpandedId(expandedId === item.id ? null : item.id);
+                        }}
+                        title="Detail Informasi"
+                      >
+                        <Info size={18} />
+                      </button>
+                      <div className="entry-actions" onClick={e => e.stopPropagation()}>
+                        <button className="btn btn-ghost btn-sm" onClick={() => handleEdit(item)}>Edit</button>
+                        <button className="btn btn-ghost btn-sm" style={{ color: 'var(--red)' }} onClick={() => handleDelete(item.id)}>Hapus</button>
+                      </div>
                     </div>
                   </div>
 
