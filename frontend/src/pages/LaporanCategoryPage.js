@@ -6,6 +6,55 @@ import api from '../services/api';
 import useAuthStore from '../store/authStore';
 import { Navigate } from 'react-router-dom';
 
+const formatJenisPublikasi = (jenis) => {
+  const map = {
+    'jurnal_internasional_scopus': 'Jurnal Internasional Scopus',
+    'jurnal_nasional_sinta': 'Jurnal Nasional SINTA',
+    'jurnal_nasional_non_sinta': 'Jurnal Nasional Non Index SINTA',
+    'prosiding_internasional_scopus': 'Prosiding Internasional Index Scopus',
+    'prosiding_nasional': 'Prosiding Nasional'
+  };
+  return map[jenis] || jenis;
+};
+
+const formatPosisiPublikasi = (posisi) => {
+  const map = {
+    'penulis_pertama': 'Penulis Pertama',
+    'corresponding': 'Corresponding Author',
+    'penulis_lainnya': 'Penulis Lainnya'
+  };
+  return map[posisi] || posisi;
+};
+
+const formatSumberHibah = (sumber) => {
+  const map = {
+    'internal': 'Internal Institusi',
+    'eksternal_dn': 'Eksternal Dalam Negeri',
+    'eksternal_ln': 'Eksternal Luar Negeri'
+  };
+  return map[sumber] || sumber;
+};
+
+const formatJenisPaten = (jenis) => {
+  const map = {
+    'paten_biasa': 'Paten Biasa',
+    'paten_sederhana': 'Paten Sederhana',
+    'hak_cipta': 'Hak Cipta',
+    'desain_industri': 'Desain Industri',
+    'merek': 'Merek/Brand'
+  };
+  return map[jenis] || jenis;
+};
+
+const formatSkemaAbdimas = (skema) => {
+  const map = {
+    'mandiri': 'Mandiri',
+    'pendanaan_internal': 'Pendanaan Internal',
+    'pendanaan_eksternal': 'Pendanaan Eksternal'
+  };
+  return map[skema] || skema;
+};
+
 export default function LaporanCategoryPage() {
   const { category } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -91,8 +140,9 @@ export default function LaporanCategoryPage() {
                 <th>Judul Publikasi</th>
                 <th>Jurnal/Konferensi</th>
                 <th style={{ textAlign: 'center' }}>Tahun</th>
-                <th>Kategori</th>
-                <th style={{ textAlign: 'center' }}>DOI</th>
+                <th>Jenis Publikasi</th>
+                <th>Posisi Penulis</th>
+                <th style={{ textAlign: 'center' }}>DOI / URL</th>
               </tr>
             </thead>
             <tbody>
@@ -106,14 +156,13 @@ export default function LaporanCategoryPage() {
                     </span>
                   </td>
                   <td style={{ fontWeight: 600, maxWidth: '300px', wordBreak: 'break-word' }}>{item.judul}</td>
-                  <td>{item.jurnal}</td>
+                  <td>{item.nama_jurnal || '—'}</td>
                   <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.tahun_terbit}</td>
-                  <td>
-                    <span className="tag-outline" style={{ textTransform: 'capitalize' }}>{item.kategori}</span>
-                  </td>
+                  <td>{formatJenisPublikasi(item.jenis)}</td>
+                  <td>{formatPosisiPublikasi(item.posisi_penulis)}</td>
                   <td style={{ textAlign: 'center' }}>
                     {item.doi_url ? (
-                      <a href={item.doi_url} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--navy)', display: 'inline-flex', alignItems: 'center' }}>
+                      <a href={item.doi_url.trim().startsWith('http') ? item.doi_url.trim() : `https://${item.doi_url.trim()}`} target="_blank" rel="noopener noreferrer" style={{ color: 'var(--navy)', display: 'inline-flex', alignItems: 'center' }}>
                         <LinkIcon size={14} />
                       </a>
                     ) : '—'}
@@ -134,6 +183,8 @@ export default function LaporanCategoryPage() {
                 <th>Sub-KK</th>
                 <th>Judul Penelitian</th>
                 <th>Sumber Dana</th>
+                <th>Pemberi Dana</th>
+                <th>Posisi</th>
                 <th>Jumlah Dana</th>
                 <th style={{ textAlign: 'center' }}>Tahun</th>
               </tr>
@@ -149,9 +200,11 @@ export default function LaporanCategoryPage() {
                     </span>
                   </td>
                   <td style={{ fontWeight: 600, maxWidth: '300px', wordBreak: 'break-word' }}>{item.judul}</td>
-                  <td>{item.sumber_dana}</td>
+                  <td>{formatSumberHibah(item.sumber_dana)}</td>
+                  <td>{item.nama_pemberi || '—'}</td>
+                  <td style={{ textTransform: 'capitalize' }}>{item.posisi || '—'}</td>
                   <td style={{ fontWeight: 700, color: '#27AE60' }}>
-                    Rp {item.jumlah_dana ? item.jumlah_dana.toLocaleString('id-ID') : '0'}
+                    Rp {item.jumlah_dana ? parseInt(item.jumlah_dana).toLocaleString('id-ID') : '0'}
                   </td>
                   <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.tahun}</td>
                 </tr>
@@ -169,7 +222,8 @@ export default function LaporanCategoryPage() {
                 <th>Dosen</th>
                 <th>Sub-KK</th>
                 <th>Judul Paten/HKI</th>
-                <th>Jenis</th>
+                <th>Jenis HKI</th>
+                <th>Nomor Sertifikat/Registrasi</th>
                 <th style={{ textAlign: 'center' }}>Tahun</th>
               </tr>
             </thead>
@@ -184,7 +238,8 @@ export default function LaporanCategoryPage() {
                     </span>
                   </td>
                   <td style={{ fontWeight: 600, maxWidth: '300px', wordBreak: 'break-word' }}>{item.judul}</td>
-                  <td>{item.jenis}</td>
+                  <td>{formatJenisPaten(item.jenis_hki)}</td>
+                  <td>{item.nomor_registrasi || '—'}</td>
                   <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.tahun}</td>
                 </tr>
               ))}
@@ -201,7 +256,10 @@ export default function LaporanCategoryPage() {
                 <th>Dosen</th>
                 <th>Sub-KK</th>
                 <th>Judul Abdimas</th>
+                <th>Skema</th>
+                <th>Posisi</th>
                 <th>Mitra Sasaran</th>
+                <th>Jumlah Dana</th>
                 <th style={{ textAlign: 'center' }}>Tahun</th>
               </tr>
             </thead>
@@ -215,8 +273,13 @@ export default function LaporanCategoryPage() {
                       {item.user?.sub_kk?.code || '—'}
                     </span>
                   </td>
-                  <td style={{ fontWeight: 600, maxWidth: '400px', wordBreak: 'break-word' }}>{item.judul}</td>
+                  <td style={{ fontWeight: 600, maxWidth: '300px', wordBreak: 'break-word' }}>{item.judul}</td>
+                  <td>{formatSkemaAbdimas(item.skema)}</td>
+                  <td style={{ textTransform: 'capitalize' }}>{item.posisi || '—'}</td>
                   <td>{item.mitra}</td>
+                  <td style={{ fontWeight: 700, color: '#27AE60' }}>
+                    Rp {item.jumlah_dana ? parseInt(item.jumlah_dana).toLocaleString('id-ID') : '0'}
+                  </td>
                   <td style={{ textAlign: 'center', fontWeight: 600 }}>{item.tahun}</td>
                 </tr>
               ))}
