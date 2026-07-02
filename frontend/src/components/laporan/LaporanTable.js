@@ -91,14 +91,13 @@ export default function LaporanTable({ users, onShowDetail, onRemindUser, showRe
                       </button>
                       {row.completeness !== 'Lengkap' && showReminderAction && (
                         <button 
-                          className={`btn btn-sm ${row.completeness === 'Belum' ? 'btn-red' : 'btn-outline'}`}
+                          className="btn btn-outline btn-sm"
                           onClick={() => onRemindUser(row)}
                           style={{ 
                             display: 'flex', 
                             alignItems: 'center', 
                             gap: '4px',
-                            padding: '4px 8px',
-                            ...(row.completeness === 'Sebagian' ? { color: 'var(--gold)', borderColor: 'var(--gold)', background: 'transparent' } : {})
+                            padding: '4px 8px'
                           }}
                         >
                           <Mail size={12} /> Ingatkan
@@ -165,9 +164,9 @@ export default function LaporanTable({ users, onShowDetail, onRemindUser, showRe
                 </button>
                 {row.completeness !== 'Lengkap' && showReminderAction && (
                   <button 
-                    className={`btn btn-sm ${row.completeness === 'Belum' ? 'btn-red' : 'btn-outline'}`}
+                    className="btn btn-outline btn-sm"
                     onClick={() => onRemindUser(row)}
-                    style={{ flex: 1, justifyContent: 'center', ...(row.completeness === 'Sebagian' ? { color: 'var(--gold)', borderColor: 'var(--gold)', background: 'transparent' } : {}) }}
+                    style={{ flex: 1, justifyContent: 'center', display: 'flex', alignItems: 'center', gap: '4px' }}
                   >
                     <Mail size={14} /> Ingatkan
                   </button>
