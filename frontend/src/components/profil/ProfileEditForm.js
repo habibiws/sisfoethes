@@ -78,7 +78,7 @@ export default function ProfileEditForm({ formData, setFormData, onSave, onCance
             </select>
           ) : (
             <div className="info-box readonly">
-              {formData.sub_kk_name || 'Terdaftar di KK ETHES'}
+              {formData.sub_kk_name || '-'}
             </div>
           )}
         </div>
