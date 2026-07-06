@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: eeats_db_container
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: eeats_db
+      MYSQL_USER: eeats_user
+      MYSQL_PASSWORD: eeats_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - eeats_network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eeats_backend_container
+    restart: always
+    volumes:
+      - ./backend:/var/www
+    env_file:
+      - ./backend/.env
+    environment:
+      - DB_CONNECTION=mysql
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=eeats_db
+      - DB_USERNAME=eeats_user
+      - DB_PASSWORD=eeats_password
+    depends_on:
+      - db
+    networks:
+      - eeats_network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: eeats_frontend_container
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - eeats_network
+
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    container_name: eeats_tunnel_container
+    restart: always
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TUNNEL_TOKEN}
+    command: tunnel --no-autoupdate run
+    depends_on:
+      - frontend
+    networks:
+      - eeats_network
+
+volumes:
+  mysql_data:
+
+networks:
+  eeats_network:
+    driver: bridge
