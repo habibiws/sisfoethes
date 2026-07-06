@@ -170,7 +170,7 @@ export default function LaporanPage() {
         {showPrintFeature && (
           <div className="print-header">
             <div className="print-header-content">
-              <span className="print-logo-text" style={{ fontWeight: 800, fontSize: '28px', letterSpacing: '1px', color: '#000', marginRight: '20px' }}>EEATS</span>
+              <img src={require('../assets/ethes-bbft.png')} alt="EEATS Logo" className="print-logo" />
               <div className="print-header-text">
                 <h2>LAPORAN REKAPITULASI CAPAIAN TRIDHARMA</h2>
                 <p>Kelompok Keahlian Electrical Engineering and Advanced Technologies (EEATS)</p>

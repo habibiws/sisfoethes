@@ -56,8 +56,12 @@ export default function Layout({ title, subtitle, headerActions, children }) {
             <Menu size={20} />
           </button>
           
-          <Link to="/dashboard" className="nav-brand-sidebar header-brand" style={{ textDecoration: 'none' }}>
-            <span style={{ fontWeight: 800, fontSize: '20px', letterSpacing: '1px', color: 'var(--navy)' }}>EEATS</span>
+          <Link to="/dashboard" className="nav-brand-sidebar header-brand">
+            <img 
+              src={require('../../assets/ethes-btfw.png')} 
+              alt="EEATS Logo" 
+              className="header-logo-img" 
+            />
           </Link>
         </div>
 
