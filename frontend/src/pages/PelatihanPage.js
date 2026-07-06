@@ -151,7 +151,7 @@ export default function PelatihanPage() {
   const getSubtitleText = () => {
     const twText = activeTW === 'all' ? 'Tahun Penuh' : `Triwulan ${activeTW}`;
     const yearText = selectedYear === 'all' ? 'Semua Tahun' : `Tahun ${selectedYear}`;
-    return `Kelompok Keahlian ETHES · ${twText} · ${yearText}`;
+    return `Kelompok Keahlian EEATS · ${twText} · ${yearText}`;
   };
 
   return (

@@ -32,7 +32,7 @@ class CapaianReminderMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pengingat Pengisian Capaian Tridharma — KK ETHES',
+            subject: 'Pengingat Pengisian Capaian Tridharma — KK EEATS',
         );
     }
 

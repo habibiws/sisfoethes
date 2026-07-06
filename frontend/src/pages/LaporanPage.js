@@ -141,7 +141,7 @@ export default function LaporanPage() {
   return (
     <Layout 
       title="Laporan & Distribusi Capaian" 
-      subtitle="Rekap seluruh anggota KK ETHES · Hak Akses: Ketua KK & Ketua Sub-KK"
+      subtitle="Rekap seluruh anggota KK EEATS · Hak Akses: Ketua KK & Ketua Sub-KK"
       headerActions={
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <select 
@@ -170,10 +170,10 @@ export default function LaporanPage() {
         {showPrintFeature && (
           <div className="print-header">
             <div className="print-header-content">
-              <img src={require('../assets/ethes-bbft.png')} alt="ETHES Logo" className="print-logo" />
+              <img src={require('../assets/ethes-bbft.png')} alt="EEATS Logo" className="print-logo" />
               <div className="print-header-text">
                 <h2>LAPORAN REKAPITULASI CAPAIAN TRIDHARMA</h2>
-                <p>Kelompok Keahlian Electrical Engineering and Advanced Technologies (ETHES)</p>
+                <p>Kelompok Keahlian Electrical Engineering and Advanced Technologies (EEATS)</p>
                 <p>Telkom University Surabaya</p>
               </div>
             </div>

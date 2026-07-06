@@ -87,7 +87,7 @@ export default function AuthPage() {
       {/* LEFT PANEL */}
       <div className="auth-left">
         <div className="auth-brand-logo">
-          <img src={logoKkEthes} alt="Logo KK ETHES" className="auth-logo-img" />
+          <img src={logoKkEthes} alt="Logo KK EEATS" className="auth-logo-img" />
         </div>
         <h1 className="auth-hero-headline">
           Sistem Informasi<br />

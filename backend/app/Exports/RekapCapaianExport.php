@@ -45,7 +45,7 @@ class RekapCapaianExport implements FromArray, WithHeadings, WithStyles, ShouldA
     {
         $periode = $this->year ? "Tahun {$this->year}" : "Semua Tahun";
         return [
-            ['LAPORAN REKAPITULASI CAPAIAN TRIDHARMA - KK ETHES'],
+            ['LAPORAN REKAPITULASI CAPAIAN TRIDHARMA - KK EEATS'],
             ['Periode: ' . $periode],
             [''],
             [

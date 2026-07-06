@@ -21,7 +21,7 @@ const useUiStore = create(
       setDisplaySize: (size) => set({ displaySize: size }),
     }),
     {
-      name: 'ethes-ui-storage', // kunci di localStorage
+      name: 'eeats-ui-storage', // kunci di localStorage
     }
   )
 );

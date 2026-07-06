@@ -57,7 +57,7 @@ export default function ProfileSecurity() {
       </div>
 
       <div style={{ marginBottom: '16px', fontSize: 'calc(13px * var(--font-scale, 1))', color: 'var(--text3)' }}>
-        Ubah password login Anda secara berkala untuk menjaga keamanan data akademik Anda di KK ETHES. Password baru wajib memiliki minimal **8 karakter**.
+        Ubah password login Anda secara berkala untuk menjaga keamanan data akademik Anda di KK EEATS. Password baru wajib memiliki minimal **8 karakter**.
       </div>
       
       {!showForm ? (

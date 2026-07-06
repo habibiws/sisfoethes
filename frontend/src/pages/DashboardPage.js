@@ -58,7 +58,7 @@ export default function DashboardPage() {
 
   return (
     <Layout
-      title="Dashboard KK ETHES"
+      title="Dashboard KK EEATS"
       subtitle={getSubtitle()}
       headerActions={
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
