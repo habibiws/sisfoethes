@@ -15,6 +15,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seed Sub Kelompok Keahlian
+        $this->call([
+            SubKkSeeder::class,
+        ]);
+
         // 1. Admin Mutlak (Super Admin) - Tidak bisa mendaftar via web
         User::create([
             'name' => 'Super Admin EEATS',
