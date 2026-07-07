@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
 
         // 1. Admin Mutlak (Super Admin) - Tidak bisa mendaftar via web
         User::create([
-            'name' => 'Super Admin EEATS',
+            'name' => 'Admin EEATS',
             'email' => env('ADMIN_EMAIL', 'admin@eeats.com'),
             'password' => \Illuminate\Support\Facades\Hash::make(env('ADMIN_PASSWORD', 'passwordadmin')),
             'role' => 'admin',

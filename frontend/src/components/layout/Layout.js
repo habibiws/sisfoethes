@@ -127,7 +127,7 @@ export default function Layout({ title, subtitle, headerActions, children }) {
                 border: '1px solid var(--border)'
               }}>
                 <Link to="/profil" style={{ display: 'block', padding: '12px 15px', color: 'var(--text)', textDecoration: 'none', fontSize: '13px', borderBottom: '1px solid var(--border)', fontWeight: 500 }}>
-                  👤 Profil Saya
+                  Profil Saya
                 </Link>
                 <button 
                   onClick={async (e) => {
@@ -137,7 +137,7 @@ export default function Layout({ title, subtitle, headerActions, children }) {
                   }} 
                   style={{ display: 'block', width: '100%', textAlign: 'left', padding: '12px 15px', background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', fontSize: '13px', fontWeight: 600 }}
                 >
-                  🚪 Keluar
+                  Keluar
                 </button>
               </div>
             )}

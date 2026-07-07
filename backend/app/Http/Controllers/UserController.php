@@ -65,6 +65,7 @@ class UserController extends Controller
             'prodi' => $request->prodi,
             'coe' => $request->coe,
             'jabatan_fungsional' => $request->jabatan_fungsional,
+            'email_verified_at' => now(),
         ]);
 
         return response()->json([
@@ -155,7 +156,7 @@ class UserController extends Controller
 
         // Ketua KK tidak boleh menghapus Admin
         if ($user->role === 'admin' && $request->user()->role === 'ketua_kk') {
-            return response()->json(['message' => 'Ketua KK tidak memiliki wewenang untuk menghapus akun Super Admin'], 403);
+            return response()->json(['message' => 'Ketua KK tidak memiliki wewenang untuk menghapus akun Admin EEATS'], 403);
         }
 
         $user->delete();

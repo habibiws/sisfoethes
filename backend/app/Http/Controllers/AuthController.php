@@ -14,56 +14,7 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'nidn' => 'required|string|unique:users',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
-            'prodi' => 'required|string',
-            'sub_kk_id' => 'required|exists:sub_kks,id',
-            'role' => 'required|in:anggota,ketua_sub_kk,ketua_kk'
-        ]);
-
-        if ($request->role === 'ketua_kk') {
-            if (User::where('role', 'ketua_kk')->exists()) {
-                return response()->json(['message' => 'Posisi Ketua KK sudah terisi.'], 400);
-            }
-        }
-
-        if ($request->role === 'ketua_sub_kk') {
-            if (User::where('role', 'ketua_sub_kk')->where('sub_kk_id', $request->sub_kk_id)->exists()) {
-                return response()->json(['message' => 'Posisi Ketua untuk Sub-KK ini sudah terisi.'], 400);
-            }
-        }
-
-        $verificationToken = Str::random(40);
-
-        $user = User::create([
-            'name' => $request->name,
-            'nidn' => $request->nidn,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'prodi' => $request->prodi,
-            'sub_kk_id' => $request->sub_kk_id,
-            'role' => $request->role,
-        ]);
-
-        $user->remember_token = $verificationToken;
-        $user->save();
-
-        // Send Email Verification
-        $verificationLink = $request->getSchemeAndHttpHost() . "/verify-email?email=" . urlencode($user->email) . "&token=" . $verificationToken;
-
-        try {
-            Mail::raw("Halo {$user->name},\n\nTerima kasih telah mendaftar di EEATS Portal.\n\nSilakan klik tautan berikut untuk memverifikasi alamat email Anda:\n{$verificationLink}\n\nJika tautan tidak bisa di-klik, Anda dapat menyalin dan menempelkannya langsung ke peramban (browser) Anda.\n\nSalam hangat,\nKelompok Keahlian EEATS", function ($message) use ($user) {
-                $message->to($user->email)
-                    ->subject('Verifikasi Alamat Email - EEATS Portal');
-            });
-        } catch (\Exception $e) {
-            \Log::error("Gagal mengirim email verifikasi ke {$user->email}: " . $e->getMessage());
-        }
-
-        return response()->json(['user' => $user, 'message' => 'Registrasi berhasil! Silakan periksa inbox email Anda untuk melakukan verifikasi sebelum masuk.']);
+        return response()->json(['message' => 'Pendaftaran mandiri dinonaktifkan. Silakan hubungi Admin Kelompok Keahlian untuk mendaftarkan akun.'], 403);
     }
 
     public function login(Request $request)
@@ -75,13 +26,6 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
-            
-            // Require Email Verification
-            if ($user->email_verified_at === null) {
-                Auth::logout();
-                return response()->json(['message' => 'Email Anda belum terverifikasi. Silakan periksa inbox email Anda untuk melakukan verifikasi.'], 403);
-            }
-
             $token = $user->createToken('auth_token')->plainTextToken;
             return response()->json(['user' => $user, 'token' => $token, 'message' => 'Login berhasil']);
         }

@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/users', [\App\Http\Controllers\UserController::class, 'index']);
     Route::post('/users', [\App\Http\Controllers\UserController::class, 'store']);
     Route::put('/users/{id}', [\App\Http\Controllers\UserController::class, 'update']);
+    Route::delete('/users/{id}', [\App\Http\Controllers\UserController::class, 'destroy']);
     Route::post('/users/{id}/reset-password', [\App\Http\Controllers\UserController::class, 'resetPassword']);
     Route::get('/capaian/summary', [\App\Http\Controllers\CapaianSummaryController::class, 'getSummary']);
 

@@ -45,8 +45,6 @@ services:
       dockerfile: Dockerfile
     container_name: eeats_frontend_container
     restart: always
-    ports:
-      - "80:80"
     depends_on:
       - backend
     networks:
