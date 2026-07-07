@@ -254,7 +254,7 @@ export default function AuthPage() {
           <div className="auth-left-content fade-in">
             {mode === 'login' && (
               <>
-                <h2 className="auth-left-title">{loginStep === 'email' ? 'Login' : 'Selamat Datang'}</h2>
+                <h2 className="auth-left-title">{loginStep === 'email' ? 'Login Page' : 'Selamat Datang'}</h2>
                 <p className="auth-left-subtitle">
                   {loginStep === 'email' ? 'Gunakan email institusi Anda' : 'Masukkan kata sandi untuk melanjutkan'}
                 </p>
