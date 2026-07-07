@@ -3,19 +3,26 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import useAuthStore from '../store/authStore';
 import useModalStore from '../store/modalStore';
-import logoBbfw from '../assets/ethes-bbfw.png'; // Blue background font white logo
+import logoBtfb from '../assets/ethes-btfb.png'; // Transparent background blue text logo
 
 export default function AuthPage() {
   const navigate = useNavigate();
   const { login, register, isActionLoading, error: authError, clearError } = useAuthStore();
   const { showAlert } = useModalStore();
 
-  const [mode, setMode] = useState('login'); // 'login' or 'register'
+  const [mode, setMode] = useState('login'); // 'login', 'register', 'forgot', 'reset'
+  const [localError, setLocalError] = useState('');
   
-  // Login Steps: 'email' -> 'password'
+  // Login State
   const [loginStep, setLoginStep] = useState('email'); 
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
+
+  // Forgot / Reset Password State
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const [newPass, setNewPass] = useState('');
+  const [newPassConfirm, setNewPassConfirm] = useState('');
 
   // Register Steps: 
   // 1: name -> 2: nidn -> 3: prodi -> 4: subkk -> 5: role -> 6: email -> 7: password
@@ -30,14 +37,15 @@ export default function AuthPage() {
   const [regPassConfirm, setRegPassConfirm] = useState('');
 
   const [subKks, setSubKks] = useState([]);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
 
   useEffect(() => {
     clearError();
-    setIsSubmitting(false);
+    setLocalError('');
+    setIsVerifying(false);
     if (mode === 'login') {
       setLoginStep('email');
-    } else {
+    } else if (mode === 'register') {
       setRegisterStep(1);
     }
   }, [mode, clearError]);
@@ -48,73 +56,165 @@ export default function AuthPage() {
       .catch(err => console.log('Backend not ready yet for sub-kks'));
   }, []);
 
-  // Validation helpers
+  // Validation helper
   const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
       .match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
   };
 
-  // Login Handlers
-  const handleLoginEmailNext = (e) => {
+  // Login Email Step Verification (Google Style check)
+  const handleLoginEmailNext = async (e) => {
     e.preventDefault();
-    if (!loginEmail) {
-      return showAlert('Silakan masukkan email Anda.', 'Peringatan', 'error');
+    setLocalError('');
+    if (!loginEmail) return setLocalError('Silakan masukkan email Anda.');
+    if (!validateEmail(loginEmail)) return setLocalError('Format email tidak valid.');
+
+    setIsVerifying(true);
+    try {
+      const res = await api.post('/check-email', { email: loginEmail });
+      setIsVerifying(false);
+      if (res.data.exists) {
+        setLoginStep('password');
+      } else {
+        setLocalError('Email tidak ditemukan. Silakan buat akun baru.');
+      }
+    } catch (err) {
+      setIsVerifying(false);
+      setLocalError('Gagal memeriksa email. Silakan coba sesaat lagi.');
     }
-    if (!validateEmail(loginEmail)) {
-      return showAlert('Format email tidak valid.', 'Peringatan', 'error');
-    }
-    setLoginStep('password');
   };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    if (!loginPass) {
-      return showAlert('Silakan masukkan kata sandi Anda.', 'Peringatan', 'error');
-    }
+    setLocalError('');
+    if (!loginPass) return setLocalError('Silakan masukkan kata sandi.');
 
-    setIsSubmitting(true);
+    setIsVerifying(true);
     const success = await login(loginEmail, loginPass);
-    setIsSubmitting(false);
+    setIsVerifying(false);
 
     if (success) {
       navigate('/dashboard');
     }
   };
 
-  // Register Step-by-Step Handlers
-  const handleRegisterNext = (e) => {
+  // Forgot Password Submit
+  const handleForgotSubmit = async (e) => {
     e.preventDefault();
-    if (registerStep === 1 && !regName) return showAlert('Harap isi nama lengkap Anda.', 'Peringatan', 'error');
-    if (registerStep === 2 && !regNidn) return showAlert('Harap isi NIDN Anda.', 'Peringatan', 'error');
-    if (registerStep === 3 && !regProdi) return showAlert('Harap pilih program studi.', 'Peringatan', 'error');
-    if (registerStep === 4 && !regSubKk) return showAlert('Harap pilih sub-kelompok keahlian.', 'Peringatan', 'error');
-    if (registerStep === 5 && !regRole) return showAlert('Harap pilih peran.', 'Peringatan', 'error');
-    if (registerStep === 6) {
-      if (!regEmail) return showAlert('Harap isi email institusi Anda.', 'Peringatan', 'error');
-      if (!validateEmail(regEmail)) return showAlert('Format email tidak valid.', 'Peringatan', 'error');
+    setLocalError('');
+    if (!resetEmail) return setLocalError('Silakan masukkan email.');
+    if (!validateEmail(resetEmail)) return setLocalError('Format email tidak valid.');
+
+    setIsVerifying(true);
+    try {
+      const res = await api.post('/forgot-password', { email: resetEmail });
+      setIsVerifying(false);
+      showAlert(res.data.message || 'Kode reset berhasil dikirim!', 'Berhasil', 'success');
+      setMode('reset');
+    } catch (err) {
+      setIsVerifying(false);
+      setLocalError(err.response?.data?.message || 'Email tidak terdaftar atau gagal mengirim email.');
     }
-    
-    setRegisterStep(prev => prev + 1);
+  };
+
+  // Reset Password Submit
+  const handleResetSubmit = async (e) => {
+    e.preventDefault();
+    setLocalError('');
+    if (!resetCode || !newPass || !newPassConfirm) return setLocalError('Harap lengkapi semua kolom.');
+    if (newPass.length < 8) return setLocalError('Sandi minimal 8 karakter.');
+    if (newPass !== newPassConfirm) return setLocalError('Konfirmasi sandi tidak cocok.');
+
+    setIsVerifying(true);
+    try {
+      const res = await api.post('/reset-password', {
+        email: resetEmail,
+        token: resetCode,
+        password: newPass,
+        password_confirmation: newPassConfirm
+      });
+      setIsVerifying(false);
+      showAlert(res.data.message || 'Sandi berhasil diatur ulang!', 'Berhasil', 'success');
+      setLoginEmail(resetEmail);
+      setResetEmail('');
+      setResetCode('');
+      setNewPass('');
+      setNewPassConfirm('');
+      setMode('login');
+      setLoginStep('password');
+    } catch (err) {
+      setIsVerifying(false);
+      setLocalError(err.response?.data?.message || 'Kode reset salah atau kedaluwarsa.');
+    }
+  };
+
+  // Register Step-by-Step Inline Verification
+  const handleRegisterNext = async (e) => {
+    e.preventDefault();
+    setLocalError('');
+
+    // Inline validation checks
+    if (registerStep === 1) {
+      if (!regName) return setLocalError('Nama lengkap wajib diisi.');
+      setRegisterStep(2);
+    } else if (registerStep === 2) {
+      if (!regNidn) return setLocalError('NIDN wajib diisi.');
+      setIsVerifying(true);
+      try {
+        const res = await api.post('/check-nidn', { nidn: regNidn });
+        setIsVerifying(false);
+        if (res.data.exists) {
+          setLocalError('NIDN sudah terdaftar. Gunakan NIDN lain.');
+        } else {
+          setRegisterStep(3);
+        }
+      } catch (err) {
+        setIsVerifying(false);
+        setLocalError('Gagal memverifikasi NIDN. Coba lagi.');
+      }
+    } else if (registerStep === 3) {
+      if (!regProdi) return setLocalError('Harap pilih program studi.');
+      setRegisterStep(4);
+    } else if (registerStep === 4) {
+      if (!regSubKk) return setLocalError('Harap pilih sub-kelompok keahlian.');
+      setRegisterStep(5);
+    } else if (registerStep === 5) {
+      if (!regRole) return setLocalError('Harap pilih peran.');
+      setRegisterStep(6);
+    } else if (registerStep === 6) {
+      if (!regEmail) return setLocalError('Email institusi wajib diisi.');
+      if (!validateEmail(regEmail)) return setLocalError('Format email tidak valid.');
+      
+      setIsVerifying(true);
+      try {
+        const res = await api.post('/check-email', { email: regEmail });
+        setIsVerifying(false);
+        if (res.data.exists) {
+          setLocalError('Email ini sudah terdaftar.');
+        } else {
+          setRegisterStep(7);
+        }
+      } catch (err) {
+        setIsVerifying(false);
+        setLocalError('Gagal memverifikasi email. Coba lagi.');
+      }
+    }
   };
 
   const handleRegisterBack = () => {
+    setLocalError('');
     setRegisterStep(prev => Math.max(1, prev - 1));
   };
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    if (!regPass || !regPassConfirm) {
-      return showAlert('Harap isi kata sandi dan konfirmasi.', 'Peringatan', 'error');
-    }
-    if (regPass.length < 8) {
-      return showAlert('Kata sandi minimal 8 karakter.', 'Peringatan', 'error');
-    }
-    if (regPass !== regPassConfirm) {
-      return showAlert('Konfirmasi kata sandi tidak cocok.', 'Kesalahan', 'error');
-    }
+    setLocalError('');
+    if (!regPass || !regPassConfirm) return setLocalError('Harap isi kata sandi.');
+    if (regPass.length < 8) return setLocalError('Kata sandi minimal 8 karakter.');
+    if (regPass !== regPassConfirm) return setLocalError('Konfirmasi kata sandi tidak cocok.');
 
-    setIsSubmitting(true);
+    setIsVerifying(true);
     const success = await register({
       name: regName,
       nidn: regNidn,
@@ -124,10 +224,10 @@ export default function AuthPage() {
       sub_kk_id: regSubKk,
       role: regRole
     });
-    setIsSubmitting(false);
+    setIsVerifying(false);
 
     if (success) {
-      showAlert('Pendaftaran berhasil! Silakan masuk.', 'Berhasil', 'success');
+      showAlert('Registrasi berhasil! Silakan periksa inbox email Anda untuk melakukan verifikasi akun sebelum masuk.', 'Registrasi Berhasil', 'success');
       setRegName('');
       setRegNidn('');
       setRegEmail('');
@@ -139,7 +239,6 @@ export default function AuthPage() {
     }
   };
 
-  // Get current sub_kk name for display
   const selectedSubKkName = subKks.find(sk => String(sk.id) === String(regSubKk))?.name || '';
 
   return (
@@ -150,28 +249,44 @@ export default function AuthPage() {
         {/* LEFT COLUMN: BRANDING & DESCRIPTIVE STATE */}
         {/* ========================================================================= */}
         <div className="auth-card-left">
-          <img src={logoBbfw} alt="Logo EEATS" className="auth-card-logo" />
+          <img src={logoBtfb} alt="Logo EEATS" className="auth-card-logo" />
           
           <div className="auth-left-content fade-in">
-            {mode === 'login' ? (
+            {mode === 'login' && (
               <>
                 <h2 className="auth-left-title">{loginStep === 'email' ? 'Login' : 'Selamat Datang'}</h2>
                 <p className="auth-left-subtitle">
-                  {loginStep === 'email' ? 'Gunakan email anda' : 'Masukkan sandi untuk melanjutkan'}
+                  {loginStep === 'email' ? 'Gunakan email institusi Anda' : 'Masukkan kata sandi untuk melanjutkan'}
                 </p>
               </>
-            ) : (
+            )}
+
+            {mode === 'register' && (
               <>
                 <h2 className="auth-left-title">Daftar Akun</h2>
                 <p className="auth-left-subtitle">
-                  {registerStep === 1 && 'Langkah 1: Tulis nama lengkap Anda'}
-                  {registerStep === 2 && 'Langkah 2: Tulis NIDN Anda'}
+                  {registerStep === 1 && 'Langkah 1: Masukkan nama lengkap & gelar Anda'}
+                  {registerStep === 2 && 'Langkah 2: Masukkan NIDN resmi Anda'}
                   {registerStep === 3 && 'Langkah 3: Pilih program studi Anda'}
-                  {registerStep === 4 && 'Langkah 4: Pilih sub-kelompok keahlian'}
-                  {registerStep === 5 && 'Langkah 5: Tentukan peran/jabatan Anda'}
-                  {registerStep === 6 && 'Langkah 6: Gunakan email institusi Anda'}
-                  {registerStep === 7 && 'Langkah 7: Buat kata sandi akun'}
+                  {registerStep === 4 && 'Langkah 4: Tentukan sub-kelompok keahlian Anda'}
+                  {registerStep === 5 && 'Langkah 5: Pilih jabatan/peran Anda di KK'}
+                  {registerStep === 6 && 'Langkah 6: Gunakan email institusi aktif'}
+                  {registerStep === 7 && 'Langkah 7: Buat kata sandi akun Anda'}
                 </p>
+              </>
+            )}
+
+            {mode === 'forgot' && (
+              <>
+                <h2 className="auth-left-title">Lupa Sandi</h2>
+                <p className="auth-left-subtitle">Masukkan email Anda untuk menerima kode verifikasi pemulihan</p>
+              </>
+            )}
+
+            {mode === 'reset' && (
+              <>
+                <h2 className="auth-left-title">Reset Sandi</h2>
+                <p className="auth-left-subtitle">Masukkan kode verifikasi reset dari email beserta sandi baru Anda</p>
               </>
             )}
           </div>
@@ -182,9 +297,10 @@ export default function AuthPage() {
         {/* ========================================================================= */}
         <div className="auth-card-right">
           
-          {authError && (
-            <div className="auth-alert alert-danger">
-              <span>⚠️</span> <span>{authError}</span>
+          {/* Display Backend or Inline Validation Errors */}
+          {(authError || localError) && (
+            <div className="auth-alert alert-danger fade-in">
+              <span>⚠️</span> <span>{localError || authError}</span>
             </div>
           )}
 
@@ -216,8 +332,8 @@ export default function AuthPage() {
                     <button type="button" className="btn-text" onClick={() => setMode('register')}>
                       Buat akun
                     </button>
-                    <button type="submit" className="btn btn-primary">
-                      Berikutnya
+                    <button type="submit" className="btn btn-primary" disabled={isVerifying}>
+                      {isVerifying ? 'Memeriksa...' : 'Berikutnya'}
                     </button>
                   </div>
                 </form>
@@ -248,15 +364,111 @@ export default function AuthPage() {
                   </div>
 
                   <div className="auth-action-row">
-                    <button type="button" className="btn-text" onClick={() => setLoginStep('email')}>
-                      Ganti email
+                    <button type="button" className="btn-text" onClick={() => { setResetEmail(loginEmail); setMode('forgot'); }}>
+                      Lupa sandi?
                     </button>
-                    <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                      {isSubmitting ? 'Memproses...' : 'Berikutnya'}
+                    <button type="submit" className="btn btn-primary" disabled={isActionLoading || isVerifying}>
+                      {isActionLoading || isVerifying ? 'Memproses...' : 'Masuk'}
                     </button>
                   </div>
                 </form>
               )}
+            </div>
+          )}
+
+          {/* ──────────────────────────────────────────────────────── */}
+          {/* FORGOT PASSWORD MODE */}
+          {/* ──────────────────────────────────────────────────────── */}
+          {mode === 'forgot' && (
+            <div className="auth-step-wrapper">
+              <form onSubmit={handleForgotSubmit} className="auth-form fade-in">
+                <div className="form-group mb-24">
+                  <div className="floating-input-container">
+                    <input 
+                      type="email" 
+                      id="resetEmail"
+                      value={resetEmail} 
+                      onChange={e => setResetEmail(e.target.value)} 
+                      placeholder=" "
+                      required
+                      autoFocus
+                    />
+                    <label htmlFor="resetEmail">Email Terdaftar</label>
+                  </div>
+                </div>
+
+                <div className="auth-action-row">
+                  <button type="button" className="btn-secondary" onClick={() => setMode('login')}>
+                    Kembali
+                  </button>
+                  <button type="submit" className="btn btn-primary" disabled={isVerifying}>
+                    {isVerifying ? 'Mengirim...' : 'Kirim Kode'}
+                  </button>
+                </div>
+              </form>
+            </div>
+          )}
+
+          {/* ──────────────────────────────────────────────────────── */}
+          {/* RESET PASSWORD MODE */}
+          {/* ──────────────────────────────────────────────────────── */}
+          {mode === 'reset' && (
+            <div className="auth-step-wrapper">
+              <form onSubmit={handleResetSubmit} className="auth-form fade-in">
+                <div className="auth-badge-info">Email: <strong>{resetEmail}</strong></div>
+
+                <div className="form-group mb-16">
+                  <div className="floating-input-container">
+                    <input 
+                      type="text" 
+                      id="resetCode"
+                      value={resetCode} 
+                      onChange={e => setResetCode(e.target.value)} 
+                      placeholder=" "
+                      required
+                      autoFocus
+                    />
+                    <label htmlFor="resetCode">Kode Verifikasi (6-Digit)</label>
+                  </div>
+                </div>
+
+                <div className="form-group mb-16">
+                  <div className="floating-input-container">
+                    <input 
+                      type="password" 
+                      id="newPass"
+                      value={newPass} 
+                      onChange={e => setNewPass(e.target.value)} 
+                      placeholder=" "
+                      required
+                    />
+                    <label htmlFor="newPass">Kata Sandi Baru</label>
+                  </div>
+                </div>
+
+                <div className="form-group mb-24">
+                  <div className="floating-input-container">
+                    <input 
+                      type="password" 
+                      id="newPassConfirm"
+                      value={newPassConfirm} 
+                      onChange={e => setNewPassConfirm(e.target.value)} 
+                      placeholder=" "
+                      required
+                    />
+                    <label htmlFor="newPassConfirm">Ulangi Sandi Baru</label>
+                  </div>
+                </div>
+
+                <div className="auth-action-row">
+                  <button type="button" className="btn-secondary" onClick={() => setMode('forgot')}>
+                    Kirim Ulang
+                  </button>
+                  <button type="submit" className="btn btn-success" disabled={isVerifying}>
+                    {isVerifying ? 'Memproses...' : 'Ubah Sandi'}
+                  </button>
+                </div>
+              </form>
             </div>
           )}
 
@@ -319,8 +531,8 @@ export default function AuthPage() {
                     <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-primary">
-                      Berikutnya
+                    <button type="submit" className="btn btn-primary" disabled={isVerifying}>
+                      {isVerifying ? 'Memeriksa...' : 'Berikutnya'}
                     </button>
                   </div>
                 </form>
@@ -442,8 +654,8 @@ export default function AuthPage() {
                     <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-primary">
-                      Berikutnya
+                    <button type="submit" className="btn btn-primary" disabled={isVerifying}>
+                      {isVerifying ? 'Memeriksa...' : 'Berikutnya'}
                     </button>
                   </div>
                 </form>
@@ -487,8 +699,8 @@ export default function AuthPage() {
                     <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
                       Kembali
                     </button>
-                    <button type="submit" className="btn btn-success" disabled={isSubmitting}>
-                      {isSubmitting ? 'Memproses...' : 'Daftar Sekarang'}
+                    <button type="submit" className="btn btn-success" disabled={isActionLoading || isVerifying}>
+                      {isActionLoading || isVerifying ? 'Memproses...' : 'Daftar Sekarang'}
                     </button>
                   </div>
                 </form>

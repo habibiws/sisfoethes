@@ -8,6 +8,11 @@ use App\Models\SubKk;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/check-email', [AuthController::class, 'checkEmail']);
+Route::post('/check-nidn', [AuthController::class, 'checkNidn']);
+Route::post('/verify-email', [AuthController::class, 'verifyEmail']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::get('/sub-kks', function() {
     return response()->json(SubKk::all());

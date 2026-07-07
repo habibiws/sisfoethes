@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KK ETHES — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div class="flex-between">
+        <div>
+          <div class="page-title">Dashboard KK ETHES</div>
+          <div class="page-sub">Semester Genap 2024/2025 · Selamat datang, Pak Mohamad Yani</div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Peran Anda</div>
+          <div style="font-size:13px;font-weight:700;color:var(--navy)">Ketua Sub-KK CORES</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="stat-grid">
+      <div class="stat-card navy">
+        <div class="stat-icon">👥</div>
+        <div class="stat-label">Total Anggota KK</div>
+        <div class="stat-value">22</div>
+        <div class="stat-meta">5 Sub-KK aktif</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">📄</div>
+        <div class="stat-label">Publikasi Tahun Ini</div>
+        <div class="stat-value">18</div>
+        <div class="stat-meta">12 jurnal · 6 prosiding</div>
+      </div>
+      <div class="stat-card teal">
+        <div class="stat-icon">💰</div>
+        <div class="stat-label">Hibah Aktif</div>
+        <div class="stat-value">7</div>
+        <div class="stat-meta">Rp 2,3 M total dana</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">🏅</div>
+        <div class="stat-label">Paten & HKI</div>
+        <div class="stat-value">4</div>
+        <div class="stat-meta">2 granted · 2 pending</div>
+      </div>
+    </div>
+
+    <!-- 2-col grid -->
+    <div class="grid-2" style="margin-bottom:16px;">
+
+      <!-- Kelengkapan Input -->
+      <div class="card">
+        <div class="flex-between mb-12">
+          <div>
+            <div class="card-title">Kelengkapan Input Capaian</div>
+            <div class="card-sub">Per sub-kelompok keahlian</div>
+          </div>
+          <span class="tag tag-red">5 belum lengkap</span>
+        </div>
+        <div class="gap-12">
+          <div>
+            <div class="flex-between" style="font-size:12px;margin-bottom:5px;"><span><strong>CORES</strong></span><span style="font-weight:700;color:var(--teal)">6/6</span></div>
+            <div class="progress-wrap"><div class="progress-fill teal" style="width:100%"></div></div>
+          </div>
+          <div>
+            <div class="flex-between" style="font-size:12px;margin-bottom:5px;"><span><strong>COS(PI)</strong></span><span style="font-weight:700;color:var(--navy)">5/6</span></div>
+            <div class="progress-wrap"><div class="progress-fill" style="width:83%"></div></div>
+          </div>
+          <div>
+            <div class="flex-between" style="font-size:12px;margin-bottom:5px;"><span><strong>PORSCE</strong></span><span style="font-weight:700;color:var(--gold)">3/4</span></div>
+            <div class="progress-wrap"><div class="progress-fill gold" style="width:75%"></div></div>
+          </div>
+          <div>
+            <div class="flex-between" style="font-size:12px;margin-bottom:5px;"><span><strong>COMMET</strong></span><span style="font-weight:700;color:var(--gold)">2/3</span></div>
+            <div class="progress-wrap"><div class="progress-fill gold" style="width:67%"></div></div>
+          </div>
+          <div>
+            <div class="flex-between" style="font-size:12px;margin-bottom:5px;"><span><strong>BEE</strong></span><span style="font-weight:700;color:var(--red)">1/2</span></div>
+            <div class="progress-wrap"><div class="progress-fill red" style="width:50%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Distribusi Capaian Bar Chart -->
+      <div class="card">
+        <div class="card-title mb-12">Distribusi Capaian</div>
+        <div style="display:flex;align-items:flex-end;gap:10px;height:130px;padding:0 8px;margin-bottom:10px;">
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <div style="font-size:11px;font-weight:700;color:var(--navy);margin-bottom:4px;">18</div>
+            <div style="background:var(--navy);width:100%;height:90%;border-radius:5px 5px 0 0;opacity:0.9;"></div>
+            <div style="font-size:9px;color:var(--text3);margin-top:5px;text-align:center;">Jurnal</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <div style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:4px;">11</div>
+            <div style="background:var(--red);width:100%;height:61%;border-radius:5px 5px 0 0;opacity:0.85;"></div>
+            <div style="font-size:9px;color:var(--text3);margin-top:5px;text-align:center;">Prosiding</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <div style="font-size:11px;font-weight:700;color:var(--teal);margin-bottom:4px;">7</div>
+            <div style="background:var(--teal);width:100%;height:39%;border-radius:5px 5px 0 0;opacity:0.85;"></div>
+            <div style="font-size:9px;color:var(--text3);margin-top:5px;text-align:center;">Hibah</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <div style="font-size:11px;font-weight:700;color:var(--gold);margin-bottom:4px;">4</div>
+            <div style="background:var(--gold);width:100%;height:22%;border-radius:5px 5px 0 0;opacity:0.9;"></div>
+            <div style="font-size:9px;color:var(--text3);margin-top:5px;text-align:center;">Paten</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <div style="font-size:11px;font-weight:700;color:#5A5A8A;margin-bottom:4px;">8</div>
+            <div style="background:#5A5A8A;width:100%;height:44%;border-radius:5px 5px 0 0;opacity:0.7;"></div>
+            <div style="font-size:9px;color:var(--text3);margin-top:5px;text-align:center;">Abdimas</div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;flex:1;">
+            <div style="font-size:11px;font-weight:700;color:#C0571A;margin-bottom:4px;">12</div>
+            <div style="background:#C0571A;width:100%;height:67%;border-radius:5px 5px 0 0;opacity:0.8;"></div>
+            <div style="font-size:9px;color:var(--text3);margin-top:5px;text-align:center;">Pelatihan</div>
+          </div>
+        </div>
+        <div style="font-size:10px;color:var(--text3);text-align:center;">Semester Genap 2024/2025</div>
+      </div>
+    </div>
+
+    <!-- Status Anggota Table -->
+    <div class="card">
+      <div class="flex-between mb-12">
+        <div>
+          <div class="card-title">Status Input Anggota</div>
+          <div class="card-sub">Monitoring kelengkapan capaian seluruh dosen</div>
+        </div>
+        <div style="display:flex;gap:8px;">
+          <a href="laporan.html" class="btn btn-outline btn-sm">Lihat Semua</a>
+          <button class="btn btn-primary btn-sm">📤 Kirim Reminder</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Nama Dosen</th><th>Sub-KK</th>
+              <th>Publikasi</th><th>Hibah</th><th>Paten</th>
+              <th>Abdimas</th><th>Pelatihan</th><th>Status</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy);">Mohamad Yani</div><div style="font-size:10px;color:var(--text3);">Ketua Sub-KK</div></td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><strong>3</strong></td><td><strong>1</strong></td><td>—</td><td><strong>2</strong></td><td><strong>3</strong></td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><a href="capaian.html" class="btn btn-ghost btn-sm">Edit</a></td>
+            </tr>
+            <tr>
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy);">Dr. Susijanto T.R.</div></td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><strong>2</strong></td><td><strong>1</strong></td><td><strong>1</strong></td><td><strong>1</strong></td><td><strong>2</strong></td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detail</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy);">Anifatul Faricha</div><div style="font-size:10px;color:var(--text3);">Ketua KK</div></td>
+              <td><span class="tag tag-gold">BEE</span></td>
+              <td><strong>4</strong></td><td><strong>2</strong></td><td><strong>1</strong></td><td><strong>1</strong></td><td><strong>2</strong></td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detail</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy);">Rifki Dwi Putranto</div></td>
+              <td><span class="tag tag-teal">PORSCE</span></td>
+              <td><strong>1</strong></td><td><strong>1</strong></td><td>—</td><td><strong>1</strong></td><td>—</td>
+              <td><span class="dot dot-amber"></span><span style="font-size:11px;color:var(--gold);font-weight:600;">Parsial</span></td>
+              <td><button class="btn btn-outline btn-sm" style="color:var(--gold);border-color:var(--gold);">Ingatkan</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy);">Nilla Rachmaningrum</div></td>
+              <td><span class="tag tag-gray">COMMET</span></td>
+              <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              <td><span class="dot dot-red"></span><span style="font-size:11px;color:var(--red);font-weight:600;">Belum Input</span></td>
+              <td><button class="btn btn-red btn-sm">Ingatkan</button></td>
+            </tr>
+            <tr>
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy);">Muhsin, Ph.D.</div></td>
+              <td><span class="tag tag-red">COS(PI)</span></td>
+              <td><strong>3</strong></td><td><strong>1</strong></td><td><strong>1</strong></td><td><strong>2</strong></td><td><strong>1</strong></td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detail</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="shared-nav.js"></script>
+<script>buildNav('dashboard');</script>
+</body>
+</html>

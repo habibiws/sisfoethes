@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AuthPage from './pages/AuthPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 import DashboardPage from './pages/DashboardPage';
 import ProfilPage from './pages/ProfilPage';
 import CapaianPage from './pages/CapaianPage';
@@ -44,6 +45,7 @@ function App() {
       <GlobalModal />
       <Routes>
         <Route path="/login" element={<GuestRoute><AuthPage /></GuestRoute>} />
+        <Route path="/verify-email" element={<GuestRoute><VerifyEmailPage /></GuestRoute>} />
         <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
         <Route path="/profil" element={<ProtectedRoute><ProfilPage /></ProtectedRoute>} />
         <Route path="/capaian" element={<ProtectedRoute><CapaianPage /></ProtectedRoute>} />

@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'email' => env('ADMIN_EMAIL', 'admin@eeats.com'),
             'password' => \Illuminate\Support\Facades\Hash::make(env('ADMIN_PASSWORD', 'passwordadmin')),
             'role' => 'admin',
+            'email_verified_at' => now(),
         ]);
     }
 }

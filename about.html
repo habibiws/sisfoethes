@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KK ETHES — Tentang KK</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.hero-banner{background:var(--navy);border-radius:var(--radius-xl);padding:36px 40px;margin-bottom:20px;position:relative;overflow:hidden;}
+.hero-banner::before{content:'';position:absolute;right:-40px;top:-40px;width:200px;height:200px;border-radius:50%;background:rgba(192,57,43,0.15);}
+.hb-kk{font-size:11px;font-weight:700;color:rgba(255,255,255,0.45);letter-spacing:1.2px;text-transform:uppercase;margin-bottom:8px;}
+.hb-title{font-family:'Fraunces',serif;font-size:28px;font-weight:700;color:white;line-height:1.25;margin-bottom:10px;}
+.hb-title em{font-style:italic;color:var(--gold);}
+.hb-desc{font-size:13px;color:rgba(255,255,255,0.6);max-width:520px;line-height:1.7;}
+.hb-meta{display:flex;gap:24px;margin-top:18px;}
+.hb-meta-val{font-size:24px;font-weight:800;color:white;font-family:'Fraunces',serif;}
+.hb-meta-label{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.5px;}
+.page-tabs{display:flex;gap:4px;border-bottom:2px solid var(--border);margin-bottom:20px;}
+.page-tab{padding:9px 18px;font-size:12px;font-weight:600;color:var(--text3);border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all 0.2s;font-family:'Plus Jakarta Sans',sans-serif;}
+.page-tab:hover{color:var(--navy);}
+.page-tab.active{color:var(--navy);border-bottom-color:var(--red);}
+.org-head-card{background:var(--navy);border-radius:var(--radius-lg);padding:14px 24px;text-align:center;max-width:300px;margin:0 auto 8px;}
+.org-head-name{font-size:13px;font-weight:700;color:white;}
+.org-connector{display:flex;justify-content:center;}
+.org-connector-line{width:2px;height:22px;background:var(--border);}
+.sub-kk-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;}
+.sub-kk-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--radius-lg);padding:14px 12px;transition:all 0.2s;}
+.sub-kk-card:hover{border-color:var(--navy);transform:translateY(-2px);box-shadow:var(--shadow);}
+.sub-kk-card.me{border-color:var(--navy);}
+.sub-kk-abbr{font-size:10px;font-weight:800;letter-spacing:0.8px;color:var(--red);margin-bottom:4px;}
+.sub-kk-abbr.navy{color:var(--navy);}
+.sub-kk-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3;}
+.sub-kk-ketua{font-size:10px;color:var(--text3);margin-bottom:6px;}
+.sub-kk-ketua strong{color:var(--text2);}
+.member-tag{background:var(--bg2);border-radius:4px;padding:2px 6px;font-size:9px;color:var(--text2);display:inline-block;margin:2px 2px 0 0;}
+.lab-section{margin-bottom:22px;}
+.lab-header{display:flex;align-items:center;gap:12px;padding:12px 18px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+.lab-body{border:1px solid var(--border);border-top:none;border-radius:0 0 var(--radius-lg) var(--radius-lg);overflow:hidden;}
+.lab-row{display:grid;grid-template-columns:240px 1fr;border-bottom:1px solid var(--border);}
+.lab-row:last-child{border-bottom:none;}
+.lab-cell{padding:14px 18px;}
+.lab-cell-left{background:#FAFAF8;border-right:1px solid var(--border);}
+.lab-name{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:4px;}
+.lab-loc{font-size:11px;color:var(--text3);}
+.riset-list{display:flex;flex-wrap:wrap;gap:8px;}
+.riset-chip{background:var(--bg);border:1px solid var(--border);border-radius:9px;padding:8px 12px;min-width:180px;}
+.riset-chip-topic{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.riset-chip-pi{font-size:10px;color:var(--text3);}
+.rm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.rm-card{border-radius:var(--radius-lg);padding:18px;border:1.5px solid var(--border);}
+.rm-card.active{border-color:var(--red);background:white;}
+.rm-card.upcoming{background:var(--bg);}
+.rm-year{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:4px;}
+.rm-badge{font-size:9px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:2px 8px;border-radius:8px;display:inline-block;margin-bottom:10px;}
+.rm-theme{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.3;}
+.rm-item{font-size:11px;color:var(--text2);padding-left:12px;position:relative;margin-bottom:3px;}
+.rm-item::before{content:'—';position:absolute;left:0;color:var(--text3);}
+.rm-visi{font-size:10px;font-weight:700;margin-top:10px;padding:4px 8px;border-radius:6px;display:inline-block;}
+.sdg-chip{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:5px;margin:3px;}
+.kontak-card{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:10px;padding:12px;}
+.kavatar{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0;}
+</style>
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+
+    <div class="hero-banner">
+      <div class="hb-kk">Kelompok Keahlian · SK Direktur 2025–2026</div>
+      <div class="hb-title">Electrical Engineering and<br><em>Advanced Technologies</em></div>
+      <div class="hb-desc">KK ETHES adalah kelompok keahlian di bawah Direktorat Universitas Telkom Kampus Surabaya, berfokus pada riset dan pengembangan keilmuan di bidang rekayasa elektro dan teknologi lanjut.</div>
+      <div class="hb-meta">
+        <div><div class="hb-meta-val">22</div><div class="hb-meta-label">Dosen Anggota</div></div>
+        <div><div class="hb-meta-val">5</div><div class="hb-meta-label">Sub-KK</div></div>
+        <div><div class="hb-meta-val">7</div><div class="hb-meta-label">Laboratorium</div></div>
+        <div><div class="hb-meta-val">23</div><div class="hb-meta-label">Topik Riset Unggulan</div></div>
+      </div>
+    </div>
+
+    <div class="page-tabs">
+      <button class="page-tab active" onclick="switchTab('overview',this)">Profil KK</button>
+      <button class="page-tab" onclick="switchTab('struktur',this)">Struktur Organisasi</button>
+      <button class="page-tab" onclick="switchTab('lab',this)">Laboratorium &amp; Riset Unggulan</button>
+      <button class="page-tab" onclick="switchTab('roadmap',this)">Roadmap 2025–2030</button>
+    </div>
+
+    <!-- TAB: OVERVIEW -->
+    <div id="tab-overview">
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="card-title mb-12">Visi &amp; Misi KK ETHES</div>
+          <p style="font-size:13px;color:var(--text2);line-height:1.75;margin-bottom:14px;">KK ETHES bertujuan menghasilkan dosen yang <strong>expert di bidangnya</strong>, mendorong riset berkualitas internasional, dan berkontribusi nyata pada masyarakat melalui Tridharma Perguruan Tinggi.</p>
+          <div class="alert alert-info" style="margin:0;">📌 Visi Jangka Panjang: <strong>National Excellence Entrepreneurial University (2028)</strong></div>
+        </div>
+        <div class="card">
+          <div class="card-title mb-12">SDGs yang Didukung</div>
+          <div>
+            <span class="sdg-chip" style="background:#E8F5EA;color:#2D7A3A;">🌿 SDG 3: Good Health</span>
+            <span class="sdg-chip" style="background:#FDF5E0;color:#8A6800;">⚡ SDG 7: Clean Energy</span>
+            <span class="sdg-chip" style="background:#EBF2F9;color:var(--navy);">💼 SDG 8: Decent Work</span>
+            <span class="sdg-chip" style="background:#F0EEF8;color:#5C4A9A;">🏭 SDG 9: Industry</span>
+            <span class="sdg-chip" style="background:#E0F4F2;color:var(--teal);">🏙️ SDG 11: Sustainable Cities</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title mb-12">Kontak Pengurus KK</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+          <div class="kontak-card"><div class="kavatar" style="background:var(--red);">MY</div><div><div style="font-size:12px;font-weight:700;color:var(--navy);">Mohamad Yani, S.S.T., M.Phil., Ph.D.</div><div style="font-size:10px;color:var(--text3);">Ketua KK ETHES</div></div></div>
+          <div class="kontak-card"><div class="kavatar" style="background:var(--navy);">AF</div><div><div style="font-size:12px;font-weight:700;color:var(--navy);">Anifatul Faricha, S.T., M.Sc., Ph.D.</div><div style="font-size:10px;color:var(--text3);">Ketua Sub-KK BEE</div></div></div>
+          <div class="kontak-card"><div class="kavatar" style="background:var(--teal);">HB</div><div><div style="font-size:12px;font-weight:700;color:var(--navy);">Hendy Briantoro, S.S.T., M.T., Ph.D.</div><div style="font-size:10px;color:var(--text3);">Ketua Sub-KK COMMET</div></div></div>
+          <div class="kontak-card"><div class="kavatar" style="background:#5C4A9A;">MU</div><div><div style="font-size:12px;font-weight:700;color:var(--navy);">Muhsin, S.T., M.T., Ph.D.</div><div style="font-size:10px;color:var(--text3);">Ketua Sub-KK COS(PI)</div></div></div>
+          <div class="kontak-card"><div class="kavatar" style="background:#1A7A6E;">RD</div><div><div style="font-size:12px;font-weight:700;color:var(--navy);">Rifki Dwi Putranto, S.T., M.T.</div><div style="font-size:10px;color:var(--text3);">Ketua Sub-KK PORSCE</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: STRUKTUR -->
+    <div id="tab-struktur" class="hidden">
+      <div class="card">
+        <div class="card-title mb-12">Struktur Organisasi Sub-KK</div>
+        <div class="org-head-card">
+          <div style="font-size:10px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px;">Ketua KK ETHES</div>
+          <div class="org-head-name">Mohamad Yani, S.S.T., M.Phil., Ph.D.</div>
+        </div>
+        <div class="org-connector"><div class="org-connector-line"></div></div>
+        <div class="sub-kk-grid">
+          <div class="sub-kk-card">
+            <div class="sub-kk-abbr">PORSCE</div>
+            <div class="sub-kk-name">Power System &amp; Energy Conversion</div>
+            <div class="sub-kk-ketua">Ketua: <strong>Rifki Dwi Putranto, S.T., M.T.</strong></div>
+            <div><span class="member-tag">Dr. Isa Hafidz</span><span class="member-tag">Dr. Chaironi L.</span><span class="member-tag">Lora Khaula A.</span></div>
+          </div>
+          <div class="sub-kk-card">
+            <div class="sub-kk-abbr">BEE</div>
+            <div class="sub-kk-name">Basic Electronics</div>
+            <div class="sub-kk-ketua">Ketua: <strong>Anifatul Faricha, S.T., M.Sc., Ph.D.</strong></div>
+            <div><span class="member-tag">Dwi Edi Setyawan</span></div>
+          </div>
+          <div class="sub-kk-card me">
+            <div class="sub-kk-abbr navy">CORES ★</div>
+            <div class="sub-kk-name">Control, Automation, Robotics &amp; Embedded</div>
+            <div class="sub-kk-ketua">Ketua: <strong>Mohamad Yani, S.S.T., M.Phil., Ph.D.</strong></div>
+            <div><span class="member-tag">Dr. Susijanto</span><span class="member-tag">Dimas A.</span><span class="member-tag">M. Iskandar</span><span class="member-tag">Eka Sari O.</span><span class="member-tag">Ardiansyah</span><span class="member-tag">Fanda Lyta</span></div>
+          </div>
+          <div class="sub-kk-card">
+            <div class="sub-kk-abbr">COMMET</div>
+            <div class="sub-kk-name">Communication Network</div>
+            <div class="sub-kk-ketua">Ketua: <strong>Hendy Briantoro, S.S.T., M.T., Ph.D.</strong></div>
+            <div><span class="member-tag">Nilla Rachmaningrum</span><span class="member-tag">Hamzah U.</span></div>
+          </div>
+          <div class="sub-kk-card">
+            <div class="sub-kk-abbr">COS(PI)</div>
+            <div class="sub-kk-name">Telecommunication &amp; Signal Processing</div>
+            <div class="sub-kk-ketua">Ketua: <strong>Muhsin, S.T., M.T., Ph.D.</strong></div>
+            <div><span class="member-tag">Dr. M. Yanuar</span><span class="member-tag">Dr. Fannush</span><span class="member-tag">Risdilah M.</span><span class="member-tag">Walid M.H.</span><span class="member-tag">Ir. Tri Agus</span><span class="member-tag">Arrizky A.</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: LAB + RISET UNGGULAN -->
+    <div id="tab-lab" class="hidden">
+      <div class="alert alert-info" style="margin-bottom:18px;">🔬 Setiap laboratorium ditampilkan bersama <strong>topik riset unggulan</strong> dan <strong>Principle Investigator (PI)</strong> yang aktif di lab tersebut.</div>
+
+      <!-- CORES -->
+      <div class="lab-section">
+        <div class="lab-header" style="background:var(--navy);">
+          <span class="tag" style="background:rgba(255,255,255,0.15);color:white;font-size:10px;flex-shrink:0;">CORES</span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">Control, Automation, Robotics and Embedded Systems</span>
+        </div>
+        <div class="lab-body">
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left">
+              <div class="lab-name">Lab. Robotics and Embedded System (ROS)</div>
+              <div class="lab-loc">📍 Gd. SBS Lantai 1</div>
+            </div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Cognitive Robotics</div><div class="riset-chip-pi">PI: Mohamad Yani, S.S.T., M.Phil., Ph.D.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Autonomous Intelligent Systems</div><div class="riset-chip-pi">PI: Ardiansyah Al Farouq, S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Robotics Vision</div><div class="riset-chip-pi">PI: Moch. Iskandar Riansyah, S.T., M.T.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left">
+              <div class="lab-name">Lab. Control and Automation (CAM)</div>
+              <div class="lab-loc">📍 Gd. SBS Lantai 5</div>
+            </div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Gait Control Systems</div><div class="riset-chip-pi">PI: Dimas Adiputra, B.Sc., M.Phil., Ph.D.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Pengolahan Sinyal Biomedis</div><div class="riset-chip-pi">PI: Eka Sari Oktarina, S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Computer Vision</div><div class="riset-chip-pi">PI: Dr. Susijanto Tri Rasmana, S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Embedded Software Engineering</div><div class="riset-chip-pi">PI: Fanda Lyta Suzanayanti, S.T., M.T.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PORSCE -->
+      <div class="lab-section">
+        <div class="lab-header" style="background:#1A7A6E;">
+          <span class="tag" style="background:rgba(255,255,255,0.15);color:white;font-size:10px;flex-shrink:0;">PORSCE</span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">Power System and Energy Conversion</span>
+        </div>
+        <div class="lab-body">
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left"><div class="lab-name">Lab. Power System and Energy Conversion (PORSCE)</div><div class="lab-loc">📍 Gd. SBS Lantai 1</div></div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Power System</div><div class="riset-chip-pi">PI: Rifki Dwi Putranto, S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Smart Grid</div><div class="riset-chip-pi">PI: Dr. Isa Hafidz, S.T., M.T.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left"><div class="lab-name">Lab. Basic Physics and Energy Storage Materials (BEST)</div><div class="lab-loc">📍 Gd. SBS Lantai 3</div></div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Energy Storage Material</div><div class="riset-chip-pi">PI: Dr. Chaironi Latif, S.Si.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Battery Management System</div><div class="riset-chip-pi">PI: Lora Khaula Amifia, S.Pd., M.Eng.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEE -->
+      <div class="lab-section">
+        <div class="lab-header" style="background:#8A6800;">
+          <span class="tag" style="background:rgba(255,255,255,0.15);color:white;font-size:10px;flex-shrink:0;">BEE</span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">Basic Electronics</span>
+        </div>
+        <div class="lab-body">
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left"><div class="lab-name">Lab. Basic Electronics (BEE)</div><div class="lab-loc">📍 Gd. SBS Lantai 2</div></div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Gas Sensing Technology</div><div class="riset-chip-pi">PI: Anifatul Faricha, S.T., M.Sc., Ph.D.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Wireless Power Transfer</div><div class="riset-chip-pi">PI: Dwi Edi Setyawan, S.T., M.T.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMET -->
+      <div class="lab-section">
+        <div class="lab-header" style="background:#4A5568;">
+          <span class="tag" style="background:rgba(255,255,255,0.15);color:white;font-size:10px;flex-shrink:0;">COMMET</span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">Communication Network</span>
+        </div>
+        <div class="lab-body">
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left"><div class="lab-name">Lab. Telematics and Communication Network (TCoN)</div><div class="lab-loc">📍 Gd. SBS Lantai 2</div></div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Communication Network</div><div class="riset-chip-pi">PI: Nilla Rachmaningrum, S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Wireless Technology</div><div class="riset-chip-pi">PI: Hendy Briantoro, S.S.T., M.T., Ph.D.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Network Architecture &amp; Handover (6G/7G)</div><div class="riset-chip-pi">PI: Hamzah Ulinuha M., S.T., M.T.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COS(PI) -->
+      <div class="lab-section">
+        <div class="lab-header" style="background:var(--red);">
+          <span class="tag" style="background:rgba(255,255,255,0.15);color:white;font-size:10px;flex-shrink:0;">COS(PI)</span>
+          <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.8);">Telecommunication and Signal Processing</span>
+        </div>
+        <div class="lab-body">
+          <div class="lab-row">
+            <div class="lab-cell lab-cell-left"><div class="lab-name">Lab. Telecommunication and Signal Processing (COS(PI))</div><div class="lab-loc">📍 Gd. SBS Lantai 2</div></div>
+            <div class="lab-cell">
+              <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">Riset Unggulan</div>
+              <div class="riset-list">
+                <div class="riset-chip"><div class="riset-chip-topic">Rekayasa Antena</div><div class="riset-chip-pi">PI: Muhsin, S.T., M.T., Ph.D.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Electromagnetic Interference</div><div class="riset-chip-pi">PI: Dr. Mohammad Yanuar H., S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Smart Phased Array Antenna</div><div class="riset-chip-pi">PI: Dr. Fannush Shofi Akbar, S.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Signal Processing</div><div class="riset-chip-pi">PI: Risdilah Mimma Untsa, S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Optimasi Sistem Komunikasi</div><div class="riset-chip-pi">PI: Walid Maulana H., S.T., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Adaptive Network &amp; Intelligent Comm.</div><div class="riset-chip-pi">PI: Ir. Tri Agus Djoko K., M.T.</div></div>
+                <div class="riset-chip"><div class="riset-chip-topic">Telecommunication Policy</div><div class="riset-chip-pi">PI: Arrizky Ayu Faradila P., S.T., M.T.</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: ROADMAP -->
+    <div id="tab-roadmap" class="hidden">
+      <div class="rm-grid">
+        <div class="rm-card active">
+          <div class="rm-year" style="color:var(--navy);">2025</div>
+          <div class="rm-badge" style="background:#FDEAEA;color:var(--red);">Sekarang</div>
+          <div class="rm-theme">Strengthening Disciplinary Expertise and Collaboration</div>
+          <div class="rm-item">Pembentukan dan konsolidasi Sub-KK</div>
+          <div class="rm-item">Mapping bidang keahlian anggota &amp; lab</div>
+          <div class="rm-item">Mapping training, sertifikasi &amp; riset unggulan</div>
+          <div class="rm-visi" style="background:#EBF2F9;color:var(--navy);">Research Excellence in Entrepreneurial University</div>
+        </div>
+        <div class="rm-card upcoming">
+          <div class="rm-year" style="color:var(--text2);">2026</div>
+          <div class="rm-badge" style="background:var(--bg2);color:var(--text3);">Berikutnya</div>
+          <div class="rm-theme">Enhancing Disciplinary Expertise and Collaboration</div>
+          <div class="rm-item">Kolaborasi mitra tridharma &amp; sertifikasi</div>
+          <div class="rm-item">Mendorong budaya riset berkualitas</div>
+          <div class="rm-visi" style="background:var(--bg2);color:var(--text3);">Innovation Excellence in Entrepreneurial University</div>
+        </div>
+        <div class="rm-card upcoming">
+          <div class="rm-year" style="color:var(--text2);">2027</div>
+          <div class="rm-badge" style="background:var(--bg2);color:var(--text3);">Internasionalisasi</div>
+          <div class="rm-theme">Partnership and Internationalization</div>
+          <div class="rm-item">MoU/MoA dengan mitra industri</div>
+          <div class="rm-item">Kerjasama internasional &amp; conference</div>
+          <div class="rm-visi" style="background:var(--bg2);color:var(--text3);">Partnership Excellence in Entrepreneurial University</div>
+        </div>
+        <div class="rm-card upcoming">
+          <div class="rm-year" style="color:var(--gold);">2028–30</div>
+          <div class="rm-badge" style="background:#FDF5E0;color:#8A6800;">Target Akhir</div>
+          <div class="rm-theme">Excellence in Disciplinary Expertise</div>
+          <div class="rm-item">Dosen expert di bidangnya masing-masing</div>
+          <div class="rm-item">Setiap Sub-KK menghasilkan NTF</div>
+          <div class="rm-visi" style="background:#FDF5E0;color:#8A6800;">National Excellence Entrepreneurial University</div>
+        </div>
+      </div>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--border);"><div class="card-title">Roadmap Riset per Sub-KK (2025–2029)</div></div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Sub-KK</th><th>2025</th><th>2026</th><th>2027</th><th>2028–2029</th></tr></thead>
+            <tbody>
+              <tr><td><span class="tag tag-navy">CORES</span></td><td style="font-size:11px;">Mobile robot navigation, Picobot Lower Limb, ADAS kamera tunggal</td><td style="font-size:11px;">Social navigation, Picobot modular, ADAS akurasi tinggi</td><td style="font-size:11px;">Robot manipulation, Smart living berbasis vision</td><td style="font-size:11px;">Autonomous Delivery Robot, Assistive robot smart apartment</td></tr>
+              <tr><td><span class="tag tag-teal">PORSCE</span></td><td style="font-size:11px;">Identifikasi instrumentasi power system</td><td style="font-size:11px;">Management energy, Smart Power Monitoring, EV</td><td style="font-size:11px;">Hybrid Energy, Hydrogen, Advanced Smart Monitoring</td><td style="font-size:11px;">Micro Grid, Energy storage sodium ion</td></tr>
+              <tr><td><span class="tag tag-gold">BEE</span></td><td style="font-size:11px;">Gas monitoring system, WPT</td><td style="font-size:11px;">Gas delivery system, Radiative WPT</td><td style="font-size:11px;">Gas sensing system, Rectenna development</td><td style="font-size:11px;">Fabrikasi sensor gas &amp; infrastruktur WPT</td></tr>
+              <tr><td><span class="tag tag-gray">COMMET</span></td><td style="font-size:11px;">LoRa IoT pendaki, V2X urban</td><td style="font-size:11px;">Monitoring pertanian urban, AIS kapal SDR</td><td style="font-size:11px;">Monitoring pertanian sub-urban</td><td style="font-size:11px;">Kontrol pertanian area urban &amp; sub-urban</td></tr>
+              <tr><td><span class="tag tag-red">COS(PI)</span></td><td style="font-size:11px;">Antena phased array subarray, 5G IKN, Gunshot Locator</td><td style="font-size:11px;">Sparse phased array, Optimasi 5G IKN</td><td style="font-size:11px;">Integrasi radar FMCW, 5G-6G co-existence</td><td style="font-size:11px;">Prototipe radar FMCW, multibeam lens antenna</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+<script src="shared-nav.js"></script>
+<script>
+buildNav('about');
+function switchTab(id,btn){
+  ['overview','struktur','lab','roadmap'].forEach(t=>document.getElementById('tab-'+t).classList.add('hidden'));
+  document.getElementById('tab-'+id).classList.remove('hidden');
+  document.querySelectorAll('.page-tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

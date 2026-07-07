@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KK ETHES — Laporan & Distribusi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.filter-bar{
+  background:white;border:1px solid var(--border);border-radius:12px;
+  padding:14px 18px;margin-bottom:18px;
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.filter-bar select,.filter-bar input{width:auto;flex:1;min-width:140px;max-width:200px;}
+.export-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px;}
+.export-card{
+  background:white;border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:18px;display:flex;align-items:center;gap:14px;cursor:pointer;
+  transition:all 0.2s;
+}
+.export-card:hover{border-color:var(--navy);transform:translateY(-1px);box-shadow:var(--shadow);}
+.export-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;
+}
+.export-info{flex:1;}
+.export-title{font-size:13px;font-weight:700;color:var(--navy);}
+.export-sub{font-size:10px;color:var(--text3);margin-top:1px;}
+.export-btn-wrap{flex-shrink:0;}
+
+.detail-modal-table table{font-size:11px;}
+.detail-modal-table th{background:var(--navy);color:white;padding:8px 10px;font-size:10px;}
+.detail-modal-table td{padding:8px 10px;border-bottom:1px solid var(--border);}
+
+.rank-item{
+  display:flex;align-items:center;gap:10px;padding:10px;
+  border-radius:8px;border:1px solid var(--border);background:var(--bg);
+}
+.rank-num{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:800;flex-shrink:0;
+  background:var(--bg2);color:var(--text3);
+}
+.rank-num.gold{background:#FDF5E0;color:#8A6800;}
+.rank-num.silver{background:#F0EEF0;color:#5A5A7A;}
+.rank-num.bronze{background:#FBF0E8;color:#8A4800;}
+</style>
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+
+    <div class="flex-between mb-16">
+      <div>
+        <div class="page-title">Laporan & Distribusi Capaian</div>
+        <div class="page-sub">Rekap seluruh anggota KK ETHES · Hak Akses: Ketua KK & Ketua Sub-KK</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline">🖨️ Cetak</button>
+        <button class="btn btn-primary">📥 Export Semua</button>
+      </div>
+    </div>
+
+    <!-- STAT SUMMARY -->
+    <div class="stat-grid" style="margin-bottom:18px;">
+      <div class="stat-card navy"><div class="stat-icon">📄</div><div class="stat-label">Total Publikasi</div><div class="stat-value">29</div><div class="stat-meta">18 jurnal · 11 prosiding</div></div>
+      <div class="stat-card teal"><div class="stat-icon">💰</div><div class="stat-label">Total Dana Hibah</div><div class="stat-value" style="font-size:24px;">2,3M</div><div class="stat-meta">7 hibah aktif</div></div>
+      <div class="stat-card gold"><div class="stat-icon">🏅</div><div class="stat-label">HKI & Paten</div><div class="stat-value">4</div><div class="stat-meta">2 granted · 2 pending</div></div>
+      <div class="stat-card red"><div class="stat-icon">🎓</div><div class="stat-label">Pelatihan/Sertifikasi</div><div class="stat-value">12</div><div class="stat-meta">Seluruh anggota KK</div></div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <label style="font-size:11px;font-weight:700;color:var(--text3);white-space:nowrap;">Filter:</label>
+      <select><option>Sem. Genap 2024/2025</option><option>Sem. Ganjil 2024/2025</option><option>Tahun 2025</option><option>Tahun 2024</option></select>
+      <select><option>Semua Sub-KK</option><option>CORES</option><option>PORSCE</option><option>BEE</option><option>COMMET</option><option>COS(PI)</option></select>
+      <select id="status-filter" onchange="filterTable()"><option value="">Semua Status</option><option value="Lengkap">Lengkap</option><option value="Parsial">Parsial</option><option value="Belum">Belum Input</option></select>
+      <input type="text" id="search-input" placeholder="Cari nama dosen..." onkeyup="filterTable()" style="max-width:180px;">
+      <button class="btn btn-primary btn-sm">Terapkan</button>
+      <button class="btn btn-outline btn-sm">Reset</button>
+    </div>
+
+    <!-- MAIN REKAP TABLE -->
+    <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);" class="flex-between">
+        <div class="card-title">Rekap Capaian Semua Dosen</div>
+        <button class="btn btn-outline btn-sm">📊 Export Excel</button>
+      </div>
+      <div class="table-wrap">
+        <table id="rekap-table">
+          <thead>
+            <tr>
+              <th>Nama Dosen</th><th>Sub-KK</th>
+              <th>Pub (1st/CA)</th><th>Hibah</th>
+              <th>Paten</th><th>Abdimas</th><th>Pelatihan</th>
+              <th>Status</th><th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="rekap-tbody">
+            <tr data-status="Lengkap">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Mohamad Yani</div><div style="font-size:10px;color:var(--text3)">Ketua Sub-KK</div></td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><strong>3</strong> <span style="font-size:10px;color:var(--teal)">(2 CA)</span></td>
+              <td>1 · Rp50jt</td><td>—</td><td>2</td><td>3</td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm" onclick="showDetail('Mohamad Yani')">Detail</button></td>
+            </tr>
+            <tr data-status="Lengkap">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Anifatul Faricha</div><div style="font-size:10px;color:var(--text3)">Ketua KK</div></td>
+              <td><span class="tag tag-gold">BEE</span></td>
+              <td><strong>4</strong> <span style="font-size:10px;color:var(--teal)">(3 CA)</span></td>
+              <td>2 · Rp120jt</td><td>1</td><td>1</td><td>2</td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm" onclick="showDetail('Anifatul Faricha')">Detail</button></td>
+            </tr>
+            <tr data-status="Lengkap">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Dr. Susijanto T.R.</div></td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><strong>2</strong> <span style="font-size:10px;color:var(--teal)">(1 CA)</span></td>
+              <td>1 · Rp75jt</td><td>1</td><td>1</td><td>2</td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detail</button></td>
+            </tr>
+            <tr data-status="Lengkap">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Muhsin, Ph.D.</div><div style="font-size:10px;color:var(--text3)">Ketua Sub-KK</div></td>
+              <td><span class="tag tag-red">COS(PI)</span></td>
+              <td><strong>3</strong> <span style="font-size:10px;color:var(--teal)">(2 CA)</span></td>
+              <td>1 · Rp60jt</td><td>1</td><td>2</td><td>1</td>
+              <td><span class="dot dot-green"></span><span style="font-size:11px;color:#27AE60;font-weight:600;">Lengkap</span></td>
+              <td><button class="btn btn-ghost btn-sm">Detail</button></td>
+            </tr>
+            <tr data-status="Parsial" style="background:#FAFDF8;">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Rifki Dwi Putranto</div><div style="font-size:10px;color:var(--text3)">Ketua Sub-KK</div></td>
+              <td><span class="tag tag-teal">PORSCE</span></td>
+              <td><strong>1</strong></td><td>1 · Rp40jt</td><td>—</td><td>1</td><td>—</td>
+              <td><span class="dot dot-amber"></span><span style="font-size:11px;color:var(--gold);font-weight:600;">Parsial</span></td>
+              <td><button class="btn btn-outline btn-sm" style="color:var(--gold);border-color:var(--gold);">Ingatkan</button></td>
+            </tr>
+            <tr data-status="Belum" style="background:#FFF9F9;">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Nilla Rachmaningrum</div><div style="font-size:10px;color:var(--text3)">Ketua Sub-KK</div></td>
+              <td><span class="tag tag-gray">COMMET</span></td>
+              <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+              <td><span class="dot dot-red"></span><span style="font-size:11px;color:var(--red);font-weight:600;">Belum Input</span></td>
+              <td><button class="btn btn-red btn-sm">Ingatkan</button></td>
+            </tr>
+            <tr data-status="Parsial">
+              <td><div style="font-size:12px;font-weight:700;color:var(--navy)">Dimas Adiputra</div></td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><strong>1</strong></td><td>—</td><td>—</td><td>1</td><td>1</td>
+              <td><span class="dot dot-amber"></span><span style="font-size:11px;color:var(--gold);font-weight:600;">Parsial</span></td>
+              <td><button class="btn btn-outline btn-sm" style="color:var(--gold);border-color:var(--gold);">Ingatkan</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PATEN & HKI TABLE -->
+    <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);" class="flex-between">
+        <div class="card-title">Rekap Paten & HKI Semua Anggota</div>
+        <button class="btn btn-outline btn-sm">📊 Export</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Judul Paten / HKI</th><th>Dosen</th><th>Sub-KK</th><th>Jenis</th><th>Status</th><th>No. DJKI</th><th>Dokumen</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-size:12px;max-width:220px;">Sistem Navigasi Robot Otonom Berbasis SLAM untuk Lingkungan Dinamis</td>
+              <td style="font-size:11px;font-weight:600;color:var(--navy);">Dr. Susijanto T.R.</td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><span class="tag tag-gray">Paten</span></td>
+              <td><span class="tag tag-green">Granted</span></td>
+              <td style="font-size:11px;font-family:monospace;">IDP000102234</td>
+              <td>
+                <button class="btn btn-outline btn-sm" style="gap:4px;">📄 Sertifikat</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;max-width:220px;">Antena Phased Array Berbasis Subarray untuk Komunikasi 5G</td>
+              <td style="font-size:11px;font-weight:600;color:var(--navy);">Muhsin, Ph.D.</td>
+              <td><span class="tag tag-red">COS(PI)</span></td>
+              <td><span class="tag tag-gray">Paten</span></td>
+              <td><span class="tag tag-gold">Pending</span></td>
+              <td style="font-size:11px;font-family:monospace;">P00202506789</td>
+              <td>
+                <button class="btn btn-outline btn-sm" style="gap:4px;">📋 Tanda Terima</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;max-width:220px;">Sensor Gas Selektif Berbasis Nanopartikel Metal Oksida</td>
+              <td style="font-size:11px;font-weight:600;color:var(--navy);">Anifatul Faricha</td>
+              <td><span class="tag tag-gold">BEE</span></td>
+              <td><span class="tag tag-gray">Paten Sederhana</span></td>
+              <td><span class="tag tag-green">Granted</span></td>
+              <td style="font-size:11px;font-family:monospace;">IDP000099811</td>
+              <td>
+                <button class="btn btn-outline btn-sm" style="gap:4px;">📄 Sertifikat</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;max-width:220px;">Sistem ADAS Kamera Tunggal untuk Kondisi Jalan Indonesia</td>
+              <td style="font-size:11px;font-weight:600;color:var(--navy);">Moch. Iskandar R.</td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><span class="tag tag-gray">Hak Cipta</span></td>
+              <td><span class="tag tag-gold">Pending</span></td>
+              <td style="font-size:11px;font-family:monospace;">EC00202511234</td>
+              <td>
+                <button class="btn btn-outline btn-sm" style="gap:4px;">📋 Tanda Terima</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PELATIHAN TABLE -->
+    <div class="card" style="margin-bottom:16px;padding:0;overflow:hidden;">
+      <div style="padding:16px 20px;border-bottom:1px solid var(--border);" class="flex-between">
+        <div class="card-title">Rekap Pelatihan & Sertifikasi Semua Anggota</div>
+        <button class="btn btn-outline btn-sm">📊 Export</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Nama Pelatihan</th><th>Dosen</th><th>Sub-KK</th><th>Jenis</th><th>Penyelenggara</th><th>Tahun</th><th>Sertifikat</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-size:12px;font-weight:600;color:var(--navy);">Certified Gait Analyst — Level 1</td>
+              <td style="font-size:11px;">Mohamad Yani</td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><span class="tag tag-gold">Sertif. Profesi</span></td>
+              <td style="font-size:11px;">GCMAS International</td>
+              <td>2025</td>
+              <td><button class="btn btn-outline btn-sm">📄 Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;font-weight:600;color:var(--navy);">Machine Learning Specialization</td>
+              <td style="font-size:11px;">Mohamad Yani</td>
+              <td><span class="tag tag-navy">CORES</span></td>
+              <td><span class="tag tag-navy">Short Course</span></td>
+              <td style="font-size:11px;">Coursera / DeepLearning.AI</td>
+              <td>2025</td>
+              <td><button class="btn btn-outline btn-sm">📄 Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;font-weight:600;color:var(--navy);">FPGA Design with Vivado</td>
+              <td style="font-size:11px;">Anifatul Faricha</td>
+              <td><span class="tag tag-gold">BEE</span></td>
+              <td><span class="tag tag-navy">Pelatihan</span></td>
+              <td style="font-size:11px;">Xilinx Academy</td>
+              <td>2025</td>
+              <td><button class="btn btn-outline btn-sm">📄 Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;font-weight:600;color:var(--navy);">Asesor Pembangkit Gardu Induk</td>
+              <td style="font-size:11px;">Rifki Dwi Putranto</td>
+              <td><span class="tag tag-teal">PORSCE</span></td>
+              <td><span class="tag tag-gold">Sertif. Profesi</span></td>
+              <td style="font-size:11px;">BNSP</td>
+              <td>2025</td>
+              <td><button class="btn btn-outline btn-sm">📄 Lihat</button></td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;font-weight:600;color:var(--navy);">MATLAB & Antenna Simulation</td>
+              <td style="font-size:11px;">Muhsin, Ph.D.</td>
+              <td><span class="tag tag-red">COS(PI)</span></td>
+              <td><span class="tag tag-navy">Pelatihan</span></td>
+              <td style="font-size:11px;">MathWorks</td>
+              <td>2025</td>
+              <td><button class="btn btn-outline btn-sm">📄 Lihat</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EXPORT OPTIONS -->
+    <div class="card" style="margin-bottom:16px;">
+      <div class="card-title mb-12">Export Laporan</div>
+      <div class="export-grid">
+        <div class="export-card">
+          <div class="export-icon" style="background:#EBF2F9;">📊</div>
+          <div class="export-info"><div class="export-title">Laporan Capaian KK</div><div class="export-sub">Rekap lengkap per semester</div></div>
+          <div class="export-btn-wrap"><button class="btn btn-primary btn-sm">PDF</button></div>
+        </div>
+        <div class="export-card">
+          <div class="export-icon" style="background:#E8F5EA;">📋</div>
+          <div class="export-info"><div class="export-title">Data Publikasi</div><div class="export-sub">Semua publikasi anggota</div></div>
+          <div class="export-btn-wrap"><button class="btn btn-teal btn-sm">Excel</button></div>
+        </div>
+        <div class="export-card">
+          <div class="export-icon" style="background:#FDF5E0;">🏅</div>
+          <div class="export-info"><div class="export-title">Rekap Paten & HKI</div><div class="export-sub">Daftar lengkap + sertifikat</div></div>
+          <div class="export-btn-wrap"><button class="btn btn-primary btn-sm">PDF</button></div>
+        </div>
+        <div class="export-card">
+          <div class="export-icon" style="background:#E8F5EA;">💰</div>
+          <div class="export-info"><div class="export-title">Rekap Hibah</div><div class="export-sub">Internal & eksternal + nilai dana</div></div>
+          <div class="export-btn-wrap"><button class="btn btn-teal btn-sm">Excel</button></div>
+        </div>
+        <div class="export-card">
+          <div class="export-icon" style="background:#F0EEF8;">🎓</div>
+          <div class="export-info"><div class="export-title">Rekap Pelatihan</div><div class="export-sub">Semua pelatihan & sertifikasi</div></div>
+          <div class="export-btn-wrap"><button class="btn btn-primary btn-sm">Excel</button></div>
+        </div>
+        <div class="export-card">
+          <div class="export-icon" style="background:#FDEAEA;">👥</div>
+          <div class="export-info"><div class="export-title">Profil Semua Dosen</div><div class="export-sub">Data lengkap anggota KK</div></div>
+          <div class="export-btn-wrap"><button class="btn btn-teal btn-sm">Excel</button></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay hidden" id="modal-detail">
+  <div class="modal" style="width:600px;max-width:95vw;">
+    <div class="modal-header">
+      <div class="modal-title" id="detail-name">Detail Capaian</div>
+      <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px;">
+      <div style="text-align:center;background:var(--bg);padding:10px;border-radius:8px;">
+        <div style="font-size:20px;font-weight:800;color:var(--navy);font-family:'Fraunces',serif;">3</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">Publikasi</div>
+      </div>
+      <div style="text-align:center;background:var(--bg);padding:10px;border-radius:8px;">
+        <div style="font-size:20px;font-weight:800;color:var(--teal);font-family:'Fraunces',serif;">1</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">Hibah</div>
+      </div>
+      <div style="text-align:center;background:var(--bg);padding:10px;border-radius:8px;">
+        <div style="font-size:20px;font-weight:800;color:var(--gold);font-family:'Fraunces',serif;">0</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">Paten</div>
+      </div>
+      <div style="text-align:center;background:var(--bg);padding:10px;border-radius:8px;">
+        <div style="font-size:20px;font-weight:800;color:var(--navy);font-family:'Fraunces',serif;">2</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">Abdimas</div>
+      </div>
+      <div style="text-align:center;background:var(--bg);padding:10px;border-radius:8px;">
+        <div style="font-size:20px;font-weight:800;color:var(--red);font-family:'Fraunces',serif;">3</div>
+        <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;">Pelatihan</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Publikasi</div>
+    <div class="gap-8" style="margin-bottom:14px;">
+      <div style="background:var(--bg);border-radius:8px;padding:10px 12px;">
+        <div style="font-size:12px;font-weight:700;color:var(--navy);">Socially-Aware Robot Navigation Using Deep RL</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">IEEE Access Q1 · 2025 · Penulis 1 + CA</div>
+      </div>
+      <div style="background:var(--bg);border-radius:8px;padding:10px 12px;">
+        <div style="font-size:12px;font-weight:700;color:var(--navy);">Cognitive Control Architecture for Picobot</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;">Robotics Auton. Syst. Q2 · 2025 · Corresponding</div>
+      </div>
+    </div>
+    <div style="font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px;">Pelatihan & Sertifikasi</div>
+    <div class="gap-8">
+      <div style="background:var(--bg);border-radius:8px;padding:10px 12px;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-size:12px;font-weight:700;color:var(--navy);">Certified Gait Analyst — Level 1</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px;">GCMAS International · Feb 2025</div>
+        </div>
+        <button class="btn btn-outline btn-sm">📄</button>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="closeModal('modal-detail')">Tutup</button>
+      <button class="btn btn-primary">📄 Export PDF Dosen Ini</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared-nav.js"></script>
+<script>
+buildNav('laporan');
+function filterTable() {
+  const status = document.getElementById('status-filter').value;
+  const search = document.getElementById('search-input').value.toLowerCase();
+  document.querySelectorAll('#rekap-tbody tr').forEach(row => {
+    const rowStatus = row.getAttribute('data-status') || '';
+    const rowText = row.textContent.toLowerCase();
+    const statusMatch = !status || rowStatus === status;
+    const searchMatch = !search || rowText.includes(search);
+    row.style.display = (statusMatch && searchMatch) ? '' : 'none';
+  });
+}
+function showDetail(name) {
+  document.getElementById('detail-name').textContent = 'Detail: ' + name;
+  document.getElementById('modal-detail').classList.remove('hidden');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+document.getElementById('modal-detail').addEventListener('click', function(e){
+  if(e.target===this) closeModal('modal-detail');
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KK ETHES — Input Capaian</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Fraunces:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+.tab-bar{
+  display:flex;gap:4px;background:white;
+  border:1px solid var(--border);border-radius:12px;padding:5px;
+  margin-bottom:20px;overflow-x:auto;
+}
+.tab-btn{
+  flex:1;padding:10px 8px;border-radius:9px;border:none;
+  background:none;cursor:pointer;font-size:12px;font-weight:600;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  color:var(--text3);white-space:nowrap;transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.tab-btn:hover{background:var(--bg);color:var(--text);}
+.tab-btn.active{background:var(--navy);color:white;box-shadow:0 2px 8px rgba(15,35,64,0.2);}
+.tab-count{
+  background:rgba(255,255,255,0.2);border-radius:10px;
+  padding:1px 6px;font-size:10px;
+}
+.tab-btn:not(.active) .tab-count{background:var(--bg2);color:var(--text3);}
+
+/* ENTRY ITEM */
+.entry-item{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;padding:12px 14px;
+  display:flex;align-items:flex-start;gap:12px;
+  transition:border-color 0.15s;
+}
+.entry-item:hover{border-color:var(--navy);}
+.entry-icon{
+  width:36px;height:36px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;flex-shrink:0;
+}
+.entry-body{flex:1;min-width:0;}
+.entry-title{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.entry-meta{font-size:11px;color:var(--text3);}
+.entry-actions{display:flex;gap:6px;align-items:center;flex-shrink:0;}
+
+/* ADD FORM PANEL */
+.add-panel{
+  background:var(--bg);border:1.5px dashed var(--border);
+  border-radius:var(--radius-lg);padding:20px;
+  margin-bottom:14px;display:none;
+}
+.add-panel.open{display:block;}
+.panel-header{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border);
+}
+.panel-title{font-size:14px;font-weight:700;color:var(--navy);}
+
+/* PROFILE SECTION */
+.profile-card{
+  background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);
+  border-radius:var(--radius-xl);padding:28px;margin-bottom:20px;
+  display:flex;align-items:center;gap:20px;
+}
+.profile-avatar{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--red);display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:800;color:white;flex-shrink:0;
+  border:3px solid rgba(255,255,255,0.2);
+}
+.profile-info{flex:1;}
+.profile-name{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:white;margin-bottom:2px;}
+.profile-meta{font-size:12px;color:rgba(255,255,255,0.6);}
+.profile-chips{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+.profile-chip{
+  background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);
+  padding:4px 10px;border-radius:20px;font-size:10px;font-weight:600;
+}
+.profile-chip.red{background:rgba(192,57,43,0.35);color:#FF8A80;}
+
+/* Stat mini bar */
+.my-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px;}
+.my-stat{background:white;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
+.my-stat-val{font-family:'Fraunces',serif;font-size:22px;font-weight:700;color:var(--navy);}
+.my-stat-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+</style>
+</head>
+<body>
+<nav class="navbar" id="navbar"></nav>
+<div class="layout">
+  <aside class="sidebar" id="sidebar"></aside>
+  <main class="main-content">
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="profile-avatar">MY</div>
+      <div class="profile-info">
+        <div class="profile-name">Mohamad Yani, S.T., M.Phil., Ph.D.</div>
+        <div class="profile-meta">NIDN: 0701038901 · S1 Teknik Elektro · Universitas Telkom Kampus Surabaya</div>
+        <div class="profile-chips">
+          <div class="profile-chip">Sub-KK CORES</div>
+          <div class="profile-chip">CoE: Cognitive Robotics</div>
+          <div class="profile-chip">Moshee: —</div>
+          <div class="profile-chip">Circlest: Robotics Research Group</div>
+          <div class="profile-chip red">Ketua Sub-KK</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" style="color:rgba(255,255,255,0.7);border-color:rgba(255,255,255,0.2);flex-shrink:0;" onclick="openEditProfile()">✏️ Edit Profil</button>
+    </div>
+
+    <!-- MY STATS -->
+    <div class="my-stats">
+      <div class="my-stat"><div class="my-stat-val">3</div><div class="my-stat-label">Publikasi</div></div>
+      <div class="my-stat"><div class="my-stat-val">1</div><div class="my-stat-label">Hibah</div></div>
+      <div class="my-stat"><div class="my-stat-val">0</div><div class="my-stat-label">Paten</div></div>
+      <div class="my-stat"><div class="my-stat-val">2</div><div class="my-stat-label">Abdimas</div></div>
+      <div class="my-stat"><div class="my-stat-val">3</div><div class="my-stat-label">Pelatihan</div></div>
+      <div class="my-stat" style="background:#EBF2F9;border-color:var(--navy);">
+        <div class="my-stat-val" style="color:var(--teal);">9</div>
+        <div class="my-stat-label" style="color:var(--navy);">Total</div>
+      </div>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <div class="flex-between mb-16">
+      <div>
+        <div class="page-title">Input Capaian</div>
+        <div class="page-sub">Semester Genap 2024/2025 · Deadline: 30 Juni 2025</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-outline">Simpan Draft</button>
+        <button class="btn btn-teal">✅ Submit Capaian</button>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="showTab('pub',this)">📄 Publikasi <span class="tab-count">3</span></button>
+      <button class="tab-btn" onclick="showTab('hibah',this)">💰 Hibah <span class="tab-count">1</span></button>
+      <button class="tab-btn" onclick="showTab('paten',this)">🏅 Paten & HKI <span class="tab-count">0</span></button>
+      <button class="tab-btn" onclick="showTab('abdimas',this)">🤝 Abdimas <span class="tab-count">2</span></button>
+      <button class="tab-btn" onclick="showTab('pelatihan',this)">🎓 Pelatihan & Sertifikasi <span class="tab-count">3</span></button>
+    </div>
+
+    <!-- ─────────────── TAB: PUBLIKASI ─────────────── -->
+    <div id="tab-pub">
+      <div class="alert alert-info">📌 Tandai posisi Anda sebagai <strong>Penulis Pertama</strong> dan/atau <strong>Corresponding Author</strong> untuk perhitungan KPI.</div>
+
+      <!-- ADD FORM -->
+      <div class="add-panel" id="form-pub">
+        <div class="panel-header">
+          <div class="panel-title">+ Tambah Publikasi Baru</div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleForm('form-pub')">✕ Tutup</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group full"><label>Judul Artikel <span class="req">*</span></label><input type="text" placeholder="Judul lengkap artikel"></div>
+          <div class="form-group">
+            <label>Jenis Publikasi <span class="req">*</span></label>
+            <select>
+              <option value="">-- Pilih --</option>
+              <option>Jurnal Internasional Bereputasi (Q1)</option>
+              <option>Jurnal Internasional Bereputasi (Q2)</option>
+              <option>Jurnal Internasional (Q3)</option>
+              <option>Jurnal Internasional (Q4)</option>
+              <option>Jurnal Nasional Sinta 1</option>
+              <option>Jurnal Nasional Sinta 2</option>
+              <option>Prosiding Internasional Bereputasi</option>
+              <option>Prosiding Nasional</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Posisi Penulis <span class="req">*</span></label>
+            <select>
+              <option value="">-- Pilih --</option>
+              <option>Penulis Pertama</option>
+              <option>Corresponding Author</option>
+              <option>Penulis Pertama + Corresponding Author</option>
+              <option>Penulis Kedua</option>
+              <option>Penulis Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Nama Jurnal / Prosiding <span class="req">*</span></label><input type="text" placeholder="Nama jurnal atau prosiding"></div>
+          <div class="form-group"><label>Penerbit / Publisher</label><input type="text" placeholder="Nama penerbit"></div>
+          <div class="form-group"><label>Volume</label><input type="text" placeholder="Vol. 12"></div>
+          <div class="form-group"><label>Nomor / Issue</label><input type="text" placeholder="No. 3"></div>
+          <div class="form-group"><label>Halaman</label><input type="text" placeholder="123–135"></div>
+          <div class="form-group"><label>Tahun Terbit <span class="req">*</span></label><input type="number" placeholder="2025"></div>
+          <div class="form-group"><label>DOI</label><input type="text" placeholder="10.1000/xyz123"></div>
+          <div class="form-group"><label>URL Artikel</label><input type="url" placeholder="https://doi.org/..."></div>
+          <div class="form-group"><label>ISSN</label><input type="text" placeholder="ISSN jurnal"></div>
+          <div class="form-group full">
+            <label>Upload Bukti (PDF/JPG/PNG, max 5MB)</label>
+            <div class="file-upload-area" onclick="this.querySelector('input').click()">
+              <div class="file-upload-icon">📎</div>
+              <div class="file-upload-text">Klik untuk upload bukti publikasi / screenshot acceptance</div>
+              <div class="file-upload-hint">Format: PDF, JPG, PNG · Maks. 5MB</div>
+              <input type="file" accept=".pdf,.jpg,.png" style="display:none">
+            </div>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-outline" onclick="toggleForm('form-pub')">Batal</button><button class="btn btn-primary">Simpan Publikasi</button></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('form-pub')">+ Tambah Publikasi</button>
+      </div>
+
+      <div class="gap-8">
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#EBF2F9;">📄</div>
+          <div class="entry-body">
+            <div class="entry-title">Socially-Aware Robot Navigation Using Deep Reinforcement Learning in Human-Shared Environments</div>
+            <div class="entry-meta">IEEE Access · 2025 · Vol. 13 · DOI: 10.1109/ACCESS.2025.001</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-teal">Q1</span>
+            <span class="tag tag-navy">Penulis 1 + CA</span>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+            <button class="btn btn-ghost btn-sm" style="color:var(--red)">🗑️</button>
+          </div>
+        </div>
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#EBF2F9;">📄</div>
+          <div class="entry-body">
+            <div class="entry-title">Cognitive Control Architecture for Lower-Limb Rehabilitation Exoskeleton (Picobot)</div>
+            <div class="entry-meta">Robotics and Autonomous Systems · 2025 · Elsevier</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-navy">Q2</span>
+            <span class="tag tag-gold">Corresponding</span>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+            <button class="btn btn-ghost btn-sm" style="color:var(--red)">🗑️</button>
+          </div>
+        </div>
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#EBF2F9;">📄</div>
+          <div class="entry-body">
+            <div class="entry-title">Mobile Robot Path Planning with Proxemic-Based Human Activity Recognition</div>
+            <div class="entry-meta">Proc. IEEE ICRA 2025 · Prosiding Internasional</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-gray">Prosiding</span>
+            <span class="tag tag-navy">Penulis 1</span>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+            <button class="btn btn-ghost btn-sm" style="color:var(--red)">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAB: HIBAH ─────────────── -->
+    <div id="tab-hibah" class="hidden">
+      <div class="add-panel" id="form-hibah">
+        <div class="panel-header">
+          <div class="panel-title">+ Tambah Hibah Penelitian</div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleForm('form-hibah')">✕ Tutup</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group full"><label>Judul Penelitian <span class="req">*</span></label><input type="text" placeholder="Judul hibah penelitian"></div>
+          <div class="form-group">
+            <label>Jenis Hibah <span class="req">*</span></label>
+            <select>
+              <option>Hibah Internal Tel-U</option>
+              <option>DRTPM Kemendikbudristek</option>
+              <option>BRIN</option>
+              <option>Industri / Swasta</option>
+              <option>Internasional</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Peran <span class="req">*</span></label>
+            <select><option>Ketua Peneliti</option><option>Anggota Peneliti</option></select>
+          </div>
+          <div class="form-group"><label>Nama Pemberi Hibah / Sponsor</label><input type="text" placeholder="Lembaga pemberi dana"></div>
+          <div class="form-group"><label>Nilai Dana (Rp) <span class="req">*</span></label><input type="number" placeholder="50000000"></div>
+          <div class="form-group"><label>Tahun Mulai</label><input type="number" placeholder="2025"></div>
+          <div class="form-group"><label>Tahun Selesai</label><input type="number" placeholder="2026"></div>
+          <div class="form-group"><label>Nomor Kontrak / SK</label><input type="text" placeholder="No. kontrak"></div>
+          <div class="form-group full">
+            <label>Upload SK / Kontrak Hibah (PDF, max 10MB)</label>
+            <div class="file-upload-area" onclick="this.querySelector('input').click()">
+              <div class="file-upload-icon">📋</div>
+              <div class="file-upload-text">Upload SK atau kontrak hibah</div>
+              <div class="file-upload-hint">Format: PDF · Maks. 10MB</div>
+              <input type="file" accept=".pdf" style="display:none">
+            </div>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-outline" onclick="toggleForm('form-hibah')">Batal</button><button class="btn btn-primary">Simpan Hibah</button></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('form-hibah')">+ Tambah Hibah</button>
+      </div>
+      <div class="gap-8">
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#E8F5EA;">💰</div>
+          <div class="entry-body">
+            <div class="entry-title">Pengembangan Robot Rehabilitasi Sosial Berbasis Cognitive AI untuk Lansia</div>
+            <div class="entry-meta">Hibah Internal Tel-U · 2025–2026 · Ketua Peneliti · Rp 50.000.000</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-teal">Internal</span>
+            <span class="tag tag-green">Ketua</span>
+            <button class="btn btn-ghost btn-sm">📄 SK</button>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAB: PATEN ─────────────── -->
+    <div id="tab-paten" class="hidden">
+      <div class="alert alert-warn">⚠️ Sertifikat paten <strong>wajib diupload</strong> jika status sudah <strong>Granted</strong>. Dokumen ini akan diverifikasi oleh Ketua KK.</div>
+
+      <div class="add-panel" id="form-paten">
+        <div class="panel-header">
+          <div class="panel-title">+ Tambah Paten / HKI</div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleForm('form-paten')">✕ Tutup</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group full"><label>Judul Paten / HKI <span class="req">*</span></label><input type="text" placeholder="Judul lengkap invensi"></div>
+          <div class="form-group">
+            <label>Jenis HKI <span class="req">*</span></label>
+            <select>
+              <option>Paten</option>
+              <option>Paten Sederhana</option>
+              <option>Hak Cipta</option>
+              <option>Merek Dagang</option>
+              <option>Desain Industri</option>
+              <option>Rahasia Dagang</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Status <span class="req">*</span></label>
+            <select id="paten-status" onchange="checkGranted()">
+              <option value="proses">Proses Permohonan</option>
+              <option value="pending">Terdaftar (Pending)</option>
+              <option value="granted">Granted ✓</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Nomor Pendaftaran DJKI</label><input type="text" placeholder="P00202500000 / IDP000000000"></div>
+          <div class="form-group"><label>Tanggal Permohonan <span class="req">*</span></label><input type="date"></div>
+          <div class="form-group" id="granted-date-group" style="display:none;"><label>Tanggal Granted <span class="req">*</span></label><input type="date"></div>
+          <div class="form-group full"><label>Inventor / Pemegang Hak (pisahkan dengan koma)</label><input type="text" placeholder="Nama inventor 1, Nama inventor 2, ..."></div>
+          <div class="form-group full"><label>Deskripsi Singkat Invensi</label><textarea placeholder="Uraian singkat tentang invensi ini..."></textarea></div>
+          <div class="form-group full" id="sertifikat-upload">
+            <label>Upload Sertifikat Paten (PDF, max 10MB) <span class="req" id="sert-req" style="display:none;">*</span></label>
+            <div class="file-upload-area" onclick="this.querySelector('input').click()">
+              <div class="file-upload-icon">🏅</div>
+              <div class="file-upload-text">Upload sertifikat paten dari DJKI</div>
+              <div class="file-upload-hint">WAJIB jika status Granted · Format: PDF · Maks. 10MB</div>
+              <input type="file" accept=".pdf" style="display:none">
+            </div>
+          </div>
+          <div class="form-group full">
+            <label>Upload Bukti Pendaftaran / Tanda Terima DJKI</label>
+            <div class="file-upload-area" onclick="this.querySelector('input').click()">
+              <div class="file-upload-icon">📋</div>
+              <div class="file-upload-text">Upload tanda terima permohonan DJKI</div>
+              <div class="file-upload-hint">Format: PDF, JPG, PNG · Maks. 5MB</div>
+              <input type="file" accept=".pdf,.jpg,.png" style="display:none">
+            </div>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-outline" onclick="toggleForm('form-paten')">Batal</button><button class="btn btn-primary">Simpan Paten</button></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('form-paten')">+ Tambah Paten / HKI</button>
+      </div>
+      <div style="text-align:center;padding:40px;color:var(--text3);">
+        <div style="font-size:32px;margin-bottom:8px;">🏅</div>
+        <div style="font-size:13px;font-weight:600;">Belum ada paten yang diinput</div>
+        <div style="font-size:11px;margin-top:4px;">Klik tombol di atas untuk menambahkan paten atau HKI</div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAB: ABDIMAS ─────────────── -->
+    <div id="tab-abdimas" class="hidden">
+      <div class="add-panel" id="form-abdimas">
+        <div class="panel-header">
+          <div class="panel-title">+ Tambah Abdimas</div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleForm('form-abdimas')">✕ Tutup</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group full"><label>Judul Kegiatan <span class="req">*</span></label><input type="text" placeholder="Judul pengabdian masyarakat"></div>
+          <div class="form-group">
+            <label>Jenis Kegiatan <span class="req">*</span></label>
+            <select>
+              <option>Penerapan Teknologi kepada Masyarakat</option>
+              <option>Pelatihan / Workshop</option>
+              <option>Penyuluhan</option>
+              <option>Training & Sertifikasi</option>
+              <option>Mitra Bestari</option>
+              <option>Pembicara</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Peran <span class="req">*</span></label>
+            <select><option>Ketua</option><option>Anggota</option></select>
+          </div>
+          <div class="form-group"><label>Nama Mitra / Institusi <span class="req">*</span></label><input type="text" placeholder="Nama mitra kegiatan"></div>
+          <div class="form-group"><label>Lokasi Kegiatan</label><input type="text" placeholder="Kota / lokasi"></div>
+          <div class="form-group"><label>Tanggal Mulai</label><input type="date"></div>
+          <div class="form-group"><label>Tanggal Selesai</label><input type="date"></div>
+          <div class="form-group"><label>Jumlah Peserta</label><input type="number" placeholder="0"></div>
+          <div class="form-group">
+            <label>Sumber Dana</label>
+            <select><option>Mandiri</option><option>Hibah Abdimas Internal</option><option>Hibah Abdimas Eksternal</option></select>
+          </div>
+          <div class="form-group">
+            <label>Luaran Kegiatan <span class="req">*</span></label>
+            <select>
+              <option>Laporan + Sertifikat</option>
+              <option>Publikasi Jurnal/Prosiding</option>
+              <option>HKI/Paten</option>
+              <option>Produk Teknologi</option>
+              <option>Video / Media Masa</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Upload Evidence / Sertifikat (PDF/JPG/PNG, max 10MB)</label>
+            <div class="file-upload-area" onclick="this.querySelector('input').click()">
+              <div class="file-upload-icon">🤝</div>
+              <div class="file-upload-text">Upload bukti kegiatan atau sertifikat</div>
+              <div class="file-upload-hint">Format: PDF, JPG, PNG · Maks. 10MB</div>
+              <input type="file" accept=".pdf,.jpg,.png" style="display:none">
+            </div>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-outline" onclick="toggleForm('form-abdimas')">Batal</button><button class="btn btn-primary">Simpan Abdimas</button></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('form-abdimas')">+ Tambah Abdimas</button>
+      </div>
+      <div class="gap-8">
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#F0EEF8;">🤝</div>
+          <div class="entry-body">
+            <div class="entry-title">Pelatihan PLC & Embedded System untuk Teknisi Industri</div>
+            <div class="entry-meta">Pelatihan · PT. Semen Indonesia · Surabaya · Maret 2025 · 40 peserta</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-gray">Sertifikat</span>
+            <button class="btn btn-ghost btn-sm">📄</button>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+          </div>
+        </div>
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#F0EEF8;">🤝</div>
+          <div class="entry-body">
+            <div class="entry-title">Workshop Autonomous Robot untuk Siswa SMA Surabaya</div>
+            <div class="entry-meta">Workshop · SMAN 5 Surabaya · April 2025 · 60 peserta</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-gray">Laporan</span>
+            <button class="btn btn-ghost btn-sm">📄</button>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────────── TAB: PELATIHAN & SERTIFIKASI ─────────────── -->
+    <div id="tab-pelatihan" class="hidden">
+      <div class="alert alert-info">🎓 Catat pelatihan yang Anda <strong>ikuti sebagai peserta</strong> (bukan sebagai penyelenggara). Upload sertifikat kelulusan sebagai bukti.</div>
+
+      <div class="add-panel" id="form-pelatihan">
+        <div class="panel-header">
+          <div class="panel-title">+ Tambah Pelatihan / Sertifikasi</div>
+          <button class="btn btn-ghost btn-sm" onclick="toggleForm('form-pelatihan')">✕ Tutup</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-group full"><label>Nama Pelatihan / Sertifikasi <span class="req">*</span></label><input type="text" placeholder="cth: Certified Gait Analyst, MATLAB Advanced, PLC Siemens, FPGA Design..."></div>
+          <div class="form-group">
+            <label>Bidang Pelatihan <span class="req">*</span></label>
+            <select>
+              <option value="">-- Pilih Bidang --</option>
+              <optgroup label="CORES">
+                <option>PLC (Programmable Logic Controller)</option>
+                <option>Image Processing</option>
+                <option>Computer Vision</option>
+                <option>Embedded System</option>
+                <option>Large Language Model (LLM)</option>
+                <option>Machine Learning & AI</option>
+                <option>STM32 / Mikrokontroler</option>
+                <option>Sinyal Biomedis</option>
+                <option>Autonomous Intelligent System</option>
+                <option>Robotics</option>
+                <option>Certified Gait Analyst</option>
+              </optgroup>
+              <optgroup label="PORSCE">
+                <option>Power System Analysis (PSA)</option>
+                <option>Asesor Pembangkit / Gardu Induk</option>
+                <option>Asesor PLTS (Panel Surya)</option>
+                <option>Baterai & Energy Storage</option>
+                <option>K3 & Pengelolaan Limbah Elektronik</option>
+                <option>ANSYS (Simulasi Power / Mekatronika)</option>
+              </optgroup>
+              <optgroup label="BEE">
+                <option>FPGA (Field Programmable Gate Array)</option>
+                <option>Teknik Digital</option>
+                <option>Electronics</option>
+                <option>Semikonduktor</option>
+              </optgroup>
+              <optgroup label="COMMET">
+                <option>IoT (Internet of Things)</option>
+                <option>Wireless Technology</option>
+                <option>Fiber Optic</option>
+                <option>Blockchain</option>
+                <option>Network & AI</option>
+              </optgroup>
+              <optgroup label="COS(PI)">
+                <option>MATLAB</option>
+                <option>Antenna Design</option>
+                <option>Remote Sensing</option>
+                <option>Electromagnetic Interference</option>
+                <option>Teknologi Akses</option>
+                <option>Optimasi Sistem Komunikasi</option>
+                <option>Telecommunication Technology</option>
+              </optgroup>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Jenis <span class="req">*</span></label>
+            <select>
+              <option>Pelatihan (Training)</option>
+              <option>Sertifikasi Profesi</option>
+              <option>Sertifikasi Internasional</option>
+              <option>Workshop</option>
+              <option>Short Course</option>
+              <option>Webinar / Seminar</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Penyelenggara <span class="req">*</span></label><input type="text" placeholder="cth: Siemens Indonesia, BNSP, Coursera, IEEE..."></div>
+          <div class="form-group"><label>Tempat / Platform</label><input type="text" placeholder="cth: Surabaya / Online (Coursera)"></div>
+          <div class="form-group"><label>Tanggal Mulai <span class="req">*</span></label><input type="date"></div>
+          <div class="form-group"><label>Tanggal Selesai <span class="req">*</span></label><input type="date"></div>
+          <div class="form-group"><label>Nomor Sertifikat</label><input type="text" placeholder="No. sertifikat (bila ada)"></div>
+          <div class="form-group"><label>Berlaku Hingga (Expiry)</label><input type="date"></div>
+          <div class="form-group">
+            <label>Durasi</label>
+            <input type="text" placeholder="cth: 3 hari, 40 jam, 2 minggu">
+          </div>
+          <div class="form-group">
+            <label>Biaya Pelatihan (Rp)</label>
+            <input type="number" placeholder="0 jika gratis / dibiayai">
+          </div>
+          <div class="form-group">
+            <label>Sumber Pembiayaan</label>
+            <select>
+              <option>Mandiri</option>
+              <option>Dana KK / Institusi</option>
+              <option>Hibah Eksternal</option>
+              <option>Gratis</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>Deskripsi / Materi yang Dipelajari</label>
+            <textarea placeholder="Topik-topik yang dibahas dalam pelatihan ini..."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Upload Sertifikat Pelatihan (PDF/JPG/PNG, max 5MB) <span class="req">*</span></label>
+            <div class="file-upload-area" onclick="this.querySelector('input').click()">
+              <div class="file-upload-icon">🎓</div>
+              <div class="file-upload-text">Upload sertifikat kelulusan pelatihan</div>
+              <div class="file-upload-hint">Format: PDF, JPG, PNG · Maks. 5MB</div>
+              <input type="file" accept=".pdf,.jpg,.png" style="display:none">
+            </div>
+          </div>
+        </div>
+        <div class="btn-row"><button class="btn btn-outline" onclick="toggleForm('form-pelatihan')">Batal</button><button class="btn btn-primary">Simpan Pelatihan</button></div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-primary btn-sm" onclick="toggleForm('form-pelatihan')">+ Tambah Pelatihan</button>
+      </div>
+      <div class="gap-8">
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#FDF5E0;">🎓</div>
+          <div class="entry-body">
+            <div class="entry-title">Certified Gait Analyst — Level 1</div>
+            <div class="entry-meta">Sertifikasi Profesi · GCMAS International · Online · Feb 2025 · 40 jam · No. CGA-2025-001</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-gold">Sertif. Profesi</span>
+            <span class="tag tag-green">CORES</span>
+            <button class="btn btn-ghost btn-sm">📄 Sertifikat</button>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+          </div>
+        </div>
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#FDF5E0;">🎓</div>
+          <div class="entry-body">
+            <div class="entry-title">Machine Learning Specialization — Coursera (Andrew Ng)</div>
+            <div class="entry-meta">Short Course · Coursera / DeepLearning.AI · Online · Jan 2025 · 3 bulan</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-navy">Short Course</span>
+            <span class="tag tag-green">CORES</span>
+            <button class="btn btn-ghost btn-sm">📄 Sertifikat</button>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+          </div>
+        </div>
+        <div class="entry-item">
+          <div class="entry-icon" style="background:#FDF5E0;">🎓</div>
+          <div class="entry-body">
+            <div class="entry-title">Computer Vision dengan OpenCV & Deep Learning</div>
+            <div class="entry-meta">Pelatihan · NVIDIA DLI · Surabaya · Mar 2025 · 3 hari</div>
+          </div>
+          <div class="entry-actions">
+            <span class="tag tag-navy">Pelatihan</span>
+            <span class="tag tag-green">CORES</span>
+            <button class="btn btn-ghost btn-sm">📄 Sertifikat</button>
+            <button class="btn btn-ghost btn-sm">✏️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- EDIT PROFILE MODAL -->
+<div class="modal-overlay hidden" id="modal-profil">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Edit Profil Dosen</div>
+      <button class="modal-close" onclick="closeModal('modal-profil')">✕</button>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">Data Pribadi</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Nama Lengkap + Gelar <span class="req">*</span></label><input type="text" value="Mohamad Yani, S.T., M.Phil., Ph.D."></div>
+        <div class="form-group"><label>NIDN <span class="req">*</span></label><input type="text" value="0701038901"></div>
+        <div class="form-group"><label>NIP</label><input type="text" placeholder="NIP (opsional)"></div>
+        <div class="form-group"><label>Program Studi</label>
+          <select>
+            <option value="">-- Pilih Prodi --</option>
+            <option selected>S1 Teknik Elektro</option>
+            <option>S1 Teknik Telekomunikasi</option>
+            <option>S1 Teknik Komputer</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Sub-KK</label>
+          <select>
+            <option selected>CORES — Control, Automation, Robotics & Embedded</option>
+            <option>PORSCE — Power System & Energy Conversion</option>
+            <option>BEE — Basic Electronics</option>
+            <option>COMMET — Communication Network</option>
+            <option>COS(PI) — Telecommunication & Signal Processing</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">Bidang Keahlian</div>
+      <div class="form-grid">
+        <div class="form-group full"><label>CoE (Centre of Excellence)</label>
+          <select>
+            <option value="">-- Pilih CoE --</option>
+            <optgroup label="CORES">
+              <option selected>Cognitive Robotics</option>
+              <option>Autonomous Intelligent Systems</option>
+              <option>Robotics Vision</option>
+              <option>Gait Control Systems</option>
+              <option>Pengolahan Sinyal Biomedis</option>
+              <option>Computer Vision</option>
+              <option>Embedded Software Engineering</option>
+            </optgroup>
+            <optgroup label="PORSCE">
+              <option>Power System</option>
+              <option>Smart Grid</option>
+              <option>Energy Storage Material</option>
+              <option>Battery Management System</option>
+            </optgroup>
+            <optgroup label="BEE">
+              <option>Gas Sensing Technology</option>
+              <option>Wireless Power Transfer</option>
+            </optgroup>
+            <optgroup label="COMMET">
+              <option>Communication Network</option>
+              <option>Wireless Technology</option>
+              <option>Network Architecture & Handover (6G/7G)</option>
+            </optgroup>
+            <optgroup label="COS(PI)">
+              <option>Rekayasa Antena</option>
+              <option>Electromagnetic Interference</option>
+              <option>Smart Phased Array Antenna</option>
+              <option>Signal Processing</option>
+              <option>Optimasi Sistem Komunikasi</option>
+              <option>Adaptive Network & Intelligent Communication</option>
+              <option>Telecommunication Policy</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group full"><label>Moshee</label><input type="text" placeholder="Link atau judul motivational sheet Anda"></div>
+        <div class="form-group full"><label>Circlest</label><input type="text" placeholder="Nama kelompok/lingkaran riset Anda" value="Robotics Research Group"></div>
+        <div class="form-group full"><label>Research Interest</label><input type="text" value="Autonomous Systems, AI, Mobile Robotics, Human-Robot Interaction" placeholder="Pisahkan dengan koma"></div>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">Profil Akademik</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Google Scholar URL</label><input type="url" placeholder="https://scholar.google.com/..."></div>
+        <div class="form-group"><label>Scopus Author ID</label><input type="text" placeholder="ID Scopus"></div>
+        <div class="form-group full"><label>ORCID</label><input type="text" placeholder="0000-0000-0000-0000"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-outline" onclick="closeModal('modal-profil')">Batal</button>
+      <button class="btn btn-primary">Simpan Perubahan</button>
+    </div>
+  </div>
+</div>
+
+<script src="shared-nav.js"></script>
+<script>
+buildNav('capaian');
+
+function showTab(id, btn) {
+  document.querySelectorAll('[id^="tab-"]').forEach(t => t.classList.add('hidden'));
+  document.getElementById('tab-' + id).classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleForm(id) {
+  const p = document.getElementById(id);
+  p.classList.toggle('open');
+  if(p.classList.contains('open')) p.scrollIntoView({behavior:'smooth', block:'start'});
+}
+function checkGranted() {
+  const val = document.getElementById('paten-status').value;
+  const grp = document.getElementById('granted-date-group');
+  const req = document.getElementById('sert-req');
+  grp.style.display = val === 'granted' ? 'flex' : 'none';
+  req.style.display = val === 'granted' ? 'inline' : 'none';
+}
+function openEditProfile() {
+  document.getElementById('modal-profil').classList.remove('hidden');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+document.getElementById('modal-profil').addEventListener('click', function(e){
+  if(e.target === this) closeModal('modal-profil');
+});
+</script>
+</body>
+</html>
