@@ -46,11 +46,13 @@ class AuthController extends Controller
             'prodi' => $request->prodi,
             'sub_kk_id' => $request->sub_kk_id,
             'role' => $request->role,
-            'remember_token' => $verificationToken,
         ]);
 
+        $user->remember_token = $verificationToken;
+        $user->save();
+
         // Send Email Verification
-        $verificationLink = env('FRONTEND_URL', 'https://kkeeats.com') . "/verify-email?email=" . urlencode($user->email) . "&token=" . $verificationToken;
+        $verificationLink = $request->getSchemeAndHttpHost() . "/verify-email?email=" . urlencode($user->email) . "&token=" . $verificationToken;
 
         try {
             Mail::raw("Halo {$user->name},\n\nTerima kasih telah mendaftar di EEATS Portal.\n\nSilakan klik tautan berikut untuk memverifikasi alamat email Anda:\n{$verificationLink}\n\nJika tautan tidak bisa di-klik, Anda dapat menyalin dan menempelkannya langsung ke peramban (browser) Anda.\n\nSalam hangat,\nKelompok Keahlian EEATS", function ($message) use ($user) {

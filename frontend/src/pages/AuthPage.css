@@ -50,8 +50,8 @@ html:has(.auth-fullscreen-container),
 }
 
 .auth-card-logo {
-  max-height: 44px;
-  max-width: 160px;
+  max-height: 56px;
+  max-width: 190px;
   object-fit: contain;
   margin-bottom: 24px;
   filter: drop-shadow(0 2px 4px rgba(15, 35, 64, 0.05));
