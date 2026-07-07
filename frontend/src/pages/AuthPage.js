@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import useAuthStore from '../store/authStore';
 import useModalStore from '../store/modalStore';
-import logoKkEthes from '../assets/logo-kk-ethes.png';
+import logoBbfw from '../assets/ethes-bbfw.png'; // Blue background font white logo
 
 export default function AuthPage() {
   const navigate = useNavigate();
@@ -17,8 +17,9 @@ export default function AuthPage() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
 
-  // Register Steps: 'personal' -> 'role' -> 'credentials'
-  const [registerStep, setRegisterStep] = useState('personal');
+  // Register Steps: 
+  // 1: name -> 2: nidn -> 3: prodi -> 4: subkk -> 5: role -> 6: email -> 7: password
+  const [registerStep, setRegisterStep] = useState(1);
   const [regName, setRegName] = useState('');
   const [regNidn, setRegNidn] = useState('');
   const [regProdi, setRegProdi] = useState('');
@@ -34,11 +35,10 @@ export default function AuthPage() {
   useEffect(() => {
     clearError();
     setIsSubmitting(false);
-    // Reset steps when switching mode
     if (mode === 'login') {
       setLoginStep('email');
     } else {
-      setRegisterStep('personal');
+      setRegisterStep(1);
     }
   }, [mode, clearError]);
 
@@ -82,30 +82,30 @@ export default function AuthPage() {
     }
   };
 
-  // Register Handlers
-  const handleRegisterPersonalNext = (e) => {
+  // Register Step-by-Step Handlers
+  const handleRegisterNext = (e) => {
     e.preventDefault();
-    if (!regName || !regNidn || !regProdi || !regSubKk) {
-      return showAlert('Harap isi semua data pribadi.', 'Peringatan', 'error');
+    if (registerStep === 1 && !regName) return showAlert('Harap isi nama lengkap Anda.', 'Peringatan', 'error');
+    if (registerStep === 2 && !regNidn) return showAlert('Harap isi NIDN Anda.', 'Peringatan', 'error');
+    if (registerStep === 3 && !regProdi) return showAlert('Harap pilih program studi.', 'Peringatan', 'error');
+    if (registerStep === 4 && !regSubKk) return showAlert('Harap pilih sub-kelompok keahlian.', 'Peringatan', 'error');
+    if (registerStep === 5 && !regRole) return showAlert('Harap pilih peran.', 'Peringatan', 'error');
+    if (registerStep === 6) {
+      if (!regEmail) return showAlert('Harap isi email institusi Anda.', 'Peringatan', 'error');
+      if (!validateEmail(regEmail)) return showAlert('Format email tidak valid.', 'Peringatan', 'error');
     }
-    setRegisterStep('role');
+    
+    setRegisterStep(prev => prev + 1);
   };
 
-  const handleRegisterRoleNext = (e) => {
-    e.preventDefault();
-    if (!regRole) {
-      return showAlert('Harap pilih peran Anda.', 'Peringatan', 'error');
-    }
-    setRegisterStep('credentials');
+  const handleRegisterBack = () => {
+    setRegisterStep(prev => Math.max(1, prev - 1));
   };
 
   const handleRegisterSubmit = async (e) => {
     e.preventDefault();
-    if (!regEmail || !regPass || !regPassConfirm) {
-      return showAlert('Harap isi email dan kata sandi.', 'Peringatan', 'error');
-    }
-    if (!validateEmail(regEmail)) {
-      return showAlert('Format email tidak valid.', 'Peringatan', 'error');
+    if (!regPass || !regPassConfirm) {
+      return showAlert('Harap isi kata sandi dan konfirmasi.', 'Peringatan', 'error');
     }
     if (regPass.length < 8) {
       return showAlert('Kata sandi minimal 8 karakter.', 'Peringatan', 'error');
@@ -139,270 +139,363 @@ export default function AuthPage() {
     }
   };
 
+  // Get current sub_kk name for display
+  const selectedSubKkName = subKks.find(sk => String(sk.id) === String(regSubKk))?.name || '';
+
   return (
     <div className="auth-fullscreen-container">
       <div className="auth-card">
-        {/* Logo and Brand */}
-        <div className="auth-card-header">
-          <img src={logoKkEthes} alt="Logo EEATS" className="auth-card-logo" />
-          <h2 className="auth-card-title">EEATS Portal</h2>
-          <p className="auth-card-subtitle">Sistem Informasi Kelompok Keahlian</p>
+        
+        {/* ========================================================================= */}
+        {/* LEFT COLUMN: BRANDING & DESCRIPTIVE STATE */}
+        {/* ========================================================================= */}
+        <div className="auth-card-left">
+          <img src={logoBbfw} alt="Logo EEATS" className="auth-card-logo" />
+          
+          <div className="auth-left-content fade-in">
+            {mode === 'login' ? (
+              <>
+                <h2 className="auth-left-title">{loginStep === 'email' ? 'Login' : 'Selamat Datang'}</h2>
+                <p className="auth-left-subtitle">
+                  {loginStep === 'email' ? 'Gunakan email anda' : 'Masukkan sandi untuk melanjutkan'}
+                </p>
+              </>
+            ) : (
+              <>
+                <h2 className="auth-left-title">Daftar Akun</h2>
+                <p className="auth-left-subtitle">
+                  {registerStep === 1 && 'Langkah 1: Tulis nama lengkap Anda'}
+                  {registerStep === 2 && 'Langkah 2: Tulis NIDN Anda'}
+                  {registerStep === 3 && 'Langkah 3: Pilih program studi Anda'}
+                  {registerStep === 4 && 'Langkah 4: Pilih sub-kelompok keahlian'}
+                  {registerStep === 5 && 'Langkah 5: Tentukan peran/jabatan Anda'}
+                  {registerStep === 6 && 'Langkah 6: Gunakan email institusi Anda'}
+                  {registerStep === 7 && 'Langkah 7: Buat kata sandi akun'}
+                </p>
+              </>
+            )}
+          </div>
         </div>
 
-        {authError && (
-          <div className="auth-alert alert-danger">
-            <span>⚠️</span> <span>{authError}</span>
-          </div>
-        )}
+        {/* ========================================================================= */}
+        {/* RIGHT COLUMN: ACTION & INPUT FIELDS */}
+        {/* ========================================================================= */}
+        <div className="auth-card-right">
+          
+          {authError && (
+            <div className="auth-alert alert-danger">
+              <span>⚠️</span> <span>{authError}</span>
+            </div>
+          )}
 
-        {/* ========================================================================= */}
-        {/* LOGIN MODE */}
-        {/* ========================================================================= */}
-        {mode === 'login' && (
-          <div className="auth-step-wrapper">
-            {loginStep === 'email' && (
-              <form onSubmit={handleLoginEmailNext} className="auth-form fade-in">
-                <h3 className="auth-form-title">Login</h3>
-                <p className="auth-form-desc">Gunakan Akun Institusi Telkom University Anda</p>
-                
-                <div className="form-group mb-20">
-                  <div className="floating-input-container">
-                    <input 
-                      type="email" 
-                      id="loginEmail"
-                      value={loginEmail} 
-                      onChange={e => setLoginEmail(e.target.value)} 
-                      placeholder=" "
-                      required
-                    />
-                    <label htmlFor="loginEmail">Email</label>
+          {/* ──────────────────────────────────────────────────────── */}
+          {/* LOGIN MODE */}
+          {/* ──────────────────────────────────────────────────────── */}
+          {mode === 'login' && (
+            <div className="auth-step-wrapper">
+              
+              {/* Step 1: Input Email */}
+              {loginStep === 'email' && (
+                <form onSubmit={handleLoginEmailNext} className="auth-form fade-in">
+                  <div className="form-group mb-24">
+                    <div className="floating-input-container">
+                      <input 
+                        type="email" 
+                        id="loginEmail"
+                        value={loginEmail} 
+                        onChange={e => setLoginEmail(e.target.value)} 
+                        placeholder=" "
+                        required
+                        autoFocus
+                      />
+                      <label htmlFor="loginEmail">Email</label>
+                    </div>
                   </div>
-                </div>
 
-                <div className="auth-action-row">
-                  <button type="button" className="btn-text" onClick={() => setMode('register')}>
-                    Buat akun baru
-                  </button>
-                  <button type="submit" className="btn btn-primary btn-next">
-                    Berikutnya
-                  </button>
-                </div>
-              </form>
-            )}
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-text" onClick={() => setMode('register')}>
+                      Buat akun
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
 
-            {loginStep === 'password' && (
-              <form onSubmit={handleLoginSubmit} className="auth-form fade-in">
-                <h3 className="auth-form-title">Selamat Datang</h3>
-                
-                {/* Active Email indicator (like Google) */}
-                <div className="auth-identity-pill" onClick={() => setLoginStep('email')}>
-                  <span>{loginEmail}</span>
-                  <span className="pill-arrow">▼</span>
-                </div>
+              {/* Step 2: Input Password */}
+              {loginStep === 'password' && (
+                <form onSubmit={handleLoginSubmit} className="auth-form fade-in">
+                  {/* Identity Pill */}
+                  <div className="auth-identity-pill" onClick={() => setLoginStep('email')}>
+                    <span>{loginEmail}</span>
+                    <span className="pill-arrow">▼</span>
+                  </div>
 
-                <div className="form-group mb-20">
-                  <div className="floating-input-container">
-                    <input 
-                      type="password" 
-                      id="loginPass"
-                      value={loginPass} 
-                      onChange={e => setLoginPass(e.target.value)} 
-                      placeholder=" "
+                  <div className="form-group mb-24">
+                    <div className="floating-input-container">
+                      <input 
+                        type="password" 
+                        id="loginPass"
+                        value={loginPass} 
+                        onChange={e => setLoginPass(e.target.value)} 
+                        placeholder=" "
+                        required
+                        autoFocus
+                      />
+                      <label htmlFor="loginPass">Masukkan sandi Anda</label>
+                    </div>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-text" onClick={() => setLoginStep('email')}>
+                      Ganti email
+                    </button>
+                    <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+                      {isSubmitting ? 'Memproses...' : 'Berikutnya'}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          )}
+
+          {/* ──────────────────────────────────────────────────────── */}
+          {/* REGISTER MODE (Multi-step single data cards) */}
+          {/* ──────────────────────────────────────────────────────── */}
+          {mode === 'register' && (
+            <div className="auth-step-wrapper">
+              
+              {/* Step 1: Nama Lengkap */}
+              {registerStep === 1 && (
+                <form onSubmit={handleRegisterNext} className="auth-form fade-in">
+                  <div className="form-group mb-24">
+                    <div className="floating-input-container">
+                      <input 
+                        type="text" 
+                        id="regName"
+                        value={regName} 
+                        onChange={e => setRegName(e.target.value)} 
+                        placeholder=" "
+                        required
+                        autoFocus
+                      />
+                      <label htmlFor="regName">Nama Lengkap & Gelar</label>
+                    </div>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-text" onClick={() => setMode('login')}>
+                      Login saja
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Step 2: NIDN */}
+              {registerStep === 2 && (
+                <form onSubmit={handleRegisterNext} className="auth-form fade-in">
+                  <div className="auth-badge-info">Nama: <strong>{regName}</strong></div>
+
+                  <div className="form-group mb-24">
+                    <div className="floating-input-container">
+                      <input 
+                        type="text" 
+                        id="regNidn"
+                        value={regNidn} 
+                        onChange={e => setRegNidn(e.target.value)} 
+                        placeholder=" "
+                        required
+                        autoFocus
+                      />
+                      <label htmlFor="regNidn">NIDN</label>
+                    </div>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
+                      Kembali
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Step 3: Program Studi */}
+              {registerStep === 3 && (
+                <form onSubmit={handleRegisterNext} className="auth-form fade-in">
+                  <div className="auth-badge-info">NIDN: <strong>{regNidn}</strong></div>
+
+                  <div className="form-group mb-24">
+                    <select 
+                      className="styled-select"
+                      value={regProdi} 
+                      onChange={e => setRegProdi(e.target.value)} 
                       required
                       autoFocus
-                    />
-                    <label htmlFor="loginPass">Masukkan Kata Sandi</label>
+                    >
+                      <option value="">Pilih Program Studi</option>
+                      <option value="Teknik Elektro">Teknik Elektro</option>
+                      <option value="Teknik Telekomunikasi">Teknik Telekomunikasi</option>
+                      <option value="Teknik Komputer">Teknik Komputer</option>
+                    </select>
                   </div>
-                </div>
 
-                <div className="auth-action-row">
-                  <button type="button" className="btn-text" onClick={() => setLoginStep('email')}>
-                    Ganti email
-                  </button>
-                  <button type="submit" className="btn btn-primary btn-next" disabled={isSubmitting}>
-                    {isSubmitting ? 'Memproses...' : 'Masuk'}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        )}
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
+                      Kembali
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
 
-        {/* ========================================================================= */}
-        {/* REGISTER MODE */}
-        {/* ========================================================================= */}
-        {mode === 'register' && (
-          <div className="auth-step-wrapper">
-            {/* Step indicator */}
-            <div className="auth-progress-bar">
-              <div className={`progress-segment ${registerStep === 'personal' ? 'active' : ''}`}>Data Diri</div>
-              <div className={`progress-segment ${registerStep === 'role' ? 'active' : ''}`}>Peran</div>
-              <div className={`progress-segment ${registerStep === 'credentials' ? 'active' : ''}`}>Kredensial</div>
+              {/* Step 4: Sub-Kelompok Keahlian */}
+              {registerStep === 4 && (
+                <form onSubmit={handleRegisterNext} className="auth-form fade-in">
+                  <div className="auth-badge-info">Prodi: <strong>{regProdi}</strong></div>
+
+                  <div className="form-group mb-24">
+                    <select 
+                      className="styled-select"
+                      value={regSubKk} 
+                      onChange={e => setRegSubKk(e.target.value)} 
+                      required
+                      autoFocus
+                    >
+                      <option value="">Pilih Sub-KK</option>
+                      {subKks.map(sk => (
+                        <option key={sk.id} value={sk.id}>{sk.name}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
+                      Kembali
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Step 5: Peran */}
+              {registerStep === 5 && (
+                <form onSubmit={handleRegisterNext} className="auth-form fade-in">
+                  <div className="auth-badge-info">Sub-KK: <strong>{selectedSubKkName}</strong></div>
+
+                  <div className="form-group mb-24">
+                    <select 
+                      className="styled-select"
+                      value={regRole} 
+                      onChange={e => setRegRole(e.target.value)} 
+                      required
+                      autoFocus
+                    >
+                      <option value="anggota">Anggota</option>
+                      <option value="ketua_sub_kk">Ketua Sub-KK</option>
+                      <option value="ketua_kk">Ketua KK</option>
+                    </select>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
+                      Kembali
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Step 6: Email Institusi */}
+              {registerStep === 6 && (
+                <form onSubmit={handleRegisterNext} className="auth-form fade-in">
+                  <div className="auth-badge-info">Peran: <strong>{regRole}</strong></div>
+
+                  <div className="form-group mb-24">
+                    <div className="floating-input-container">
+                      <input 
+                        type="email" 
+                        id="regEmail"
+                        value={regEmail} 
+                        onChange={e => setRegEmail(e.target.value)} 
+                        placeholder=" "
+                        required
+                        autoFocus
+                      />
+                      <label htmlFor="regEmail">Email Institusi (@telkomuniversity.ac.id)</label>
+                    </div>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
+                      Kembali
+                    </button>
+                    <button type="submit" className="btn btn-primary">
+                      Berikutnya
+                    </button>
+                  </div>
+                </form>
+              )}
+
+              {/* Step 7: Kata Sandi */}
+              {registerStep === 7 && (
+                <form onSubmit={handleRegisterSubmit} className="auth-form fade-in">
+                  <div className="auth-badge-info">Email: <strong>{regEmail}</strong></div>
+
+                  <div className="form-group mb-16">
+                    <div className="floating-input-container">
+                      <input 
+                        type="password" 
+                        id="regPass"
+                        value={regPass} 
+                        onChange={e => setRegPass(e.target.value)} 
+                        placeholder=" "
+                        required
+                        autoFocus
+                      />
+                      <label htmlFor="regPass">Kata Sandi (Min. 8 karakter)</label>
+                    </div>
+                  </div>
+
+                  <div className="form-group mb-24">
+                    <div className="floating-input-container">
+                      <input 
+                        type="password" 
+                        id="regPassConfirm"
+                        value={regPassConfirm} 
+                        onChange={e => setRegPassConfirm(e.target.value)} 
+                        placeholder=" "
+                        required
+                      />
+                      <label htmlFor="regPassConfirm">Konfirmasi Kata Sandi</label>
+                    </div>
+                  </div>
+
+                  <div className="auth-action-row">
+                    <button type="button" className="btn-secondary" onClick={handleRegisterBack}>
+                      Kembali
+                    </button>
+                    <button type="submit" className="btn btn-success" disabled={isSubmitting}>
+                      {isSubmitting ? 'Memproses...' : 'Daftar Sekarang'}
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
-
-            {/* Step 1: Personal */}
-            {registerStep === 'personal' && (
-              <form onSubmit={handleRegisterPersonalNext} className="auth-form fade-in">
-                <h3 className="auth-form-title">Buat Akun</h3>
-                <p className="auth-form-desc">Langkah 1: Masukkan data diri akademis Anda</p>
-
-                <div className="form-group mb-16">
-                  <div className="floating-input-container">
-                    <input 
-                      type="text" 
-                      id="regName"
-                      value={regName} 
-                      onChange={e => setRegName(e.target.value)} 
-                      placeholder=" "
-                      required
-                    />
-                    <label htmlFor="regName">Nama Lengkap & Gelar</label>
-                  </div>
-                </div>
-
-                <div className="form-group mb-16">
-                  <div className="floating-input-container">
-                    <input 
-                      type="text" 
-                      id="regNidn"
-                      value={regNidn} 
-                      onChange={e => setRegNidn(e.target.value)} 
-                      placeholder=" "
-                      required
-                    />
-                    <label htmlFor="regNidn">NIDN</label>
-                  </div>
-                </div>
-
-                <div className="form-group mb-16">
-                  <select 
-                    className="styled-select"
-                    value={regProdi} 
-                    onChange={e => setRegProdi(e.target.value)} 
-                    required
-                  >
-                    <option value="">Pilih Program Studi</option>
-                    <option value="Teknik Elektro">Teknik Elektro</option>
-                    <option value="Teknik Telekomunikasi">Teknik Telekomunikasi</option>
-                    <option value="Teknik Komputer">Teknik Komputer</option>
-                  </select>
-                </div>
-
-                <div className="form-group mb-20">
-                  <select 
-                    className="styled-select"
-                    value={regSubKk} 
-                    onChange={e => setRegSubKk(e.target.value)} 
-                    required
-                  >
-                    <option value="">Pilih Sub-Kelompok Keahlian</option>
-                    {subKks.map(sk => (
-                      <option key={sk.id} value={sk.id}>{sk.name}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="auth-action-row">
-                  <button type="button" className="btn-text" onClick={() => setMode('login')}>
-                    Sudah punya akun?
-                  </button>
-                  <button type="submit" className="btn btn-primary btn-next">
-                    Berikutnya
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* Step 2: Role */}
-            {registerStep === 'role' && (
-              <form onSubmit={handleRegisterRoleNext} className="auth-form fade-in">
-                <h3 className="auth-form-title">Pilih Peran</h3>
-                <p className="auth-form-desc">Langkah 2: Tentukan jabatan Anda di Kelompok Keahlian</p>
-
-                <div className="form-group mb-24">
-                  <select 
-                    className="styled-select"
-                    value={regRole} 
-                    onChange={e => setRegRole(e.target.value)} 
-                    required
-                  >
-                    <option value="anggota">Anggota</option>
-                    <option value="ketua_sub_kk">Ketua Sub-KK</option>
-                    <option value="ketua_kk">Ketua KK</option>
-                  </select>
-                </div>
-
-                <div className="auth-action-row">
-                  <button type="button" className="btn-secondary" onClick={() => setRegisterStep('personal')}>
-                    Kembali
-                  </button>
-                  <button type="submit" className="btn btn-primary btn-next">
-                    Berikutnya
-                  </button>
-                </div>
-              </form>
-            )}
-
-            {/* Step 3: Credentials */}
-            {registerStep === 'credentials' && (
-              <form onSubmit={handleRegisterSubmit} className="auth-form fade-in">
-                <h3 className="auth-form-title">Kredensial Login</h3>
-                <p className="auth-form-desc">Langkah 3: Masukkan email dan buat kata sandi baru</p>
-
-                <div className="form-group mb-16">
-                  <div className="floating-input-container">
-                    <input 
-                      type="email" 
-                      id="regEmail"
-                      value={regEmail} 
-                      onChange={e => setRegEmail(e.target.value)} 
-                      placeholder=" "
-                      required
-                    />
-                    <label htmlFor="regEmail">Email Institusi (@telkomuniversity.ac.id)</label>
-                  </div>
-                </div>
-
-                <div className="form-group mb-16">
-                  <div className="floating-input-container">
-                    <input 
-                      type="password" 
-                      id="regPass"
-                      value={regPass} 
-                      onChange={e => setRegPass(e.target.value)} 
-                      placeholder=" "
-                      required
-                    />
-                    <label htmlFor="regPass">Kata Sandi (Min. 8 karakter)</label>
-                  </div>
-                </div>
-
-                <div className="form-group mb-20">
-                  <div className="floating-input-container">
-                    <input 
-                      type="password" 
-                      id="regPassConfirm"
-                      value={regPassConfirm} 
-                      onChange={e => setRegPassConfirm(e.target.value)} 
-                      placeholder=" "
-                      required
-                    />
-                    <label htmlFor="regPassConfirm">Konfirmasi Kata Sandi</label>
-                  </div>
-                </div>
-
-                <div className="auth-action-row">
-                  <button type="button" className="btn-secondary" onClick={() => setRegisterStep('role')}>
-                    Kembali
-                  </button>
-                  <button type="submit" className="btn btn-success btn-next" disabled={isSubmitting}>
-                    {isSubmitting ? 'Membuat Akun...' : 'Daftar Sekarang'}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
