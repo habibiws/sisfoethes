@@ -21,7 +21,10 @@ class SubKkSeeder extends Seeder
         ];
 
         foreach ($subKks as $sub) {
-            \App\Models\SubKk::create($sub);
+            \App\Models\SubKk::updateOrCreate(
+                ['code' => $sub['code']],
+                $sub
+            );
         }
     }
 }

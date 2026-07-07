@@ -21,12 +21,14 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // 1. Admin Mutlak (Super Admin) - Tidak bisa mendaftar via web
-        User::create([
-            'name' => 'Admin EEATS',
-            'email' => env('ADMIN_EMAIL', 'admin@eeats.com'),
-            'password' => \Illuminate\Support\Facades\Hash::make(env('ADMIN_PASSWORD', 'passwordadmin')),
-            'role' => 'admin',
-            'email_verified_at' => now(),
-        ]);
+        User::updateOrCreate(
+            ['email' => env('ADMIN_EMAIL', 'admin@eeats.com')],
+            [
+                'name' => 'Admin EEATS',
+                'password' => \Illuminate\Support\Facades\Hash::make(env('ADMIN_PASSWORD', 'passwordadmin')),
+                'role' => 'admin',
+                'email_verified_at' => now(),
+            ]
+        );
     }
 }
