@@ -86,13 +86,16 @@
   }
 }
 
-/* 2. Tablet Portrait - LAYOUT STACK (<= 768px) */
 @media (max-width: 768px) {
+  body:has(.auth-container), html:has(.auth-container), #root:has(.auth-container) {
+    overflow-y: auto !important;
+  }
+
   .auth-container {
     flex-direction: column;
     height: auto;
     min-height: 100vh;
-    overflow-y: auto;
+    overflow: visible !important;
   }
 
   .auth-left {
