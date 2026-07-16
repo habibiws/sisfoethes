@@ -59,7 +59,7 @@ export default function Layout({ title, subtitle, headerActions, children }) {
           <Link to="/dashboard" className="nav-brand-sidebar header-brand">
             <img 
               src={require('../../assets/ethes-btfw.png')} 
-              alt="EEATS Logo" 
+              alt="EEAT Logo" 
               className="header-logo-img" 
             />
           </Link>

@@ -109,9 +109,9 @@ class AuthController extends Controller
         );
 
         try {
-            Mail::raw("Halo,\n\nAnda menerima email ini karena kami menerima permintaan reset kata sandi untuk akun Anda.\n\nKode verifikasi reset sandi Anda adalah: {$token}\n\nMasukkan kode ini di aplikasi untuk mereset kata sandi Anda. Kode ini berlaku selama 60 menit.\n\nJika Anda tidak meminta reset sandi, abaikan email ini.\n\nSalam,\nKelompok Keahlian EEATS", function ($message) use ($request) {
+            Mail::raw("Halo,\n\nAnda menerima email ini karena kami menerima permintaan reset kata sandi untuk akun Anda.\n\nKode verifikasi reset sandi Anda adalah: {$token}\n\nMasukkan kode ini di aplikasi untuk mereset kata sandi Anda. Kode ini berlaku selama 60 menit.\n\nJika Anda tidak meminta reset sandi, abaikan email ini.\n\nSalam,\nKelompok Keahlian EEAT", function ($message) use ($request) {
                 $message->to($request->email)
-                    ->subject('Kode Reset Kata Sandi - EEATS Portal');
+                    ->subject('Kode Reset Kata Sandi - EEAT Portal');
             });
         } catch (\Exception $e) {
             \Log::error("Gagal mengirim email reset sandi ke {$request->email}: " . $e->getMessage());

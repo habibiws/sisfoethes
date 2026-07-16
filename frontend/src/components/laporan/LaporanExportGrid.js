@@ -28,8 +28,8 @@ export default function LaporanExportGrid({ selectedYear, subKkId }) {
       link.href = url;
       
       const fileName = isRekap 
-        ? `Rekap_Capaian_EEATS${selectedYear ? '_' + selectedYear : ''}.xlsx`
-        : `Detail_Lengkap_Capaian_EEATS${selectedYear ? '_' + selectedYear : ''}.xlsx`;
+        ? `Rekap_Capaian_EEAT${selectedYear ? '_' + selectedYear : ''}.xlsx`
+        : `Detail_Lengkap_Capaian_EEAT${selectedYear ? '_' + selectedYear : ''}.xlsx`;
 
       link.setAttribute('download', fileName);
       document.body.appendChild(link);

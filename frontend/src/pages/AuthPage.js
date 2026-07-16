@@ -12,9 +12,9 @@ export default function AuthPage() {
 
   const [mode, setMode] = useState('login'); // 'login', 'register', 'forgot', 'reset'
   const [localError, setLocalError] = useState('');
-  
+
   // Login State
-  const [loginStep, setLoginStep] = useState('email'); 
+  const [loginStep, setLoginStep] = useState('email');
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPass, setLoginPass] = useState('');
 
@@ -185,7 +185,7 @@ export default function AuthPage() {
     } else if (registerStep === 6) {
       if (!regEmail) return setLocalError('Email institusi wajib diisi.');
       if (!validateEmail(regEmail)) return setLocalError('Format email tidak valid.');
-      
+
       setIsVerifying(true);
       try {
         const res = await api.post('/check-email', { email: regEmail });
@@ -244,17 +244,17 @@ export default function AuthPage() {
   return (
     <div className="auth-fullscreen-container">
       <div className="auth-card">
-        
+
         {/* ========================================================================= */}
         {/* LEFT COLUMN: BRANDING & DESCRIPTIVE STATE */}
         {/* ========================================================================= */}
         <div className="auth-card-left">
-          <img src={logoBtfb} alt="Logo EEATS" className="auth-card-logo" />
-          
+          <img src={logoBtfb} alt="Logo EEAT" className="auth-card-logo" />
+
           <div className="auth-left-content fade-in">
             {mode === 'login' && (
               <>
-                <h2 className="auth-left-title">{loginStep === 'email' ? 'Login Page' : 'Selamat Datang'}</h2>
+                <h2 className="auth-left-title">{loginStep === 'email' ? 'Login' : 'Selamat Datang'}</h2>
                 <p className="auth-left-subtitle">
                   {loginStep === 'email' ? 'Gunakan email institusi Anda' : 'Masukkan kata sandi untuk melanjutkan'}
                 </p>
@@ -288,7 +288,7 @@ export default function AuthPage() {
         {/* RIGHT COLUMN: ACTION & INPUT FIELDS */}
         {/* ========================================================================= */}
         <div className="auth-card-right">
-          
+
           {/* Display Backend or Inline Validation Errors */}
           {(authError || localError) && (
             <div className="auth-alert alert-danger fade-in">
@@ -301,17 +301,17 @@ export default function AuthPage() {
           {/* ──────────────────────────────────────────────────────── */}
           {mode === 'login' && (
             <div className="auth-step-wrapper">
-              
+
               {/* Step 1: Input Email */}
               {loginStep === 'email' && (
                 <form onSubmit={handleLoginEmailNext} className="auth-form fade-in">
                   <div className="form-group mb-24">
                     <div className="floating-input-container">
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         id="loginEmail"
-                        value={loginEmail} 
-                        onChange={e => setLoginEmail(e.target.value)} 
+                        value={loginEmail}
+                        onChange={e => setLoginEmail(e.target.value)}
                         placeholder=" "
                         required
                         autoFocus
@@ -342,11 +342,11 @@ export default function AuthPage() {
 
                   <div className="form-group mb-24">
                     <div className="floating-input-container">
-                      <input 
-                        type="password" 
+                      <input
+                        type="password"
                         id="loginPass"
-                        value={loginPass} 
-                        onChange={e => setLoginPass(e.target.value)} 
+                        value={loginPass}
+                        onChange={e => setLoginPass(e.target.value)}
                         placeholder=" "
                         required
                         autoFocus
@@ -376,11 +376,11 @@ export default function AuthPage() {
               <form onSubmit={handleForgotSubmit} className="auth-form fade-in">
                 <div className="form-group mb-24">
                   <div className="floating-input-container">
-                    <input 
-                      type="email" 
+                    <input
+                      type="email"
                       id="resetEmail"
-                      value={resetEmail} 
-                      onChange={e => setResetEmail(e.target.value)} 
+                      value={resetEmail}
+                      onChange={e => setResetEmail(e.target.value)}
                       placeholder=" "
                       required
                       autoFocus
@@ -411,11 +411,11 @@ export default function AuthPage() {
 
                 <div className="form-group mb-16">
                   <div className="floating-input-container">
-                    <input 
-                      type="text" 
+                    <input
+                      type="text"
                       id="resetCode"
-                      value={resetCode} 
-                      onChange={e => setResetCode(e.target.value)} 
+                      value={resetCode}
+                      onChange={e => setResetCode(e.target.value)}
                       placeholder=" "
                       required
                       autoFocus
@@ -426,11 +426,11 @@ export default function AuthPage() {
 
                 <div className="form-group mb-16">
                   <div className="floating-input-container">
-                    <input 
-                      type="password" 
+                    <input
+                      type="password"
                       id="newPass"
-                      value={newPass} 
-                      onChange={e => setNewPass(e.target.value)} 
+                      value={newPass}
+                      onChange={e => setNewPass(e.target.value)}
                       placeholder=" "
                       required
                     />
@@ -440,11 +440,11 @@ export default function AuthPage() {
 
                 <div className="form-group mb-24">
                   <div className="floating-input-container">
-                    <input 
-                      type="password" 
+                    <input
+                      type="password"
                       id="newPassConfirm"
-                      value={newPassConfirm} 
-                      onChange={e => setNewPassConfirm(e.target.value)} 
+                      value={newPassConfirm}
+                      onChange={e => setNewPassConfirm(e.target.value)}
                       placeholder=" "
                       required
                     />

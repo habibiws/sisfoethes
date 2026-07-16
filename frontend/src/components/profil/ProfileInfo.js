@@ -87,7 +87,7 @@ export default function ProfileInfo({ user, onEdit }) {
             <label><Shield size={15} /> Role</label>
             <div style={{ display: 'flex', alignItems: 'center', height: '40px' }}>
               <span className="tag tag-red" style={{ fontSize: '13px', padding: '6px 12px' }}>
-                Admin EEATS
+                Admin EEAT
               </span>
             </div>
           </div>

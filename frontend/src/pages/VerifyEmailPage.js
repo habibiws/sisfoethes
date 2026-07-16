@@ -34,7 +34,7 @@ export default function VerifyEmailPage() {
     <div className="auth-fullscreen-container">
       <div className="auth-card" style={{ maxWidth: '480px', flexDirection: 'column' }}>
         <div className="auth-card-header" style={{ marginBottom: '32px' }}>
-          <img src={logoBtfb} alt="Logo EEATS" className="auth-card-logo" style={{ maxHeight: '50px' }} />
+          <img src={logoBtfb} alt="Logo EEAT" className="auth-card-logo" style={{ maxHeight: '50px' }} />
           <h2 className="auth-card-title">Verifikasi Akun</h2>
         </div>
 

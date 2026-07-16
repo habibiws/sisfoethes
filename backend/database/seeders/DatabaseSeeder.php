@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => env('ADMIN_EMAIL', 'admin@eeats.com')],
             [
-                'name' => 'Admin EEATS',
+                'name' => 'Admin EEAT',
                 'password' => \Illuminate\Support\Facades\Hash::make(env('ADMIN_PASSWORD', 'passwordadmin')),
                 'role' => 'admin',
                 'email_verified_at' => now(),

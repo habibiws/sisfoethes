@@ -1,6 +1,6 @@
-# PANDUAN LANGKAH DEMI LANGKAH: MENG-ONLINE-KAN APLIKASI EEATS DENGAN CLOUDFLARE TUNNEL
+# PANDUAN LANGKAH DEMI LANGKAH: MENG-ONLINE-KAN APLIKASI EEAT DENGAN CLOUDFLARE TUNNEL
 
-Panduan ini disusun khusus untuk pemula agar aplikasi **EEATS** yang saat ini berjalan di Docker laptop/server Anda dapat diakses secara online oleh publik menggunakan domain **`kkeeats.com`** tanpa perlu konfigurasi IP Public Statis atau Port Forwarding pada modem.
+Panduan ini disusun khusus untuk pemula agar aplikasi **EEAT** yang saat ini berjalan di Docker laptop/server Anda dapat diakses secara online oleh publik menggunakan domain **`kkeeats.com`** tanpa perlu konfigurasi IP Public Statis atau Port Forwarding pada modem.
 
 ---
 

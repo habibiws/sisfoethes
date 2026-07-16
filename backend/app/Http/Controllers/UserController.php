@@ -156,7 +156,7 @@ class UserController extends Controller
 
         // Ketua KK tidak boleh menghapus Admin
         if ($user->role === 'admin' && $request->user()->role === 'ketua_kk') {
-            return response()->json(['message' => 'Ketua KK tidak memiliki wewenang untuk menghapus akun Admin EEATS'], 403);
+            return response()->json(['message' => 'Ketua KK tidak memiliki wewenang untuk menghapus akun Admin EEAT'], 403);
         }
 
         $user->delete();

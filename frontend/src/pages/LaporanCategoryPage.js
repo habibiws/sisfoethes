@@ -351,7 +351,7 @@ export default function LaporanCategoryPage() {
           <span>{config.title}</span>
         </div>
       }
-      subtitle={`Detail data capaian KK EEATS · ${year ? `Tahun ${year}` : 'Semua Tahun'}`}
+      subtitle={`Detail data capaian KK EEAT · ${year ? `Tahun ${year}` : 'Semua Tahun'}`}
       headerActions={
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
           {/* Sub-KK selector */}
